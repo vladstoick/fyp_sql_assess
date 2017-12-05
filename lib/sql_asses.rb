@@ -1,5 +1,7 @@
 require "sql_asses/version"
 
-module SqlAsses
-  # Your code goes here...
-end
+require "sql_asses/error"
+
+require "sql_asses/database_connection"
+
+module SqlAsses; end
