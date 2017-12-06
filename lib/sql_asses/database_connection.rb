@@ -24,9 +24,8 @@ module SqlAsses
       raise DatabaseConnectionError.new(exception.message)
     end
 
-    private
-
-    def check_database_connection
+    def query(query)
+      @client.query(query)
     end
   end
 end
