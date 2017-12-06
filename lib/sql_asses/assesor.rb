@@ -1,5 +1,6 @@
 require "sql_asses/database_connection"
 require "sql_asses/database_schema"
+require "sql_asses/database_query_comparator"
 
 module SqlAsses
   class Assesor
@@ -17,9 +18,15 @@ module SqlAsses
       )
     end
 
-    def asses(create_schema_sql_query)
+    def asses(create_schema_sql_query, instructor_sql_query, student_sql_query)
       create_database(create_schema_sql_query)
+
+      result = DatabaseQueryComparator.new(@connection)
+        .compare(instructor_sql_query, student_sql_query)
+
       clear_database
+
+      result
     end
 
     private
