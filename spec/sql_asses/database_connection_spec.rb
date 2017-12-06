@@ -1,7 +1,6 @@
 require "spec_helper"
 
 RSpec.describe SqlAsses::DatabaseConnection do
-
   describe "#initialize" do
     context "when the url is invalid" do
       let(:database_url) { "invalid_database" }

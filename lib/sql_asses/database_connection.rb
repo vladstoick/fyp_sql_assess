@@ -20,8 +20,6 @@ module SqlAsses
           database: database,
         )
       end
-
-
     rescue Mysql2::Error => exception
       raise DatabaseConnectionError.new(exception.message)
     end
