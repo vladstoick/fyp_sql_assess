@@ -16,8 +16,9 @@ module SqlAsses
 
       return if tables.count.zero?
 
-      tables.first["Tables_in_local_db"].split(",").each do |table|
-        @connection.query("DROP table #{table}")
+      tables.each do |table|
+        table_name = table["Tables_in_local_db"]
+        @connection.query("DROP table #{table_name}")
       end
     ensure
       # ensure that foreign key checks are enabled
