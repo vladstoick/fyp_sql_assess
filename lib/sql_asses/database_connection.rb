@@ -2,7 +2,7 @@ require "mysql2"
 
 module SqlAsses
   class DatabaseConnection
-    def initialize(host: "localhost", port: "3306", username: "root", database: nil)
+    def initialize(host: "127.0.0.1", port: "3306", username: "root", database: nil)
       if database.nil?
         database = "local_db"
         @client = Mysql2::Client.new(
@@ -20,8 +20,6 @@ module SqlAsses
           database: database,
         )
       end
-
-
     rescue Mysql2::Error => exception
       raise DatabaseConnectionError.new(exception.message)
     end
