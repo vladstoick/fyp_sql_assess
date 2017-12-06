@@ -4,6 +4,15 @@ RSpec.describe SqlAsses::DatabaseSchema do
   let(:connection) { SqlAsses::DatabaseConnection.new }
   subject { described_class.new(connection) }
 
+  describe "#create_schema" do
+    it "runs the command" do
+      subject.create_schema('CREATE TABLE table1 (id integer);')
+
+      tables = connection.query("SHOW tables");
+      expect(tables.first["Tables_in_local_db"]).to eq("table1")
+    end
+  end
+
   describe "#clear_database" do
     context "when there are erros" do
       it "leaves FOREIGN_KEY_CHECKS set to ON" do

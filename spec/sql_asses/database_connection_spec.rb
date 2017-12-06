@@ -18,4 +18,10 @@ RSpec.describe SqlAsses::DatabaseConnection do
       end
     end
   end
+
+  describe "#query" do
+    it "runs the query" do
+      expect(subject.query("SHOW tables").count).to eq(0)
+    end
+  end
 end
