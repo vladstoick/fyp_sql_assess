@@ -1,6 +1,6 @@
 require "mysql2"
 
-module SqlAsses
+module SqlAssess
   class DatabaseConnection
     def initialize(host: "127.0.0.1", port: "3306", username: "root", database: nil)
       if database.nil?

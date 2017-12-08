@@ -1,3 +1,3 @@
-module SqlAsses
+module SqlAssess
   VERSION = "0.1.0"
 end

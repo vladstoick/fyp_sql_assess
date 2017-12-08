@@ -1,7 +1,7 @@
 require "spec_helper"
 
-RSpec.describe SqlAsses::DatabaseSchema do
-  let(:connection) { SqlAsses::DatabaseConnection.new }
+RSpec.describe SqlAssess::DatabaseSchema do
+  let(:connection) { SqlAssess::DatabaseConnection.new }
   subject { described_class.new(connection) }
 
   describe "#create_schema" do

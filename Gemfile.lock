@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sql_asses (0.1.0)
+    sql_assess (0.1.0)
       mysql2
       sql-parser
 
@@ -41,7 +41,7 @@ DEPENDENCIES
   pry
   rake (~> 10.0)
   rspec (~> 3.0)
-  sql_asses!
+  sql_assess!
 
 BUNDLED WITH
    1.16.0

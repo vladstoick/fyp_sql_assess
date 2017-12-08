@@ -1,12 +1,12 @@
 require "spec_helper"
 
-RSpec.describe SqlAsses::DatabaseConnection do
+RSpec.describe SqlAssess::DatabaseConnection do
   describe "#initialize" do
     context "when the url is invalid" do
       let(:database_url) { "invalid_database" }
 
       it "throws an error" do
-        expect { described_class.new(username: "test") }.to raise_error(SqlAsses::DatabaseConnectionError)
+        expect { described_class.new(username: "test") }.to raise_error(SqlAssess::DatabaseConnectionError)
       end
     end
 

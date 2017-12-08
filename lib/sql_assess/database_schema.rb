@@ -1,4 +1,4 @@
-module SqlAsses
+module SqlAssess
   class DatabaseSchema
     def initialize(connection)
       @connection = connection
