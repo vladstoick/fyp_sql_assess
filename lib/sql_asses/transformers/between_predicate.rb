@@ -21,14 +21,11 @@ module SqlAsses::Transformers
     private
 
     def transform_between_queries(statement)
-      if statement.is_a?(SQLParser::Statement::And)
-        SQLParser::Statement::And.new(
+      if statement.is_a?(SQLParser::Statement::SearchCondition)
+        statement.class.new(
           transform_between_queries(statement.left),
           transform_between_queries(statement.right)
         )
-      elsif statement.is_a?(SQLParser::Statement::Or)
-        # statement.left = transform_between_queries(statement.left)
-        # statement.right = transform_between_queries(statement.right)
       elsif statement.is_a?(SQLParser::Statement::Between)
         transform_between_query(statement)
       else
