@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "sql_asses"
+require "sql_assess"
 
 require "pry"
 
@@ -15,8 +15,8 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    SqlAsses::DatabaseSchema.new(
-      SqlAsses::DatabaseConnection.new
+    SqlAssess::DatabaseSchema.new(
+      SqlAssess::DatabaseConnection.new
     ).clear_database
   end
 end

@@ -1,11 +1,11 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "sql_asses/version"
+require "sql_assess/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "sql_asses"
-  spec.version       = SqlAsses::VERSION
+  spec.name          = "sql_assess"
+  spec.version       = SqlAssess::VERSION
   spec.authors       = ["Vlad Stoica"]
   spec.email         = ["vlad96stoica@gmail.com"]
 

@@ -1,4 +1,4 @@
-module SqlAsses::Transformers
+module SqlAssess::Transformers
   class Base
     def initialize(connection)
       @connection = connection

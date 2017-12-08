@@ -1,4 +1,4 @@
-module SqlAsses
+module SqlAssess
   class DatabaseQueryComparisonResult
     def initialize(success:)
       @success = success

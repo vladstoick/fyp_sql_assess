@@ -1,6 +1,6 @@
 require 'sql-parser'
 
-module SqlAsses::Transformers
+module SqlAssess::Transformers
   class BetweenPredicate < Base
     def transform(query)
       parsed_query = @parser.scan_str(query)
