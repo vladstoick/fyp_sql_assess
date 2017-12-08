@@ -1,6 +1,7 @@
 require "sql_asses/database_connection"
 require "sql_asses/database_schema"
 require "sql_asses/database_query_comparator"
+require "sql_asses/database_query_transformer"
 
 module SqlAsses
   class Assesor

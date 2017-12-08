@@ -3,6 +3,7 @@ PATH
   specs:
     sql_asses (0.1.0)
       mysql2
+      sql-parser
 
 GEM
   remote: https://rubygems.org/
@@ -14,6 +15,7 @@ GEM
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
+    racc (1.4.14)
     rake (10.5.0)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
@@ -28,6 +30,8 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.0)
+    sql-parser (0.0.2)
+      racc
 
 PLATFORMS
   ruby
