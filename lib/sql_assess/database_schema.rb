@@ -8,6 +8,10 @@ module SqlAssess
       @connection.query(create_schema_sql_query)
     end
 
+    def seed_initial_data(seed_sql_query)
+      @connection.query(seed_sql_query)
+    end
+
     def clear_database
       # disable foreign key checks before dropping the database
       @connection.query("SET FOREIGN_KEY_CHECKS = 0")

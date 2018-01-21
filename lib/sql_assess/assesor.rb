@@ -19,8 +19,8 @@ module SqlAssess
       )
     end
 
-    def asses(create_schema_sql_query, instructor_sql_query, student_sql_query)
-      create_database(create_schema_sql_query)
+    def asses(create_schema_sql_query, instructor_sql_query, seed_sql_query, student_sql_query)
+      create_database(create_schema_sql_query, seed_sql_query)
 
       result = DatabaseQueryComparator.new(@connection)
         .compare(instructor_sql_query, student_sql_query)
@@ -32,9 +32,13 @@ module SqlAssess
 
     private
 
-    def create_database(create_schema_sql_query)
+    def create_database(create_schema_sql_query, seed_sql_query)
       SqlAssess::DatabaseSchema.new(@connection).create_schema(
         create_schema_sql_query
+      )
+
+      SqlAssess::DatabaseSchema.new(@connection).seed_initial_data(
+        seed_sql_query
       )
     end
 
