@@ -5,11 +5,23 @@ RSpec.describe SqlAssess::DatabaseSchema do
   subject { described_class.new(connection) }
 
   describe "#create_schema" do
-    it "runs the command" do
-      subject.create_schema('CREATE TABLE table1 (id integer);')
+    context "with a single command" do
+      it "runs the command" do
+        subject.create_schema('CREATE TABLE table1 (id integer);')
 
-      tables = connection.query("SHOW tables");
-      expect(tables.first["Tables_in_local_db"]).to eq("table1")
+        tables = connection.query("SHOW tables");
+        expect(tables.first["Tables_in_local_db"]).to eq("table1")
+      end
+    end
+
+    context "with multiple commands" do
+      it "runs all commands" do
+        subject.create_schema('CREATE TABLE table1 (id integer); CREATE TABLE table2 (id integer);')
+
+        tables = connection.query("SHOW tables");
+        expect(tables.size).to eq(2)
+        expect(tables.map{ |line| line["Tables_in_local_db"] }).to eq(["table1", "table2"])
+      end
     end
   end
 

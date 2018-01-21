@@ -5,11 +5,11 @@ module SqlAssess
     end
 
     def create_schema(create_schema_sql_query)
-      @connection.query(create_schema_sql_query)
+      @connection.multiple_query(create_schema_sql_query)
     end
 
     def seed_initial_data(seed_sql_query)
-      @connection.query(seed_sql_query)
+      @connection.multiple_query(seed_sql_query)
     end
 
     def clear_database
