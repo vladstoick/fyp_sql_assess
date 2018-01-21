@@ -10,7 +10,8 @@ module SqlAssess
         host: host,
         port: port,
         username: username,
-        init_command: "CREATE DATABASE IF NOT EXISTS #{database}"
+        init_command: "CREATE DATABASE IF NOT EXISTS #{database}",
+        flags: Mysql2::Client::MULTI_STATEMENTS
       )
 
       @client.select_db(database)
