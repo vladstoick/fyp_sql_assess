@@ -25,9 +25,9 @@ module SqlAssess
       result = DatabaseQueryComparator.new(@connection)
         .compare(instructor_sql_query, student_sql_query)
 
-      clear_database
-
       result
+    ensure
+      clear_database
     end
 
     private
