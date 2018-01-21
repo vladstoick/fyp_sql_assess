@@ -1,4 +1,6 @@
 require "sql_assess/database_query_comparison_result"
+require "sql_assess/parsers/base"
+
 
 module SqlAssess
   class DatabaseQueryComparator
@@ -10,18 +12,20 @@ module SqlAssess
       instructor_result = @connection.query(instructor_sql_query).to_a
       student_result = @connection.query(student_sql_query).to_a
 
-      if instructor_result.count != student_result.count
-        DatabaseQueryComparisonResult.new(
-          success: false
-        )
-      else
-        matches = (0..instructor_result.count).all? do |i|
-          instructor_result[i] == student_result[i]
-        end
+      DatabaseQueryComparisonResult.new(
+        success: is_success(instructor_result, student_result),
+        instructor_columns: Parsers::Columns.new(instructor_sql_query).columns,
+        student_columns: Parsers::Columns.new(student_sql_query).columns,
+      )
+    end
 
-        DatabaseQueryComparisonResult.new(
-          success: matches
-        )
+    private
+
+    def is_success(instructor_result, student_result)
+      return false if instructor_result.count != student_result.count
+
+      (0..instructor_result.count).all? do |i|
+        instructor_result[i] == student_result[i]
       end
     end
   end

@@ -1,11 +1,12 @@
 module SqlAssess
   class DatabaseQueryComparisonResult
-    def initialize(success:)
-      @success = success
-    end
+    attr_reader :success,
+                :student_columns, :instructor_columns
 
-    def success?
-      @success
+    def initialize(success:, student_columns:, instructor_columns:)
+      @success = success
+      @student_columns = student_columns
+      @instructor_columns = instructor_columns
     end
   end
 end
