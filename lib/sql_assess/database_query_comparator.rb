@@ -1,7 +1,6 @@
 require "sql_assess/database_query_comparison_result"
 require "sql_assess/parsers/base"
 
-
 module SqlAssess
   class DatabaseQueryComparator
     def initialize(connection)
