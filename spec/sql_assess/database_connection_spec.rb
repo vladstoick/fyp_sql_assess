@@ -24,4 +24,12 @@ RSpec.describe SqlAssess::DatabaseConnection do
       expect(subject.query("SHOW tables").count).to eq(0)
     end
   end
+
+  describe "#multi_query" do
+    it "runs the query" do
+      result = subject.multiple_query("SELECT 1; SELECT 2; SELECT 3")
+      expect(result.count).to eq(3)
+      expect(result.map(&:first)).to eq([{ "1" => 1 }, { "2" => 2 }, { "3" => 3 }])
+    end
+  end
 end

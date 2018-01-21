@@ -22,5 +22,17 @@ module SqlAssess
     def query(query)
       @client.query(query)
     end
+
+    def multiple_query(query)
+      result = []
+
+      result << @client.query(query)
+
+      while @client.next_result
+        result << @client.store_result
+      end
+
+      result
+    end
   end
 end
