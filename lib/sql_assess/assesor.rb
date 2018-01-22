@@ -21,7 +21,7 @@ module SqlAssess
       clear_database
     end
 
-    def asses(create_schema_sql_query, instructor_sql_query, seed_sql_query, student_sql_query)
+    def assess(create_schema_sql_query:, instructor_sql_query:, seed_sql_query:, student_sql_query:)
       create_database(create_schema_sql_query, seed_sql_query)
 
       result = DatabaseQueryComparator.new(@connection)
