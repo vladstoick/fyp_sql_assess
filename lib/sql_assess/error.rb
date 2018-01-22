@@ -10,4 +10,7 @@ module SqlAssess
 
   class DatabaseSeedError < SqlAssess::Error
   end
+
+  class DatabaseQueryExecutionFailed < SqlAssess::Error
+  end
 end
