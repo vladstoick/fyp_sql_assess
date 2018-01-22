@@ -24,7 +24,7 @@ module SqlAssess
     def compile(create_schema_sql_query:, instructor_sql_query:, seed_sql_query:)
       create_database(create_schema_sql_query, seed_sql_query)
 
-      DatabaseQueryRunner.new(instructor_sql_query).run
+      DatabaseQueryRunner.new(@connection, instructor_sql_query).run
     ensure
       clear_database
     end
