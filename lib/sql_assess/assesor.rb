@@ -2,6 +2,7 @@ require "sql_assess/database_connection"
 require "sql_assess/database_schema"
 require "sql_assess/database_query_comparator"
 require "sql_assess/database_query_transformer"
+require "sql_assess/database_query_runner"
 
 module SqlAssess
   class Assesor
@@ -17,11 +18,18 @@ module SqlAssess
         username: database_username,
         database: database_name
       )
+      clear_database
     end
 
-    def asses(create_schema_sql_query, instructor_sql_query, seed_sql_query, student_sql_query)
-      clear_database
+    def compile(create_schema_sql_query:, instructor_sql_query:, seed_sql_query:)
+      create_database(create_schema_sql_query, seed_sql_query)
 
+      DatabaseQueryRunner.new(instructor_sql_query).run
+    ensure
+      clear_database
+    end
+
+    def assess(create_schema_sql_query:, instructor_sql_query:, seed_sql_query:, student_sql_query:)
       create_database(create_schema_sql_query, seed_sql_query)
 
       result = DatabaseQueryComparator.new(@connection)

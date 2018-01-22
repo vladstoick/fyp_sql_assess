@@ -4,4 +4,13 @@ module SqlAssess
 
   class DatabaseConnectionError < SqlAssess::Error
   end
+
+  class DatabaseSchemaError < SqlAssess::Error
+  end
+
+  class DatabaseSeedError < SqlAssess::Error
+  end
+
+  class DatabaseQueryExecutionFailed < SqlAssess::Error
+  end
 end
