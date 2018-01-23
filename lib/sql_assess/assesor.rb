@@ -3,6 +3,7 @@ require "sql_assess/database_schema"
 require "sql_assess/database_query_comparator"
 require "sql_assess/database_query_transformer"
 require "sql_assess/database_query_runner"
+require "sql_assess/database_data_extractor"
 
 module SqlAssess
   class Assesor
@@ -25,6 +26,8 @@ module SqlAssess
       create_database(create_schema_sql_query, seed_sql_query)
 
       DatabaseQueryRunner.new(@connection, instructor_sql_query).run
+
+      DatabaseDataExtractor.new(@connection).run
     ensure
       clear_database
     end
