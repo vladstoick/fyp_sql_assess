@@ -11,15 +11,7 @@ module SqlAssess
       instructor_result = @connection.query(instructor_sql_query).to_a
       student_result = @connection.query(student_sql_query).to_a
 
-      transformer = DatabaseQueryTransformer.new(@connection)
-      instructor_sql_query = transformer.transform(instructor_sql_query)
-      student_sql_query = transformer.transform(student_sql_query)
-
-      DatabaseQueryComparisonResult.new(
-        success: is_success(instructor_result, student_result),
-        instructor_columns: Parsers::Columns.new(instructor_sql_query).columns,
-        student_columns: Parsers::Columns.new(student_sql_query).columns,
-      )
+      is_success(instructor_result, student_result)
     end
 
     private
