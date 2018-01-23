@@ -53,7 +53,7 @@ RSpec.describe SqlAssess::DatabaseQueryComparator do
     it "returns the correct student_columns" do
       result = subject.compare(instructor_query, student_query)
       expect(result.instructor_columns).to eq(["id"])
-      expect(result.student_columns).to eq(["*"])
+      expect(result.student_columns).to eq(["id", "second"])
     end
   end
 end

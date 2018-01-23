@@ -7,16 +7,15 @@ module SqlAssess::Transformers
 
       if @parsed_query.query_expression.list.is_a?(SQLParser::Statement::All)
         transform_star_select
-        @parsed_query.to_sql
-      else
-        @parsed_query.to_sql
       end
+
+      @parsed_query.to_sql
     end
 
     private
 
     def transform_star_select
-      table_expression = @parsed_query.query_expression.table_expression.to_sql
+      table_expression = @parsed_query.query_expression.table_expression.from_clause.to_sql
       columns_query = "SHOW columns #{table_expression}"
       column_names = @connection.query(columns_query).map { |k| k["Field"] }
 
@@ -28,8 +27,6 @@ module SqlAssess::Transformers
         "@list",
         SQLParser::Statement::SelectList.new(sql_columns)
       )
-
-      # binding.pry
     end
   end
 end
