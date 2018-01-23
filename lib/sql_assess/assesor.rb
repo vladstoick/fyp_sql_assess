@@ -4,6 +4,7 @@ require "sql_assess/database_query_comparator"
 require "sql_assess/database_query_transformer"
 require "sql_assess/database_query_runner"
 require "sql_assess/database_data_extractor"
+require "sql_assess/database_query_attribute_extractor"
 
 module SqlAssess
   class Assesor
