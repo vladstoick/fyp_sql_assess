@@ -16,12 +16,12 @@ RSpec.describe SqlAssess::DatabaseDataExtractor do
       expect(subject.run).to eq([
         {
           name: "table1",
-          columns: ["id"],
+          columns: [{ name: "id", type: "int(11)" }],
           data: [{ "id" => 1 }, { "id" => 2 }]
         },
         {
           name: "table2",
-          columns: ["id"],
+          columns: [{ name: "id", type: "int(11)" }],
           data: []
         },
       ])

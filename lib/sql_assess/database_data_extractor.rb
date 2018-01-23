@@ -14,11 +14,16 @@ module SqlAssess
         table_name = table.first.last
 
         data = @connection.query("SELECT * from #{table_name}")
-        columns = @connection.query("SHOW columns from #{table_name}")
+        columns = @connection.query("SHOW columns from #{table_name}").to_a.map do |column|
+          {
+            name: column.fetch("Field"),
+            type: column.fetch("Type")
+          }
+        end
 
         result << {
           name: table_name,
-          columns: columns.to_a.map { |column| column["Field"] },
+          columns: columns,
           data: data.to_a
         }
       end
