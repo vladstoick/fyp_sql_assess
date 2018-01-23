@@ -14,9 +14,11 @@ module SqlAssess
     end
 
     def transform(query)
-      self.TRANSFORMERS.each do |transformer_class|
-        query = transformer_class.new(connection).transform(query)
+      TRANSFORMERS.each do |transformer_class|
+        query = transformer_class.new(@connection).transform(query)
       end
+
+      query
     end
   end
 end
