@@ -36,10 +36,19 @@ module SqlAssess
     def assess(create_schema_sql_query:, instructor_sql_query:, seed_sql_query:, student_sql_query:)
       create_database(create_schema_sql_query, seed_sql_query)
 
-      result = DatabaseQueryComparator.new(@connection)
+      query_result_match = DatabaseQueryComparator.new(@connection)
         .compare(instructor_sql_query, student_sql_query)
 
-      result
+      transformer = DatabaseQueryTransformer.new(@connection)
+      instructor_sql_query = transformer.transform(instructor_sql_query)
+      student_sql_query = transformer.transform(student_sql_query)
+
+      DatabaseQueryComparisonResult.new(
+        success: query_result_match,
+        attributes: DatabaseQueryAttributeExtractor.new(@connection).extract(
+          instructor_sql_query, student_sql_query
+        )
+      )
     ensure
       clear_database
     end
