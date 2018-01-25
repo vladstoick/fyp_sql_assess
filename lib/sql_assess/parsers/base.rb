@@ -7,3 +7,4 @@ module SqlAssess::Parsers
 end
 
 require_relative "columns"
+require_relative "order_by"
