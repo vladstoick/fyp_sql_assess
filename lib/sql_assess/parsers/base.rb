@@ -9,3 +9,4 @@ end
 require_relative "columns"
 require_relative "order_by"
 require_relative "where"
+require_relative "tables"
