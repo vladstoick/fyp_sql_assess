@@ -1,5 +1,3 @@
-require 'sql-parser'
-
 module SqlAssess::Transformers
   class AllColumns < Base
     def transform(query)
