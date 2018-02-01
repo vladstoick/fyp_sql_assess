@@ -1,4 +1,5 @@
 require 'sql-parser'
+require 'pg_query'
 
 module SqlAssess::Transformers
   class Base
