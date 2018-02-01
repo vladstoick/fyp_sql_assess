@@ -4,7 +4,8 @@ module SqlAssess
   class DatabaseQueryTransformer
     TRANSFORMERS = [
       Transformers::BetweenPredicate,
-      Transformers::AllColumns
+      Transformers::AllColumns,
+      Transformers::Not,
     ]
 
     def initialize(connection)
