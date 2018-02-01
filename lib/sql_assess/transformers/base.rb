@@ -1,3 +1,6 @@
+require 'sql-parser'
+require 'pg_query'
+
 module SqlAssess::Transformers
   class Base
     def initialize(connection)
@@ -10,3 +13,7 @@ module SqlAssess::Transformers
     end
   end
 end
+
+require_relative 'all_columns'
+require_relative 'between_predicate'
+require_relative 'not'

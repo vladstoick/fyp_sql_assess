@@ -1,12 +1,11 @@
 require "sql_assess/transformers/base"
-require "sql_assess/transformers/between_predicate"
-require "sql_assess/transformers/all_columns"
 
 module SqlAssess
   class DatabaseQueryTransformer
     TRANSFORMERS = [
       Transformers::BetweenPredicate,
-      Transformers::AllColumns
+      Transformers::AllColumns,
+      Transformers::Not,
     ]
 
     def initialize(connection)

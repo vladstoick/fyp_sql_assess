@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activesupport"
   spec.add_dependency "mysql2"
   spec.add_dependency "sql-parser"
+  spec.add_dependency "pg_query"
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "pry"
