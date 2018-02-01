@@ -16,3 +16,4 @@ end
 
 require_relative 'all_columns'
 require_relative 'between_predicate'
+require_relative 'not'
