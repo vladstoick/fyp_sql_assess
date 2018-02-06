@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe SqlAssess::DatabaseQueryComparator do
+RSpec.describe SqlAssess::QueryComparator do
   let(:connection) { SqlAssess::DatabaseConnection.new }
   subject { described_class.new(connection) }
 

@@ -15,7 +15,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    SqlAssess::DatabaseSchema.new(
+    SqlAssess::Runner.new(
       SqlAssess::DatabaseConnection.new
     ).clear_database
   end

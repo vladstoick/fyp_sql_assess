@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe SqlAssess::DatabaseDataExtractor do
+RSpec.describe SqlAssess::DataExtractor do
   let(:connection) { SqlAssess::DatabaseConnection.new }
   subject { described_class.new(connection) }
 
