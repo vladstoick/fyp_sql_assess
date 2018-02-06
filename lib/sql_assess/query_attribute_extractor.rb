@@ -1,5 +1,5 @@
 module SqlAssess
-  class DatabaseQueryAttributeExtractor
+  class QueryAttributeExtractor
     def initialize(connection)
       @connection = connection
     end

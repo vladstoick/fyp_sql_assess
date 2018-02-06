@@ -1,5 +1,5 @@
 module SqlAssess
-  class DatabaseQueryComparisonResult
+  class QueryComparisonResult
     attr_reader :success, :attributes
 
     def initialize(success:, attributes:)

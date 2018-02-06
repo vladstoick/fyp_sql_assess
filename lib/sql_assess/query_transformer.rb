@@ -1,7 +1,7 @@
 require "sql_assess/transformers/base"
 
 module SqlAssess
-  class DatabaseQueryTransformer
+  class QueryTransformer
     TRANSFORMERS = [
       Transformers::BetweenPredicate,
       Transformers::AllColumns,

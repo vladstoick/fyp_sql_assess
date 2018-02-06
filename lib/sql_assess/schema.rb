@@ -1,5 +1,5 @@
 module SqlAssess
-  class DatabaseSchema
+  class Schema
     def initialize(connection)
       @connection = connection
     end

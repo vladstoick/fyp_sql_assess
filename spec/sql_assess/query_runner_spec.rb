@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe SqlAssess::DatabaseQueryRunner do
+RSpec.describe SqlAssess::QueryRunner do
   let(:connection) { SqlAssess::DatabaseConnection.new }
   subject { described_class.new(connection, query) }
 

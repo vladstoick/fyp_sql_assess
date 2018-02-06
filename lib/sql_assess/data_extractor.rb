@@ -1,7 +1,7 @@
 require "mysql2"
 
 module SqlAssess
-  class DatabaseDataExtractor
+  class DataExtractor
     def initialize(connection)
       @connection = connection
     end

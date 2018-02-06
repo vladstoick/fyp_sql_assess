@@ -1,10 +1,10 @@
 require "sql_assess/database_connection"
-require "sql_assess/database_schema"
-require "sql_assess/database_query_comparator"
-require "sql_assess/database_query_transformer"
-require "sql_assess/database_query_runner"
-require "sql_assess/database_data_extractor"
-require "sql_assess/database_query_attribute_extractor"
+require "sql_assess/schema"
+require "sql_assess/query_comparator"
+require "sql_assess/query_transformer"
+require "sql_assess/query_runner"
+require "sql_assess/data_extractor"
+require "sql_assess/query_attribute_extractor"
 
 module SqlAssess
   class Assesor
@@ -26,9 +26,9 @@ module SqlAssess
     def compile(create_schema_sql_query:, instructor_sql_query:, seed_sql_query:)
       create_database(create_schema_sql_query, seed_sql_query)
 
-      DatabaseQueryRunner.new(@connection, instructor_sql_query).run
+      QueryRunner.new(@connection, instructor_sql_query).run
 
-      DatabaseDataExtractor.new(@connection).run
+      DataExtractor.new(@connection).run
     ensure
       clear_database
     end
@@ -36,16 +36,16 @@ module SqlAssess
     def assess(create_schema_sql_query:, instructor_sql_query:, seed_sql_query:, student_sql_query:)
       create_database(create_schema_sql_query, seed_sql_query)
 
-      query_result_match = DatabaseQueryComparator.new(@connection)
+      query_result_match = QueryComparator.new(@connection)
         .compare(instructor_sql_query, student_sql_query)
 
-      transformer = DatabaseQueryTransformer.new(@connection)
+      transformer = QueryTransformer.new(@connection)
       instructor_sql_query = transformer.transform(instructor_sql_query)
       student_sql_query = transformer.transform(student_sql_query)
 
-      DatabaseQueryComparisonResult.new(
+      QueryComparisonResult.new(
         success: query_result_match,
-        attributes: DatabaseQueryAttributeExtractor.new(@connection).extract(
+        attributes: QueryAttributeExtractor.new(@connection).extract(
           instructor_sql_query, student_sql_query
         )
       )
@@ -56,17 +56,17 @@ module SqlAssess
     private
 
     def create_database(create_schema_sql_query, seed_sql_query)
-      SqlAssess::DatabaseSchema.new(@connection).create_schema(
+      SqlAssess::Schema.new(@connection).create_schema(
         create_schema_sql_query
       )
 
-      SqlAssess::DatabaseSchema.new(@connection).seed_initial_data(
+      SqlAssess::Schema.new(@connection).seed_initial_data(
         seed_sql_query
       )
     end
 
     def clear_database
-      SqlAssess::DatabaseSchema.new(@connection).clear_database
+      SqlAssess::Schema.new(@connection).clear_database
     end
   end
 end

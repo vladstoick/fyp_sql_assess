@@ -1,5 +1,5 @@
 module SqlAssess
-  class DatabaseQueryRunner
+  class QueryRunner
     def initialize(connection, sql_query)
       @connection = connection
       @sql_query = sql_query
