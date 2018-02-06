@@ -1,8 +1,7 @@
 require "sql_assess/database_connection"
-require "sql_assess/schema"
+require "sql_assess/runner"
 require "sql_assess/query_comparator"
 require "sql_assess/query_transformer"
-require "sql_assess/query_runner"
 require "sql_assess/data_extractor"
 require "sql_assess/query_attribute_extractor"
 
@@ -26,7 +25,7 @@ module SqlAssess
     def compile(create_schema_sql_query:, instructor_sql_query:, seed_sql_query:)
       create_database(create_schema_sql_query, seed_sql_query)
 
-      QueryRunner.new(@connection, instructor_sql_query).run
+      Runner.new(@connection).execute_query(instructor_sql_query)
 
       DataExtractor.new(@connection).run
     ensure
@@ -56,17 +55,17 @@ module SqlAssess
     private
 
     def create_database(create_schema_sql_query, seed_sql_query)
-      SqlAssess::Schema.new(@connection).create_schema(
+      SqlAssess::Runner.new(@connection).create_schema(
         create_schema_sql_query
       )
 
-      SqlAssess::Schema.new(@connection).seed_initial_data(
+      SqlAssess::Runner.new(@connection).seed_initial_data(
         seed_sql_query
       )
     end
 
     def clear_database
-      SqlAssess::Schema.new(@connection).clear_database
+      SqlAssess::Runner.new(@connection).clear_database
     end
   end
 end

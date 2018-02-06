@@ -1,5 +1,5 @@
 module SqlAssess
-  class Schema
+  class Runner
     def initialize(connection)
       @connection = connection
     end
@@ -14,6 +14,12 @@ module SqlAssess
       @connection.multiple_query(seed_sql_query)
     rescue Mysql2::Error => exception
       raise DatabaseSeedError.new(exception.message)
+    end
+
+    def execute_query(sql_query)
+      @connection.query(sql_query)
+    rescue Mysql2::Error => exception
+      raise DatabaseQueryExecutionFailed.new(exception.message)
     end
 
     def clear_database
