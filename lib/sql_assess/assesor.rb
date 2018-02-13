@@ -7,6 +7,8 @@ require "sql_assess/query_attribute_extractor"
 
 module SqlAssess
   class Assesor
+    attr_reader :connection
+
     def initialize(
       databse_host: "127.0.0.1",
       database_port: "3306",
@@ -34,6 +36,9 @@ module SqlAssess
 
     def assess(create_schema_sql_query:, instructor_sql_query:, seed_sql_query:, student_sql_query:)
       create_database(create_schema_sql_query, seed_sql_query)
+
+      # Try to compile
+      Runner.new(@connection).execute_query(student_sql_query)
 
       query_result_match = QueryComparator.new(@connection)
         .compare(instructor_sql_query, student_sql_query)
