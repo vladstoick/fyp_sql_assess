@@ -4,7 +4,7 @@ module SqlAssess::Transformers
       @parsed_query = @parser.scan_str(query)
 
       if @parsed_query.query_expression.list.is_a?(SQLParser::Statement::All)
-        transform_star_select(query)
+        transform_star_select
       end
 
       @parsed_query.to_sql
@@ -12,8 +12,8 @@ module SqlAssess::Transformers
 
     private
 
-    def transform_star_select(query)
-      table_list = PgQuery.parse(query).tables
+    def transform_star_select
+      table_list = PgQuery.parse(SQLVisitorForPostgres.new.visit(@parsed_query)).tables
 
       column_names = table_list.map do |table|
         columns_query = "SHOW COLUMNS from #{table}"
