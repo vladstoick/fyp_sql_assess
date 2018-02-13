@@ -12,12 +12,12 @@ RSpec.describe SqlAssess::QueryAttributeExtractor do
     end
 
     let(:instructor_query) { "SELECT id from table1" }
-    let(:student_query) { "SELECT * from table1" }
+    let(:student_query) { "SELECT second from table1" }
 
     it "returns the correct student_columns" do
       result = subject.extract(instructor_query, student_query)
-      expect(result[:columns][:instructor_columns]).to eq(["id"])
-      expect(result[:columns][:student_columns]).to eq(["*"])
+      expect(result[:columns][:instructor_columns]).to eq(["`id`"])
+      expect(result[:columns][:student_columns]).to eq(["`second`"])
     end
   end
 end
