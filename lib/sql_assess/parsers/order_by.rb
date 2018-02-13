@@ -10,15 +10,5 @@ module SqlAssess::Parsers
         end
       end
     end
-
-    private
-
-    def sort_specification_type(sort_specification)
-      if sort_specification.is_a?(SQLParser::Statement::Ascending)
-        'ASC'
-      else
-        'DESC'
-      end
-    end
   end
 end
