@@ -5,6 +5,7 @@ module SqlAssess
     TRANSFORMERS = [
       Transformers::BetweenPredicate,
       Transformers::AllColumns,
+      Transformers::AmbigousColumns,
       Transformers::Not,
     ]
 
