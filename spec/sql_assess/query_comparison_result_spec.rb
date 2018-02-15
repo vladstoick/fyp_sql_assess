@@ -17,14 +17,18 @@ RSpec.describe SqlAssess::QueryComparisonResult do
       let(:attributes) do
         {
           columns: {
-            student_columns: ['a', 'd', 'g'],
+            student_columns: ['a', 'd', 'g', 'e'],
             instructor_columns: ['a', 'b', 'c', 'd', 'e']
+          },
+          order_by: {
+            student_order_by: ['a ASC', 'b DESC', 'g', 'f'],
+            instructor_order_by: ['a ASC', 'b DESC', 'f']
           }
         }
       end
 
       it "returns the percentage of matched columns" do
-        expect(subject.grade).to eq(40.0)
+        expect(subject.grade).to eq(80.0)
       end
     end
   end
