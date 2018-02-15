@@ -24,12 +24,14 @@ module SqlAssess
           student_attributes: attributes[key]["student_#{key}".to_sym],
           instructor_attributes: attributes[key]["instructor_#{key}".to_sym]
         ) * grade_components_percentages[key]
-      end
+      end.round(2)
     end
 
     def grade_components_percentages
       {
-        columns: 1.00
+        columns: 1 / 3.0,
+        order_by: 1 / 3.0,
+        where: 1 / 3.0,
       }
     end
   end
