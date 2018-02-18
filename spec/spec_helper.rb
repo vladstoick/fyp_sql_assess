@@ -1,10 +1,12 @@
 require "bundler/setup"
 
-require 'simplecov'
-SimpleCov.start
+unless ENV["CODECOV_TOKEN"].nil?
+  require 'simplecov'
+  SimpleCov.start
 
-require 'codecov'
-SimpleCov.formatter = SimpleCov::Formatter::Codecov
+  require 'codecov'
+  SimpleCov.formatter = SimpleCov::Formatter::Codecov
+end
 
 require "sql_assess"
 
@@ -19,6 +21,15 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+
+  config.before(:suite) do
+    # begin
+      SqlAssess::DatabaseConnection.new
+    # rescue SqlAssess::DatabaseConnectionError
+    #   puts "\e[31mCouldn't connect to database\e[0m"
+    #   exit
+    # end
   end
 
   config.before(:each) do
