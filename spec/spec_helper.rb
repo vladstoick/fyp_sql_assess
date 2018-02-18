@@ -24,12 +24,7 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    # begin
-      SqlAssess::DatabaseConnection.new
-    # rescue SqlAssess::DatabaseConnectionError
-    #   puts "\e[31mCouldn't connect to database\e[0m"
-    #   exit
-    # end
+    SqlAssess::DatabaseConnection.new
   end
 
   config.before(:each) do
