@@ -32,7 +32,7 @@ RSpec.describe SqlAssess::QueryComparisonResult do
       end
 
       it "returns the percentage of matched columns" do
-        expect(subject.grade).to eq(70.0)
+        expect(subject.grade).to be_a(BigDecimal)
       end
     end
   end

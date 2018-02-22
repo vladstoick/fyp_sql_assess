@@ -1,5 +1,5 @@
 module SqlAssess::Grader
-  class Where
+  class Where < Base
     def initialize(student_attributes:, instructor_attributes:)
       @student_where = student_attributes
       @instructor_where = instructor_attributes
