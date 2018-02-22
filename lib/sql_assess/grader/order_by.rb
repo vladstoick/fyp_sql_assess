@@ -1,5 +1,5 @@
 module SqlAssess::Grader
-  class OrderBy
+  class OrderBy < Base
     def initialize(student_attributes:, instructor_attributes:)
       @student_order_by = student_attributes
       @instructor_order_by = instructor_attributes

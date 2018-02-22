@@ -6,13 +6,17 @@ module SqlAssess::Grader
       "SqlAssess::Grader::#{attribute.to_s.camelcase}".constantize.new(
         student_attributes: student_attributes,
         instructor_attributes: instructor_attributes
-      ).grade
+      ).rounded_grade
     end
 
     def levenshtein_distance(string_1, string_2)
       ld = Class.new.extend(Gem::Text).method(:levenshtein_distance)
 
       ld.call(string_1, string_2)
+    end
+
+    def rounded_grade
+      grade.round(2)
     end
   end
 end
