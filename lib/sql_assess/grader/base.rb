@@ -1,3 +1,5 @@
+require "rubygems/text"
+
 module SqlAssess::Grader
   class Base
     def self.grade_for(attribute:, student_attributes:, instructor_attributes:)
@@ -5,6 +7,12 @@ module SqlAssess::Grader
         student_attributes: student_attributes,
         instructor_attributes: instructor_attributes
       ).grade
+    end
+
+    def levenshtein_distance(string_1, string_2)
+      ld = Class.new.extend(Gem::Text).method(:levenshtein_distance)
+
+      ld.call(string_1, string_2)
     end
   end
 end
