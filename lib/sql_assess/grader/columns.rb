@@ -6,9 +6,14 @@ module SqlAssess::Grader
     end
 
     def grade
-      instructor_unmatched_columns = @instructor_columns.dup
+      matched_columns = @student_columns & @instructor_columns
 
-      matched_grade = @student_columns.sum do |student_unmatched_column|
+      instructor_unmatched_columns = @instructor_columns - matched_columns
+      student_unmatched_columns = @student_columns - matched_columns
+
+      matched_grade = matched_columns.length * 2.0
+
+      matched_grade += student_unmatched_columns.sum do |student_unmatched_column|
         next 0 if instructor_unmatched_columns.empty?
 
         match_score = instructor_unmatched_columns.map do |instructor_unmatched_column|
