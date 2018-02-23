@@ -22,6 +22,10 @@ module SqlAssess
           instructor_tables: Parsers::Tables.new(instructor_sql_query).tables,
           student_tables: Parsers::Tables.new(student_sql_query).tables
         },
+        distinct_filter: {
+          instructor_distinct_filter: Parsers::DistinctFilter.new(instructor_sql_query).distinct_filter,
+          student_distinct_filter: Parsers::DistinctFilter.new(student_sql_query).distinct_filter
+        },
       }
     end
   end
