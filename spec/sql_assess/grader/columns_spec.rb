@@ -15,8 +15,15 @@ RSpec.describe SqlAssess::Grader::Columns do
     it { expect(subject.rounded_grade).to eq(1) }
   end
 
-  context "example 1 - two of same correct column for student" do
+  context "example 2 - two of same correct column for student" do
     let(:student_columns) { ["table1.column", "table1.column"] }
+    let(:instructor_columns) { ["table1.column"] }
+
+    it { expect(subject.rounded_grade).to eq(0.67) }
+  end
+
+  context "example 3 - one correct column and one incorrect for student" do
+    let(:student_columns) { ["table1.column", "table1.column2"] }
     let(:instructor_columns) { ["table1.column"] }
 
     it { expect(subject.rounded_grade).to eq(0.67) }
