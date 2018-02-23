@@ -14,10 +14,30 @@ RSpec.describe SqlAssess::QueryAttributeExtractor do
     let(:instructor_query) { "SELECT id from table1" }
     let(:student_query) { "SELECT second from table1" }
 
-    it "returns the correct student_columns" do
+    it "returns the correct format" do
       result = subject.extract(instructor_query, student_query)
-      expect(result[:columns][:instructor_columns]).to eq(["`id`"])
-      expect(result[:columns][:student_columns]).to eq(["`second`"])
+      expect(result).to match({
+        columns: {
+          student_columns: an_instance_of(Array),
+          instructor_columns: an_instance_of(Array)
+        },
+        order_by: {
+          student_order_by: an_instance_of(Array),
+          instructor_order_by: an_instance_of(Array)
+        },
+        where: {
+          student_where: an_instance_of(Hash),
+          instructor_where: an_instance_of(Hash)
+        },
+        tables: {
+          student_tables: an_instance_of(Array),
+          instructor_tables: an_instance_of(Array)
+        },
+        distinct_filter: {
+          student_distinct_filter: an_instance_of(String),
+          instructor_distinct_filter: an_instance_of(String)
+        }
+      })
     end
   end
 end
