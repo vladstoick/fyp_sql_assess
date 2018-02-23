@@ -31,11 +31,15 @@ RSpec.describe SqlAssess::QueryComparisonResult do
           distinct_filter: {
             student_distinct_filter: "ALL",
             instructor_distinct_filter: "ALL"
-          }
+          },
+          limit: {
+            student_limit: { "limit": 1, "offset": 1 },
+            instructor_limit: { "limit": 1, "offset": 1 }
+          },
         }
       end
 
-      it "returns the percentage of matched columns" do
+      it "returns a number" do
         expect(subject.grade).to be_a(BigDecimal)
       end
     end

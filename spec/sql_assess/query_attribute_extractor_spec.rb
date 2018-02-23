@@ -36,7 +36,11 @@ RSpec.describe SqlAssess::QueryAttributeExtractor do
         distinct_filter: {
           student_distinct_filter: an_instance_of(String),
           instructor_distinct_filter: an_instance_of(String)
-        }
+        },
+        limit: {
+          student_limit: an_instance_of(Hash),
+          instructor_limit: an_instance_of(Hash)
+        },
       })
     end
   end

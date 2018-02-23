@@ -29,10 +29,11 @@ module SqlAssess
 
     def grade_components_percentages
       {
-        columns: 1 / 4.0,
-        order_by: 1 / 4.0,
-        where: 1 / 4.0,
-        distinct_filter: 1 / 4.0
+        columns: 1 / 5.0,
+        order_by: 1 / 5.0,
+        where: 1 / 5.0,
+        distinct_filter: 1 / 5.0,
+        limit: 1 / 5.0
       }
     end
   end

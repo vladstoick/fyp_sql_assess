@@ -26,6 +26,10 @@ module SqlAssess
           instructor_distinct_filter: Parsers::DistinctFilter.new(instructor_sql_query).distinct_filter,
           student_distinct_filter: Parsers::DistinctFilter.new(student_sql_query).distinct_filter
         },
+        limit: {
+          instructor_limit: Parsers::Limit.new(instructor_sql_query).limit,
+          student_limit: Parsers::Limit.new(student_sql_query).limit
+        },
       }
     end
   end
