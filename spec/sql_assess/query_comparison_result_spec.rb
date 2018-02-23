@@ -27,6 +27,10 @@ RSpec.describe SqlAssess::QueryComparisonResult do
           where: {
             student_where: ["a > 1", "b > 2"],
             instructor_where: ["a > 1", "c > 3"]
+          },
+          distinct_filter: {
+            student_distinct_filter: "ALL",
+            instructor_distinct_filter: "ALL"
           }
         }
       end
