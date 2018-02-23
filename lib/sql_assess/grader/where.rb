@@ -6,8 +6,7 @@ module SqlAssess::Grader
     end
 
     def grade
-      matched_where = @student_where & @instructor_where
-      matched_where.length.to_d / @instructor_where.length
+      @student_where == @instructor_where ? 1 : 0
     end
   end
 end
