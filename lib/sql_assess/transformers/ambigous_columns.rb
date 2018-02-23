@@ -5,11 +5,16 @@ module SqlAssess::Transformers
       @parsed_query = @parser.scan_str(query)
 
       columns = @parsed_query.query_expression.list.columns.map do |column|
-        table = find_table_for(column.name)
-        SQLParser::Statement::QualifiedColumn.new(
-          SQLParser::Statement::Table.new(table),
+        if column.is_a?(SQLParser::Statement::Column)
+          table = find_table_for(column.name)
+
+          SQLParser::Statement::QualifiedColumn.new(
+            SQLParser::Statement::Table.new(table),
+            column
+          )
+        else
           column
-        )
+        end
       end
 
       @parsed_query.query_expression.list.instance_variable_set(
