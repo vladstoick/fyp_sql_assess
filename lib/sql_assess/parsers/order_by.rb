@@ -1,7 +1,6 @@
 module SqlAssess::Parsers
   class OrderBy < Base
     def order
-
       if @parsed_query.order_by.nil?
         []
       else
