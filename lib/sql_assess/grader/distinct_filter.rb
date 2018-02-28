@@ -6,7 +6,15 @@ module SqlAssess::Grader
     end
 
     def grade
-      @student_distinct == @instructor_distinct ? 1 : 0
+      if @student_distinct == @instructor_distinct
+        1.0
+      elsif @student_distinct == "DISTINCT" && @instructor_distinct == "DISTINCTROW"
+        0.5
+      elsif @student_distinct == "DISTINCTROW" && @instructor_distinct == "DISTINCT"
+        0.5
+      else
+        0
+      end
     end
   end
 end
