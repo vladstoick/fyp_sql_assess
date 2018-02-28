@@ -22,10 +22,17 @@ RSpec.describe SqlAssess::Grader::DistinctFilter do
     it { expect(subject.rounded_grade).to eq(0) }
   end
 
-  context "different filter" do
+  context "different filter - but both including distinct" do
     let(:student_distinct_filter) { "DISTINCTROW" }
     let(:instructor_distinct_filter) { "DISTINCT" }
 
-    it { expect(subject.rounded_grade).to eq(0) }
+    it { expect(subject.rounded_grade).to eq(0.5) }
+  end
+
+  context "different filter - but both including distinct" do
+    let(:student_distinct_filter) { "DISTINCT" }
+    let(:instructor_distinct_filter) { "DISTINCTROW" }
+
+    it { expect(subject.rounded_grade).to eq(0.5) }
   end
 end
