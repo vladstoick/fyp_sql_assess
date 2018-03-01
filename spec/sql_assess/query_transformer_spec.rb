@@ -13,4 +13,9 @@ RSpec.describe SqlAssess::QueryTransformer do
     expect(subject.transform("SELECT * from table1"))
       .to eq("SELECT `table1`.`id1`, `table1`.`id2` FROM `table1`")
   end
+
+  it do
+    expect(subject.transform("SELECT * from table1 ORDER BY table1.id1 DESC"))
+      .to eq("SELECT `table1`.`id1`, `table1`.`id2` FROM `table1` ORDER BY `table1`.`id1` DESC")
+  end
 end
