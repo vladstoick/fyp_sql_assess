@@ -2,13 +2,15 @@ require "sql_assess/grader/base"
 
 module SqlAssess
   class QueryComparisonResult
-    attr_reader :success, :attributes, :grade
+    attr_reader :success, :attributes, :grade, :attributes_grade
 
     def initialize(success:, attributes:)
       @success = success
       @attributes = attributes
 
-      if success
+      calculate_attributes_grade
+
+      if @success == true
         @grade = 100.00
       else
         @grade = calculate_grade * 100.00
@@ -18,13 +20,22 @@ module SqlAssess
     private
 
     def calculate_grade
-      grade_components_percentages.keys.sum do |key|
-        SqlAssess::Grader::Base.grade_for(
-          attribute: key,
-          student_attributes: attributes[key]["student_#{key}".to_sym],
-          instructor_attributes: attributes[key]["instructor_#{key}".to_sym]
-        ) * grade_components_percentages[key]
+      attributes_grade.sum do |attribute, grade|
+        grade * grade_components_percentages[attribute]
       end
+    end
+
+    def calculate_attributes_grade
+      @attributes_grade ||= grade_components_percentages.keys.map do |key|
+        [
+          key,
+          SqlAssess::Grader::Base.grade_for(
+            attribute: key,
+            student_attributes: attributes[key]["student_#{key}".to_sym],
+            instructor_attributes: attributes[key]["instructor_#{key}".to_sym]
+          ).to_d
+        ]
+      end.to_h
     end
 
     def grade_components_percentages
