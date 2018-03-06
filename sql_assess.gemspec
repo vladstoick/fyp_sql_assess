@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "mysql2"
   spec.add_dependency 'sql-parser-vlad', '~> 0.0.5'
   spec.add_dependency "pg_query"
+  spec.add_dependency "rgl"
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "pry"
