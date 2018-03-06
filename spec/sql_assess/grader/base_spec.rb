@@ -1,6 +1,7 @@
 require "spec_helper"
 
 RSpec.describe SqlAssess::Grader::Base do
+  subject { described_class.new(student_attributes: double, instructor_attributes: double) }
   context "#levenshtein_distance" do
     it "returns the correct distance for a and empty string" do
       expect(subject.levenshtein_distance("a", "")).to eq(1)
