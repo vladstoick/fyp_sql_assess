@@ -9,7 +9,7 @@ RSpec.describe SqlAssess::Grader::Tables do
   end
 
   let(:attributes) do
-    SqlAssess::QueryAttributeExtractor.new(SqlAssess::DatabaseConnection.new).extract(
+    SqlAssess::QueryAttributeExtractor.new(connection).extract(
        instructor_query, student_query
     )
   end

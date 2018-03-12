@@ -4,7 +4,7 @@ RSpec.describe SqlAssess::QueryComparisonResult do
   subject { described_class.new(success: success, attributes: attributes) }
 
   let(:attributes) do
-    SqlAssess::QueryAttributeExtractor.new(SqlAssess::DatabaseConnection.new).extract(
+    SqlAssess::QueryAttributeExtractor.new(connection).extract(
       (
         <<-SQL.squish
           SELECT a, d, g
