@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe SqlAssess::Transformers::EquivalentColumns do
-  subject { described_class.new(SqlAssess::DatabaseConnection.new).transform(sql) }
+  subject { described_class.new(connection).transform(sql) }
 
   context "no equivalence" do
     context "with no join clause" do

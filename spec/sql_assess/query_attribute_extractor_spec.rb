@@ -1,7 +1,6 @@
 require "spec_helper"
 
 RSpec.describe SqlAssess::QueryAttributeExtractor do
-  let(:connection) { SqlAssess::DatabaseConnection.new }
   subject { described_class.new(connection) }
 
   context "columns" do

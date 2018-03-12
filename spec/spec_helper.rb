@@ -12,6 +12,12 @@ require "sql_assess"
 
 require "pry"
 
+module SharedConnection
+  def connection
+    @shared_connection
+  end
+end
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
@@ -23,13 +29,17 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.include SharedConnection
+
   config.before(:suite) do
     SqlAssess::DatabaseConnection.new
   end
 
+  config.before(:all) do
+    @shared_connection = SqlAssess::DatabaseConnection.new
+  end
+
   config.before(:each) do
-    SqlAssess::Runner.new(
-      SqlAssess::DatabaseConnection.new
-    ).clear_database
+    SqlAssess::Runner.new(@shared_connection).clear_database
   end
 end
