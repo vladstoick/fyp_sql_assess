@@ -11,22 +11,22 @@ module SqlAssess::Parsers
       if @parsed_query.query_expression.table_expression.where_clause.nil?
         {}
       else
-        transform(@parsed_query.query_expression.table_expression.where_clause.search_condition)
+        self.class.transform(@parsed_query.query_expression.table_expression.where_clause.search_condition)
       end
     end
 
-    private
-
-    def transform(clause)
+    def self.transform(clause)
       if clause.is_a?(SQLParser::Statement::Equals)
         {
           type: Type::EQUALS,
-          condition: clause.to_sql
+          left: clause.left.to_sql,
+          right: clause.right.to_sql
         }
       elsif clause.is_a?(SQLParser::Statement::Less)
         {
           type: Type::LESS,
-          condition: clause.to_sql
+          left: clause.left.to_sql,
+          right: clause.right.to_sql
         }
       elsif clause.is_a?(SQLParser::Statement::And)
         transform_left = merge(Type::AND, transform(clause.left))
@@ -51,7 +51,9 @@ module SqlAssess::Parsers
       end
     end
 
-    def merge(type, clause)
+    private
+
+    def self.merge(type, clause)
       if clause[:type] == type
         clause[:clauses]
       else

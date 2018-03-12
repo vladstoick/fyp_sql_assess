@@ -18,7 +18,8 @@ RSpec.describe SqlAssess::Parsers::Where do
       it "returns the correct result" do
         expect(subject.where).to eq({
           type: SqlAssess::Parsers::Where::Type::EQUALS,
-          condition: "`id` = 1"
+          left: "`id`",
+          right: "1"
         })
       end
     end
@@ -29,7 +30,8 @@ RSpec.describe SqlAssess::Parsers::Where do
       it "returns the correct result" do
         expect(subject.where).to eq({
           type: SqlAssess::Parsers::Where::Type::LESS,
-          condition: "`id` < 1"
+          left: "`id`",
+          right: "1"
         })
       end
     end
@@ -45,11 +47,13 @@ RSpec.describe SqlAssess::Parsers::Where do
           clauses: [
             {
               type: SqlAssess::Parsers::Where::Type::EQUALS,
-              condition: "`id` = 1"
+              left: "`id`",
+              right: "1"
             },
             {
               type: SqlAssess::Parsers::Where::Type::LESS,
-              condition: "`id` < 3"
+              left: "`id`",
+              right: "3"
             }
           ]
         })
@@ -65,15 +69,18 @@ RSpec.describe SqlAssess::Parsers::Where do
           clauses: [
             {
               type: SqlAssess::Parsers::Where::Type::EQUALS,
-              condition: "`id` = 1"
+              left: "`id`",
+              right: "1"
             },
             {
               type: SqlAssess::Parsers::Where::Type::LESS,
-              condition: "`id` < 3"
+              left: "`id`",
+              right: "3"
             },
             {
               type: SqlAssess::Parsers::Where::Type::LESS,
-              condition: "`id` < 4"
+              left: "`id`",
+              right: "4"
             }
           ]
         })
@@ -91,11 +98,13 @@ RSpec.describe SqlAssess::Parsers::Where do
           clauses: [
             {
               type: SqlAssess::Parsers::Where::Type::EQUALS,
-              condition: "`id` = 1"
+              left: "`id`",
+              right: "1"
             },
             {
               type: SqlAssess::Parsers::Where::Type::LESS,
-              condition: "`id` < 3"
+              left: "`id`",
+              right: "3"
             }
           ]
         })
@@ -111,15 +120,18 @@ RSpec.describe SqlAssess::Parsers::Where do
           clauses: [
             {
               type: SqlAssess::Parsers::Where::Type::EQUALS,
-              condition: "`id` = 1"
+          left: "`id`",
+          right: "1"
             },
             {
               type: SqlAssess::Parsers::Where::Type::LESS,
-              condition: "`id` < 3"
+              left: "`id`",
+              right: "3"
             },
             {
               type: SqlAssess::Parsers::Where::Type::LESS,
-              condition: "`id` < 4"
+              left: "`id`",
+              right: "4"
             }
           ]
         })
@@ -139,17 +151,20 @@ RSpec.describe SqlAssess::Parsers::Where do
             clauses: [
               {
                 type: SqlAssess::Parsers::Where::Type::EQUALS,
-                condition: "`id` = 1"
+                left: "`id`",
+                right: "1"
               },
               {
                 type: SqlAssess::Parsers::Where::Type::LESS,
-                condition: "`id` < 3"
+                left: "`id`",
+                right: "3"
               },
             ]
           },
           {
             type: SqlAssess::Parsers::Where::Type::LESS,
-            condition: "`id` < 4"
+            left: "`id`",
+            right: "4"
           }
         ]
       })
