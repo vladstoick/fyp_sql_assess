@@ -4,28 +4,23 @@ RSpec.describe SqlAssess::QueryComparisonResult do
   subject { described_class.new(success: success, attributes: attributes) }
 
   let(:attributes) do
-    {
-      columns: {
-        student_columns: ['a', 'd', 'g', 'e'],
-        instructor_columns: ['a', 'b', 'c', 'd', 'e']
-      },
-      order_by: {
-        student_order_by: ['a ASC', 'b DESC', 'g', 'f'],
-        instructor_order_by: ['a ASC', 'b DESC', 'f']
-      },
-      where: {
-        student_where: ["a > 1", "b > 2"],
-        instructor_where: ["a > 1", "c > 3"]
-      },
-      distinct_filter: {
-        student_distinct_filter: "ALL",
-        instructor_distinct_filter: "ALL"
-      },
-      limit: {
-        student_limit: { "limit": 1, "offset": 1 },
-        instructor_limit: { "limit": 1, "offset": 1 }
-      },
-    }
+    SqlAssess::QueryAttributeExtractor.new(connection).extract(
+      (
+        <<-SQL.squish
+          SELECT a, d, g
+          FROM table1 LEFT JOIN table2 on table1.id = table2.id
+          WHERE a < 1 AND b < 2
+          LIMIT 1 OFFSET 1
+        SQL
+      ), (
+        <<-SQL.squish
+          SELECT a, b, c, d
+          FROM table1 RIGHT JOIN table2 on table1.id = table2.id
+          WHERE a < 1 AND c < 3
+          LIMIT 1 OFFSET 1
+        SQL
+      )
+    )
   end
 
   context "#grade" do
@@ -54,6 +49,7 @@ RSpec.describe SqlAssess::QueryComparisonResult do
         where: an_instance_of(BigDecimal),
         distinct_filter: an_instance_of(BigDecimal),
         limit: an_instance_of(BigDecimal),
+        tables: an_instance_of(BigDecimal),
       })
     end
   end

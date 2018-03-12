@@ -12,14 +12,28 @@ module SqlAssess::Parsers
 
     private
 
-    def transform(query)
+    def transform(query, is_base = true)
       if query.is_a?(SQLParser::Statement::Table)
-        query.to_sql
+        if is_base
+          {
+            type: "BASE",
+            table: query.to_sql
+          }
+        else
+          query.to_sql
+        end
       elsif query.is_a?(SQLParser::Statement::JoinedTable)
-        [
-          transform(query.left),
-          "#{query.class.name.split('::').last.underscore.humanize.upcase} #{transform(query.right)}"
-        ].flatten
+        hash = {
+          type: query.class.name.split('::').last.underscore.humanize.upcase,
+          table: transform(query.right, false),
+        }
+        if query.is_a?(SQLParser::Statement::QualifiedJoin)
+          hash[:condition] = Where.transform(
+            query.search_condition.search_condition
+          )
+        end
+
+        [transform(query.left, is_base), hash].flatten
       end
     end
   end

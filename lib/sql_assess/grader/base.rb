@@ -26,11 +26,12 @@ module SqlAssess::Grader
 
     private
 
-    def grade_for_array
+    def grade_for_array(instructor_attributes = @instructor_attributes, student_attributes = @student_attributes)
+      max_grade = (student_attributes.length + instructor_attributes.length).to_d
       return 1 if max_grade == 0
 
-      instructor_unmatched_attributes = @instructor_attributes.dup
-      student_unmatched_attributes = @student_attributes.dup
+      instructor_unmatched_attributes = instructor_attributes.dup
+      student_unmatched_attributes = student_attributes.dup
 
       student_unmatched_attributes = student_unmatched_attributes.keep_if do |student_unmatched_attribute|
         next 0 if instructor_unmatched_attributes.empty?
@@ -50,7 +51,7 @@ module SqlAssess::Grader
       end
 
       matched_attributes = array_difference(
-        @student_attributes,
+        student_attributes,
         student_unmatched_attributes
       )
 
@@ -82,10 +83,6 @@ module SqlAssess::Grader
       b.each { |del| a.slice!(a.index(del)) if a.include?(del) }
       a
     end
-
-    def max_grade
-      (@student_attributes.length + @instructor_attributes.length).to_d
-    end
   end
 end
 
@@ -94,3 +91,4 @@ require_relative "order_by"
 require_relative "where"
 require_relative "distinct_filter"
 require_relative "limit"
+require_relative "tables"
