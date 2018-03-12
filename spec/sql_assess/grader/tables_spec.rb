@@ -30,7 +30,7 @@ RSpec.describe SqlAssess::Grader::Tables do
     it { expect(subject.rounded_grade).to eq(0) }
   end
 
-  context "with only base table and equal" do
+  context "with only base table equal" do
     let(:student_query) do
       <<-SQL
         SELECT a from table1
@@ -40,6 +40,22 @@ RSpec.describe SqlAssess::Grader::Tables do
     let(:instructor_query) do
       <<-SQL
         SELECT a from table1
+      SQL
+    end
+
+    it { expect(subject.rounded_grade).to eq(1) }
+  end
+
+  context "with only base table and join equal" do
+    let(:student_query) do
+      <<-SQL
+        SELECT a from table1 left join table2 on table2.id = table1.id
+      SQL
+    end
+
+    let(:instructor_query) do
+      <<-SQL
+        SELECT a from table1 left join table2 on table2.id = table1.id
       SQL
     end
 
