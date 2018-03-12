@@ -1,7 +1,6 @@
 require "spec_helper"
 
 RSpec.describe SqlAssess::QueryTransformer do
-  let(:connection) { SqlAssess::DatabaseConnection.new }
   subject { described_class.new(connection) }
 
   before do

@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe SqlAssess::Transformers::BetweenPredicate do
-  subject { described_class.new(SqlAssess::DatabaseConnection.new) }
+  subject { described_class.new(connection) }
 
   context "when there is no where clause" do
     it "returns the same query" do
