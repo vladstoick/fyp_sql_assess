@@ -50,6 +50,7 @@ RSpec.describe SqlAssess::QueryComparisonResult do
         distinct_filter: an_instance_of(BigDecimal),
         limit: an_instance_of(BigDecimal),
         tables: an_instance_of(BigDecimal),
+        group: an_instance_of(BigDecimal),
       })
     end
   end
