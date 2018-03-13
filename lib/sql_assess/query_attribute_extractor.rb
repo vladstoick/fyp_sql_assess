@@ -30,6 +30,10 @@ module SqlAssess
           instructor_limit: Parsers::Limit.new(instructor_sql_query).limit,
           student_limit: Parsers::Limit.new(student_sql_query).limit
         },
+        group: {
+          instructor_group: Parsers::Group.new(instructor_sql_query).group,
+          student_group: Parsers::Group.new(student_sql_query).group
+        },
       }
     end
   end
