@@ -17,7 +17,8 @@ module SqlAssess::Parsers
         if is_base
           {
             type: "BASE",
-            table: query.to_sql
+            table: query.to_sql,
+            sql: query.to_sql
           }
         else
           query.to_sql
@@ -26,11 +27,13 @@ module SqlAssess::Parsers
         hash = {
           type: query.class.name.split('::').last.underscore.humanize.upcase,
           table: transform(query.right, false),
+          sql: "#{query.class.name.split('::').last.underscore.humanize.upcase} #{query.right.to_sql}"
         }
         if query.is_a?(SQLParser::Statement::QualifiedJoin)
           hash[:condition] = Where.transform(
             query.search_condition.search_condition
           )
+          hash[:sql] = "#{query.class.name.split('::').last.underscore.humanize.upcase} #{query.right.to_sql} #{query.search_condition.to_sql}"
         end
 
         [transform(query.left, is_base), hash].flatten

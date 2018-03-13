@@ -17,7 +17,8 @@ RSpec.describe SqlAssess::Parsers::Tables do
       expect(subject.tables).to eq([
         {
           type: "BASE",
-          table: "`table1`"
+          table: "`table1`",
+          sql: "`table1`",
         }
       ])
     end
@@ -30,11 +31,13 @@ RSpec.describe SqlAssess::Parsers::Tables do
       expect(subject.tables).to eq([
         {
           type: "BASE",
-          table: "`table1`"
+          table: "`table1`",
+          sql: "`table1`",
         },
         {
           type: "CROSS JOIN",
-          table: "`table2`"
+          table: "`table2`",
+          sql: "CROSS JOIN `table2`",
         }
       ])
     end
@@ -47,11 +50,13 @@ RSpec.describe SqlAssess::Parsers::Tables do
       expect(subject.tables).to eq([
         {
           type: "BASE",
-          table: "`table1`"
+          table: "`table1`",
+          sql: "`table1`",
         },
         {
           type: "INNER JOIN",
           table: "`table2`",
+          sql: "INNER JOIN `table2` ON `table1`.`id` = `table2`.`id`",
           condition: {
             type: SqlAssess::Parsers::Where::Type::EQUALS,
             left: "`table1`.`id`",
@@ -77,7 +82,8 @@ RSpec.describe SqlAssess::Parsers::Tables do
       expect(subject.tables).to eq([
         {
           type: "BASE",
-          table: "`table1`"
+          table: "`table1`",
+          sql: "`table1`",
         },
         {
           type: "LEFT JOIN",
@@ -86,7 +92,8 @@ RSpec.describe SqlAssess::Parsers::Tables do
             type: SqlAssess::Parsers::Where::Type::EQUALS,
             left: "`table1`.`id`",
             right: "`table2`.`id`"
-          }
+          },
+          sql: "LEFT JOIN `table2` ON `table1`.`id` = `table2`.`id`"
         },
         {
           type: "LEFT JOIN",
@@ -95,7 +102,8 @@ RSpec.describe SqlAssess::Parsers::Tables do
             type: SqlAssess::Parsers::Where::Type::EQUALS,
             left: "`table3`.`id`",
             right: "`table2`.`id`"
-          }
+          },
+          sql: "LEFT JOIN `table3` ON `table3`.`id` = `table2`.`id`"
         }
       ])
     end
