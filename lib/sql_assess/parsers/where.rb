@@ -1,12 +1,5 @@
 module SqlAssess::Parsers
   class Where < Base
-    class Type
-      EQUALS = "EQUALS"
-      LESS = "Less"
-      AND = "AND"
-      OR = "OR"
-    end
-
     def where
       if @parsed_query.query_expression.table_expression.where_clause.nil?
         {}
@@ -16,35 +9,19 @@ module SqlAssess::Parsers
     end
 
     def self.transform(clause)
-      if clause.is_a?(SQLParser::Statement::Equals)
+      if clause.is_a?(SQLParser::Statement::ComparisonPredicate)
         {
-          type: Type::EQUALS,
+          type: clause.class.name.split('::').last.underscore.humanize.upcase,
           left: clause.left.to_sql,
           right: clause.right.to_sql,
           sql: clause.to_sql,
         }
-      elsif clause.is_a?(SQLParser::Statement::Less)
+      elsif clause.is_a?(SQLParser::Statement::SearchCondition)
+        type = clause.class.name.split('::').last.underscore.humanize.upcase
+        transform_left = merge(type, transform(clause.left))
+        transform_right = merge(type, transform(clause.right))
         {
-          type: Type::LESS,
-          left: clause.left.to_sql,
-          right: clause.right.to_sql,
-          sql: clause.to_sql,
-        }
-      elsif clause.is_a?(SQLParser::Statement::And)
-        transform_left = merge(Type::AND, transform(clause.left))
-        transform_right = merge(Type::AND, transform(clause.right))
-        {
-          type: Type::AND,
-          clauses: [
-            transform_left,
-            transform_right,
-          ].flatten
-        }
-      elsif clause.is_a?(SQLParser::Statement::Or)
-        transform_left = merge(Type::OR, transform(clause.left))
-        transform_right = merge(Type::OR, transform(clause.right))
-        {
-          type: Type::OR,
+          type: type,
           clauses: [
             transform_left,
             transform_right,

@@ -58,7 +58,7 @@ RSpec.describe SqlAssess::Parsers::Tables do
           table: "`table2`",
           sql: "INNER JOIN `table2` ON `table1`.`id` = `table2`.`id`",
           condition: {
-            type: SqlAssess::Parsers::Where::Type::EQUALS,
+            type: "EQUALS",
             left: "`table1`.`id`",
             right: "`table2`.`id`",
             sql: "`table1`.`id` = `table2`.`id`"
@@ -90,7 +90,7 @@ RSpec.describe SqlAssess::Parsers::Tables do
           type: "LEFT JOIN",
           table: "`table2`",
           condition: {
-            type: SqlAssess::Parsers::Where::Type::EQUALS,
+            type: "EQUALS",
             left: "`table1`.`id`",
             right: "`table2`.`id`",
             sql: "`table1`.`id` = `table2`.`id`"
@@ -101,7 +101,7 @@ RSpec.describe SqlAssess::Parsers::Tables do
           type: "LEFT JOIN",
           table: "`table3`",
           condition: {
-            type: SqlAssess::Parsers::Where::Type::EQUALS,
+            type: "EQUALS",
             left: "`table3`.`id`",
             right: "`table2`.`id`",
             sql: "`table3`.`id` = `table2`.`id`"
