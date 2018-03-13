@@ -6,8 +6,9 @@ module SqlAssess
       Transformers::BetweenPredicate,
       Transformers::AllColumns,
       Transformers::AmbigousColumns,
+      Transformers::AmbigousColumnsGroup,
       Transformers::Not,
-      Transformers::EquivalentColumns
+      Transformers::EquivalentColumns,
     ]
 
     def initialize(connection)
