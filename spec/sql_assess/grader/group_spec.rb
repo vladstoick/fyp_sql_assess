@@ -35,4 +35,11 @@ RSpec.describe SqlAssess::Grader::Group do
 
     it { expect(subject.rounded_grade).to eq(0.5) }
   end
+
+  context "example 5 - totally different columns" do
+    let(:student_group) { ["table1.column"] }
+    let(:instructor_group) { ["table2.column_2"] }
+
+    it { expect(subject.rounded_grade).to eq(0) }
+  end
 end
