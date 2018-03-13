@@ -60,7 +60,8 @@ RSpec.describe SqlAssess::Parsers::Tables do
           condition: {
             type: SqlAssess::Parsers::Where::Type::EQUALS,
             left: "`table1`.`id`",
-            right: "`table2`.`id`"
+            right: "`table2`.`id`",
+            sql: "`table1`.`id` = `table2`.`id`"
           }
         }
       ])
@@ -91,7 +92,8 @@ RSpec.describe SqlAssess::Parsers::Tables do
           condition: {
             type: SqlAssess::Parsers::Where::Type::EQUALS,
             left: "`table1`.`id`",
-            right: "`table2`.`id`"
+            right: "`table2`.`id`",
+            sql: "`table1`.`id` = `table2`.`id`"
           },
           sql: "LEFT JOIN `table2` ON `table1`.`id` = `table2`.`id`"
         },
@@ -101,7 +103,8 @@ RSpec.describe SqlAssess::Parsers::Tables do
           condition: {
             type: SqlAssess::Parsers::Where::Type::EQUALS,
             left: "`table3`.`id`",
-            right: "`table2`.`id`"
+            right: "`table2`.`id`",
+            sql: "`table3`.`id` = `table2`.`id`"
           },
           sql: "LEFT JOIN `table3` ON `table3`.`id` = `table2`.`id`"
         }

@@ -20,13 +20,15 @@ module SqlAssess::Parsers
         {
           type: Type::EQUALS,
           left: clause.left.to_sql,
-          right: clause.right.to_sql
+          right: clause.right.to_sql,
+          sql: clause.to_sql,
         }
       elsif clause.is_a?(SQLParser::Statement::Less)
         {
           type: Type::LESS,
           left: clause.left.to_sql,
-          right: clause.right.to_sql
+          right: clause.right.to_sql,
+          sql: clause.to_sql,
         }
       elsif clause.is_a?(SQLParser::Statement::And)
         transform_left = merge(Type::AND, transform(clause.left))
