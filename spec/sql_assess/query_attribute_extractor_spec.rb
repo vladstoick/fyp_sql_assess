@@ -40,6 +40,10 @@ RSpec.describe SqlAssess::QueryAttributeExtractor do
           student_limit: an_instance_of(Hash),
           instructor_limit: an_instance_of(Hash)
         },
+        group: {
+          student_group: an_instance_of(Array),
+          instructor_group: an_instance_of(Array)
+        },
       })
     end
   end
