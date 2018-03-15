@@ -63,7 +63,7 @@ module SqlAssess
     def first_wrong_component
       grade_components_percentages.detect do |component|
         attributes_grade[component] != 1
-      end
+      end.first
     end
 
     def message_for_attribute(attribute)
