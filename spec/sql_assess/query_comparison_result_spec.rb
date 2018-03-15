@@ -54,4 +54,62 @@ RSpec.describe SqlAssess::QueryComparisonResult do
       })
     end
   end
+
+  context "#message" do
+    context "with success = true" do
+      let(:success) { true }
+
+      it { expect(subject.message).to eq("Congratulations! Your solutions is correct") }
+    end
+
+    context "with success = false" do
+      let(:success) { false }
+
+      before do
+        allow_any_instance_of(described_class).to receive(:first_wrong_component).and_return(component)
+      end
+
+      context "with columns first_wrong_attribute" do
+        let(:component) { :columns }
+
+        it { expect(subject.message).to eq("Your query is not correct. Check what columns you are selecting.") }
+      end
+
+      context "with tables first_wrong_attribute" do
+        let(:component) { :tables }
+
+        it { expect(subject.message).to eq("Your query is not correct. Are you sure you are selecting the right tables?") }
+      end
+
+      context "with order_by first_wrong_attribute" do
+        let(:component) { :order_by }
+
+        it { expect(subject.message).to eq("Your query is not correct. Are you ordering the rows correctly?") }
+      end
+
+      context "with where first_wrong_attribute" do
+        let(:component) { :where }
+
+        it { expect(subject.message).to eq("Your query is not correct. Looks like you are selecting the right columns, but you are not selecting only the correct rows.") }
+      end
+
+      context "with distinct_filter first_wrong_attribute" do
+        let(:component) { :distinct_filter }
+
+        it { expect(subject.message).to eq("Your query is not correct. What about duplicates? What does the exercise say?") }
+      end
+
+      context "with limit first_wrong_attribute" do
+        let(:component) { :limit }
+
+        it { expect(subject.message).to eq("Your query is not correct. Are you selecting the correct number of rows?") }
+      end
+
+      context "with group first_wrong_attribute" do
+        let(:component) { :group }
+
+        it { expect(subject.message).to eq("Your query is not correct. Are you grouping by the correct columns?") }
+      end
+    end
+  end
 end
