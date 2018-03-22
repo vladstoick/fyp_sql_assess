@@ -1,12 +1,5 @@
 module SqlAssess::Parsers
   class Where < Base
-    class Type
-      EQUALS = "EQUALS"
-      LESS = "Less"
-      AND = "AND"
-      OR = "OR"
-    end
-
     def where
       if @parsed_query.query_expression.table_expression.where_clause.nil?
         {}
@@ -15,36 +8,30 @@ module SqlAssess::Parsers
       end
     end
 
+    def where_tree
+      if @parsed_query.query_expression.table_expression.where_clause.nil?
+        {}
+      else
+        transform_tree(
+          @parsed_query.query_expression.table_expression.where_clause.search_condition
+        )
+      end
+    end
+
     def self.transform(clause)
-      if clause.is_a?(SQLParser::Statement::Equals)
+      if clause.is_a?(SQLParser::Statement::ComparisonPredicate)
         {
-          type: Type::EQUALS,
+          type: clause.class.name.split('::').last.underscore.humanize.upcase,
           left: clause.left.to_sql,
           right: clause.right.to_sql,
           sql: clause.to_sql,
         }
-      elsif clause.is_a?(SQLParser::Statement::Less)
+      elsif clause.is_a?(SQLParser::Statement::SearchCondition)
+        type = clause.class.name.split('::').last.underscore.humanize.upcase
+        transform_left = merge(type, transform(clause.left))
+        transform_right = merge(type, transform(clause.right))
         {
-          type: Type::LESS,
-          left: clause.left.to_sql,
-          right: clause.right.to_sql,
-          sql: clause.to_sql,
-        }
-      elsif clause.is_a?(SQLParser::Statement::And)
-        transform_left = merge(Type::AND, transform(clause.left))
-        transform_right = merge(Type::AND, transform(clause.right))
-        {
-          type: Type::AND,
-          clauses: [
-            transform_left,
-            transform_right,
-          ].flatten
-        }
-      elsif clause.is_a?(SQLParser::Statement::Or)
-        transform_left = merge(Type::OR, transform(clause.left))
-        transform_right = merge(Type::OR, transform(clause.right))
-        {
-          type: Type::OR,
+          type: type,
           clauses: [
             transform_left,
             transform_right,
@@ -54,6 +41,27 @@ module SqlAssess::Parsers
     end
 
     private
+
+    def transform_tree(clause)
+      if clause.is_a?(SQLParser::Statement::ComparisonPredicate)
+        {
+          is_inner: false,
+          type: clause.class.name.split('::').last.underscore.humanize.upcase,
+          left: clause.left.to_sql,
+          right: clause.right.to_sql,
+          sql: clause.to_sql,
+        }
+      elsif clause.is_a?(SQLParser::Statement::SearchCondition)
+        type = clause.class.name.split('::').last.underscore.humanize.upcase
+
+        {
+          is_inner: true,
+          type: type,
+          left_clause: transform_tree(clause.left),
+          right_clause: transform_tree(clause.right),
+        }
+      end
+    end
 
     def self.merge(type, clause)
       if clause[:type] == type

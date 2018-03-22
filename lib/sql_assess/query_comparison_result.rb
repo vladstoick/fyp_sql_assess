@@ -33,8 +33,8 @@ module SqlAssess
           key,
           SqlAssess::Grader::Base.grade_for(
             attribute: key,
-            student_attributes: attributes[key]["student_#{key}".to_sym],
-            instructor_attributes: attributes[key]["instructor_#{key}".to_sym]
+            student_attributes: attributes[key],
+            instructor_attributes: attributes[key]
           ).to_d
         ]
       end.to_h
