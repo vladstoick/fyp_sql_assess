@@ -26,7 +26,9 @@ RSpec.describe SqlAssess::QueryAttributeExtractor do
         },
         where: {
           student_where: an_instance_of(Hash),
-          instructor_where: an_instance_of(Hash)
+          instructor_where: an_instance_of(Hash),
+          student_where_tree: an_instance_of(Hash),
+          instructor_where_tree: an_instance_of(Hash),
         },
         tables: {
           student_tables: an_instance_of(Array),

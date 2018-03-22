@@ -3,9 +3,11 @@ require "rubygems/text"
 module SqlAssess::Grader
   class Base
     def self.grade_for(attribute:, student_attributes:, instructor_attributes:)
+      key = attribute_used(attribute)
+
       "SqlAssess::Grader::#{attribute.to_s.camelcase}".constantize.new(
-        student_attributes: student_attributes,
-        instructor_attributes: instructor_attributes,
+        student_attributes: student_attributes["student_#{key}".to_sym],
+        instructor_attributes: instructor_attributes["instructor_#{key}".to_sym],
       ).rounded_grade
     end
 
@@ -25,6 +27,14 @@ module SqlAssess::Grader
     end
 
     private
+
+    def self.attribute_used(attribute)
+      if attribute == :where
+        "where_tree"
+      else
+        attribute
+      end
+    end
 
     def grade_for_array(instructor_attributes = @instructor_attributes, student_attributes = @student_attributes)
       max_grade = (student_attributes.length + instructor_attributes.length).to_d

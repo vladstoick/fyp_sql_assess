@@ -16,7 +16,9 @@ module SqlAssess
         },
         where: {
           instructor_where: Parsers::Where.new(instructor_sql_query).where,
-          student_where: Parsers::Where.new(student_sql_query).where
+          student_where: Parsers::Where.new(student_sql_query).where,
+          instructor_where_tree: Parsers::Where.new(instructor_sql_query).where_tree,
+          student_where_tree: Parsers::Where.new(student_sql_query).where_tree,
         },
         tables: {
           instructor_tables: Parsers::Tables.new(instructor_sql_query).tables,
