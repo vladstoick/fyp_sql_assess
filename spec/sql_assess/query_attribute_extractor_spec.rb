@@ -46,6 +46,12 @@ RSpec.describe SqlAssess::QueryAttributeExtractor do
           student_group: an_instance_of(Array),
           instructor_group: an_instance_of(Array)
         },
+        having: {
+          student_having: an_instance_of(Hash),
+          instructor_having: an_instance_of(Hash),
+          student_having_tree: an_instance_of(Hash),
+          instructor_having_tree: an_instance_of(Hash),
+        },
       })
     end
   end
