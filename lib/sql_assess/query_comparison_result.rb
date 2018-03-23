@@ -42,13 +42,14 @@ module SqlAssess
 
     def grade_components_percentages
       {
-        tables: 1 / 7.0,
-        columns: 1 / 7.0,
-        group: 1 / 7.0,
-        where: 1 / 7.0,
-        distinct_filter: 1 / 7.0,
-        limit: 1 / 7.0,
-        order_by: 1 / 7.0,
+        tables: 1 / 8.0,
+        columns: 1 / 8.0,
+        group: 1 / 8.0,
+        where: 1 / 8.0,
+        distinct_filter: 1 / 8.0,
+        limit: 1 / 8.0,
+        order_by: 1 / 8.0,
+        having: 1 / 8.0
       }
     end
 

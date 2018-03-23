@@ -36,6 +36,12 @@ module SqlAssess
           instructor_group: Parsers::Group.new(instructor_sql_query).group,
           student_group: Parsers::Group.new(student_sql_query).group
         },
+        having: {
+          instructor_having: Parsers::Having.new(instructor_sql_query).having,
+          student_having: Parsers::Having.new(student_sql_query).having,
+          instructor_having_tree: Parsers::Having.new(instructor_sql_query).having_tree,
+          student_having_tree: Parsers::Having.new(student_sql_query).having_tree,
+        },
       }
     end
   end

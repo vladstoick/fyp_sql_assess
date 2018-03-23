@@ -13,3 +13,4 @@ require_relative "tables"
 require_relative 'distinct_filter'
 require_relative 'limit'
 require_relative 'group'
+require_relative 'having'
