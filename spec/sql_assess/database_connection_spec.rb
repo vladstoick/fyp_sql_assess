@@ -11,14 +11,13 @@ RSpec.describe SqlAssess::DatabaseConnection do
 
   describe "#initialize" do
     context "when the user is invalid" do
+      let(:do_not_delete_database) { true }
       it "throws an error" do
         expect { described_class.new(username: "test") }.to raise_error(SqlAssess::DatabaseConnectionError)
       end
     end
 
     context "when everything is valid" do
-      let(:database_url) { "valid_database" }
-
       it "doesn't throw an error" do
         expect { subject }.to_not raise_error
       end

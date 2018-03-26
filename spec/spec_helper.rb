@@ -42,8 +42,4 @@ RSpec.configure do |config|
   config.before(:each) do
     @shared_connection.delete_database
   end
-
-  config.after(:suite) do
-    SqlAssess::DatabaseConnection.new(database: "local_db").delete_database
-  end
 end

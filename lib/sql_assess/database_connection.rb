@@ -13,7 +13,7 @@ module SqlAssess
       if database.present?
         @parent_database = true
         @database = database
-        query("CREATE DATABASE IF NOT EXISTS `#{@database}`")
+        @client.query("CREATE DATABASE IF NOT EXISTS `#{@database}`")
       else
         success = false
         attempt = 0
@@ -27,9 +27,10 @@ module SqlAssess
           end
 
           begin
-            query("CREATE DATABASE `#{@database}`")
+            @client.query("CREATE DATABASE `#{@database}`")
             success = true
           rescue Mysql2::Error => exception
+            raise exception unless exception.message.include?("database exists")
             success = false
             attempt += 1
           end
@@ -37,6 +38,9 @@ module SqlAssess
       end
 
       @client.select_db(@database)
+
+      @client.query("CREATE USER IF NOT EXISTS `#{@database}`;")
+      @client.query("GRANT ALL PRIVILEGES ON *.* TO `#{@database}` WITH GRANT OPTION;")
     rescue Mysql2::Error => exception
       raise DatabaseConnectionError.new(exception.message)
     end
@@ -60,6 +64,7 @@ module SqlAssess
         query("SET FOREIGN_KEY_CHECKS = 1")
       else
         query("DROP DATABASE `#{@database}`")
+        query("DROP USER IF EXISTS `#{@database}`")
       end
     end
 
