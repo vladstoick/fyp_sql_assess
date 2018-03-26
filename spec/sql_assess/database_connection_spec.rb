@@ -11,14 +11,13 @@ RSpec.describe SqlAssess::DatabaseConnection do
 
   describe "#initialize" do
     context "when the user is invalid" do
+      let(:do_not_delete_database) { true }
       it "throws an error" do
         expect { described_class.new(username: "test") }.to raise_error(SqlAssess::DatabaseConnectionError)
       end
     end
 
     context "when everything is valid" do
-      let(:database_url) { "valid_database" }
-
       it "doesn't throw an error" do
         expect { subject }.to_not raise_error
       end
@@ -51,6 +50,12 @@ RSpec.describe SqlAssess::DatabaseConnection do
     it "runs the query" do
       expect(subject.query("SHOW tables").count).to eq(0)
     end
+
+    context "when trying to create another database" do
+      it "throws an error" do
+        expect { subject.query("CREATE DATABASE TEST") }.to raise_error(Mysql2::Error)
+      end
+    end
   end
 
   describe "#multi_query" do
@@ -58,6 +63,12 @@ RSpec.describe SqlAssess::DatabaseConnection do
       result = subject.multiple_query("SELECT 1; SELECT 2; SELECT 3")
       expect(result.count).to eq(3)
       expect(result.map(&:first)).to eq([{ "1" => 1 }, { "2" => 2 }, { "3" => 3 }])
+    end
+
+    context "when trying to create another database" do
+      it "throws an error" do
+        expect { subject.multiple_query("CREATE DATABASE TEST") }.to raise_error(Mysql2::Error)
+      end
     end
   end
 

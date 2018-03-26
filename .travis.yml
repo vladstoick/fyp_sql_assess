@@ -1,4 +1,4 @@
-sudo: false
+sudo: true
 language: ruby
 rvm:
   - 2.3.4
@@ -6,3 +6,14 @@ before_install: gem install bundler -v 1.16.0
 services:
   - mysql
 cache: bundler
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
+      - mysql-client
+before_install:
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade
+  - sudo service mysql restart
