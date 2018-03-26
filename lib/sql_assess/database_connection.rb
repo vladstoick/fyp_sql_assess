@@ -37,44 +37,56 @@ module SqlAssess
         end
       end
 
-      @client.select_db(@database)
-
       @client.query("CREATE USER IF NOT EXISTS `#{@database}`;")
-      @client.query("GRANT ALL PRIVILEGES ON *.* TO `#{@database}` WITH GRANT OPTION;")
+      @client.query("GRANT ALL PRIVILEGES ON `#{@database}`.* TO `#{@database}` WITH GRANT OPTION;")
+
+      @restricted_client = Mysql2::Client.new(
+        host: host,
+        port: port,
+        username: @database,
+        flags: Mysql2::Client::MULTI_STATEMENTS
+      )
+
+      @restricted_client.select_db(@database)
+      @client.select_db(@database)
     rescue Mysql2::Error => exception
       raise DatabaseConnectionError.new(exception.message)
     end
 
     def query(query)
+      @restricted_client.query(query)
+    end
+
+    def query_as_root(query)
       @client.query(query)
     end
 
     def delete_database
       if @parent_database
         # disable foreign key checks before dropping the database
-        query("SET FOREIGN_KEY_CHECKS = 0")
+        @client.query("SET FOREIGN_KEY_CHECKS = 0")
 
         tables = query("SHOW tables");
 
         tables.each do |table|
           table_name = table["Tables_in_local_db"]
-          query("DROP table #{table_name}")
+          @client.query("DROP table #{table_name}")
         end
 
-        query("SET FOREIGN_KEY_CHECKS = 1")
+        @client.query("SET FOREIGN_KEY_CHECKS = 1")
       else
-        query("DROP DATABASE `#{@database}`")
-        query("DROP USER IF EXISTS `#{@database}`")
+        @client.query("DROP DATABASE `#{@database}`")
+        @client.query("DROP USER IF EXISTS `#{@database}`")
       end
     end
 
     def multiple_query(query)
       result = []
 
-      result << @client.query(query)
+      result << @restricted_client.query(query)
 
-      while @client.next_result
-        result << @client.store_result
+      while @restricted_client.next_result
+        result << @restricted_client.store_result
       end
 
       result
