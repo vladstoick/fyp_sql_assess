@@ -21,23 +21,5 @@ module SqlAssess
     rescue Mysql2::Error => exception
       raise DatabaseQueryExecutionFailed.new(exception.message)
     end
-
-    def clear_database
-      # disable foreign key checks before dropping the database
-      @connection.query("SET FOREIGN_KEY_CHECKS = 0")
-
-      tables = @connection.query("SHOW tables");
-
-      return if tables.count.zero?
-
-      tables.each do |table|
-        table_name = table["Tables_in_local_db"]
-        @connection.query("DROP table #{table_name}")
-      end
-    ensure
-      # ensure that foreign key checks are enabled
-      # at the end if any drop fails
-      @connection.query("SET FOREIGN_KEY_CHECKS = 1")
-    end
   end
 end

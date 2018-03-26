@@ -16,19 +16,12 @@ module SqlAssess
   class Assesor
     attr_reader :connection
 
-    def initialize(
-      databse_host: "127.0.0.1",
-      database_port: "3306",
-      database_username: "root",
-      database_name: nil
-    )
+    def initialize(databse_host: "127.0.0.1", database_port: "3306", database_username: "root")
       @connection = SqlAssess::DatabaseConnection.new(
         host: databse_host,
         port: database_port,
-        username: database_username,
-        database: database_name
+        username: database_username
       )
-      clear_database
     end
 
     def compile(create_schema_sql_query:, instructor_sql_query:, seed_sql_query:)
@@ -78,8 +71,8 @@ module SqlAssess
       )
     end
 
-    def clear_database
-      SqlAssess::Runner.new(@connection).clear_database
+    def clear_database(delete_databse: true)
+      @connection.delete_database
     end
   end
 end
