@@ -9,7 +9,7 @@ unless ENV["CODECOV_TOKEN"].nil?
 end
 
 require "sql_assess"
-
+require "timecop"
 require "pry"
 
 module SharedConnection
@@ -32,14 +32,18 @@ RSpec.configure do |config|
   config.include SharedConnection
 
   config.before(:suite) do
-    SqlAssess::DatabaseConnection.new
+    SqlAssess::DatabaseConnection.new(database: "local_db")
   end
 
   config.before(:all) do
-    @shared_connection = SqlAssess::DatabaseConnection.new
+    @shared_connection = SqlAssess::DatabaseConnection.new(database: "local_db")
   end
 
   config.before(:each) do
-    SqlAssess::Runner.new(@shared_connection).clear_database
+    @shared_connection.delete_database
+  end
+
+  config.after(:suite) do
+    SqlAssess::DatabaseConnection.new(database: "local_db").delete_database
   end
 end

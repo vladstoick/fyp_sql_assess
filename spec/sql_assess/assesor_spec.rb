@@ -1,6 +1,9 @@
 require "spec_helper"
 
 RSpec.describe SqlAssess::Assesor do
+  before do
+    allow(SqlAssess::DatabaseConnection).to receive(:new).and_return(@shared_connection)
+  end
   context "#compile" do
     context "without any errors" do
       it "returns the result from data extractor" do
