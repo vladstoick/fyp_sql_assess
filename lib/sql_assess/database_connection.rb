@@ -57,10 +57,6 @@ module SqlAssess
       @restricted_client.query(query)
     end
 
-    def query_as_root(query)
-      @client.query(query)
-    end
-
     def delete_database
       if @parent_database
         # disable foreign key checks before dropping the database
