@@ -23,4 +23,7 @@ RSpec.describe SqlAssess::Transformers::AmbigousColumns do
       .to eq("SELECT `table1`.`id1`, `table2`.`id3` FROM `table1` CROSS JOIN `table2`")
   end
 
+  it "transforms the query" do
+    expect(subject.transform("SELECT SUM(id1) FROM table1")).to eq("SELECT SUM(`table1`.`id1`) FROM `table1`")
+  end
 end
