@@ -12,7 +12,7 @@ module SqlAssess::Transformers
             SQLParser::Statement::Table.new(table),
             column
           )
-        elsif column.is_a?(SQLParser::Statement::Aggregate)# && column.is_a?(SQLParser::Statement::Column)
+        elsif column.is_a?(SQLParser::Statement::Aggregate) && column.column.is_a?(SQLParser::Statement::Column)
           table = find_table_for(column.column.name)
 
           column.instance_variable_set(
