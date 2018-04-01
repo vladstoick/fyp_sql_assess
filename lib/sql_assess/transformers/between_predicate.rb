@@ -32,10 +32,6 @@ module SqlAssess::Transformers
     end
 
     def transform_between_query(statement)
-      unless statement.is_a?(SQLParser::Statement::Between)
-        raise "Trying to transform a query that's not between"
-      end
-
       SQLParser::Statement::And.new(
         SQLParser::Statement::Greater.new(statement.left, statement.min),
         SQLParser::Statement::Less.new(statement.left, statement.max)
