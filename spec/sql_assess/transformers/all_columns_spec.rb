@@ -25,7 +25,7 @@ RSpec.describe SqlAssess::Transformers::AllColumns do
 
     context "when there is *" do
       it "returns the query containing all columns in select" do
-        expect(subject.transform("SELECT * FROM table1")).to eq("SELECT `id1`, `id2` FROM `table1`")
+        expect(subject.transform("SELECT * FROM table1")).to eq("SELECT `table1`.`id1`, `table1`.`id2` FROM `table1`")
       end
     end
   end
@@ -48,7 +48,7 @@ RSpec.describe SqlAssess::Transformers::AllColumns do
     context "when there is *" do
       it "returns the query containing all columns in select" do
         expect(subject.transform("SELECT * FROM table1, table2"))
-          .to eq("SELECT `id1`, `id2`, `id3`, `id4` FROM `table1` CROSS JOIN `table2`")
+          .to eq("SELECT `table1`.`id1`, `table1`.`id2`, `table2`.`id3`, `table2`.`id4` FROM `table1` CROSS JOIN `table2`")
       end
     end
   end

@@ -15,18 +15,21 @@ module SqlAssess::Transformers
     def transform_star_select
       table_list = PgQuery.parse(SQLVisitorForPostgres.new.visit(@parsed_query)).tables
 
-      column_names = table_list.map do |table|
+      new_columns = table_list.map do |table|
         columns_query = "SHOW COLUMNS from #{table}"
-        @connection.query(columns_query).map { |k| k["Field"] }
-      end.flatten
+        columns = @connection.query(columns_query).map { |k| k["Field"] }
 
-      sql_columns = column_names.map do |column_name|
-        SQLParser::Statement::Column.new(column_name)
-      end
+        columns.map do |column_name|
+          SQLParser::Statement::QualifiedColumn.new(
+            SQLParser::Statement::Table.new(table),
+            SQLParser::Statement::Column.new(column_name)
+          )
+        end
+      end.flatten
 
       @parsed_query.query_expression.instance_variable_set(
         "@list",
-        SQLParser::Statement::SelectList.new(sql_columns)
+        SQLParser::Statement::SelectList.new(new_columns)
       )
     end
   end
