@@ -11,6 +11,7 @@ module SqlAssess
       # Predicate
       Transformers::Not,
       Transformers::BetweenPredicate,
+      Transformers::JoinComparisonPredicate,
       Transformers::WhereComparisonPredicate,
       Transformers::HavingComparisonPredicate,
     ]
