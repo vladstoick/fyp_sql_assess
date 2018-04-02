@@ -3,12 +3,15 @@ require "sql_assess/transformers/base"
 module SqlAssess
   class QueryTransformer
     TRANSFORMERS = [
-      Transformers::BetweenPredicate,
+      # Columns
       Transformers::AllColumns,
+      Transformers::EquivalentColumns,
       Transformers::AmbigousColumns,
       Transformers::AmbigousColumnsGroup,
+      # Predicate
+      Transformers::BetweenPredicate,
+      Transformers::WhereComparisonPredicate,
       Transformers::Not,
-      Transformers::EquivalentColumns,
     ]
 
     def initialize(connection)
