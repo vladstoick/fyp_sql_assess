@@ -40,7 +40,7 @@ module SqlAssess
       instructor_sql_query = transformer.transform(instructor_sql_query)
       student_sql_query = transformer.transform(student_sql_query)
 
-      attributes = QueryAttributeExtractor.new(@connection).extract(
+      attributes = QueryAttributeExtractor.new.extract(
         instructor_sql_query, student_sql_query
       )
 

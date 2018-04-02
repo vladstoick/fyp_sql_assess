@@ -37,6 +37,12 @@ module SqlAssess::Parsers
         end
 
         [transform(query.left, is_base), hash].flatten
+      elsif query.is_a?(SQLParser::Statement::Subquery)
+        {
+          type: "Subquery",
+          sql: query.to_sql,
+          attributes: SqlAssess::QueryAttributeExtractor.new.extract_query(query.query_specification.to_sql)
+        }
       end
     end
   end

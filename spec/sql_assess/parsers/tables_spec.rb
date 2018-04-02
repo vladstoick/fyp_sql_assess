@@ -111,4 +111,34 @@ RSpec.describe SqlAssess::Parsers::Tables do
       ])
     end
   end
+
+  context "a subquery" do
+    let(:query) do
+      <<-SQL.squish
+        SELECT *
+        FROM (SELECT id FROM table1)
+      SQL
+    end
+
+    it "returns an array containing the tables" do
+      expect(subject.tables).to eq([
+        {
+          type: "Subquery",
+          sql: "(SELECT `id` FROM `table1`)",
+          attributes: {
+            columns: ["`id`"],
+            order_by: [],
+            where: {},
+            where_tree: {},
+            tables: [{type: "BASE", table: "`table1`", sql: "`table1`"}],
+            distinct_filter: "ALL",
+            limit: {limit: "inf", offset: 0},
+            group: [],
+            having: {},
+            having_tree: {},
+          }
+        }
+      ])
+    end
+  end
 end
