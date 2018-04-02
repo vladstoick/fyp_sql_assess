@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport"
   spec.add_dependency "mysql2"
-  spec.add_dependency 'sql-parser-vlad', '~> 0.0.6'
+  spec.add_dependency 'sql-parser-vlad', '~> 0.0.7'
   spec.add_dependency "rgl"
 
   spec.add_development_dependency "bundler", "~> 1.16"
