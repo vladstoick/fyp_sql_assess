@@ -3,8 +3,8 @@ require "spec_helper"
 RSpec.describe SqlAssess::Grader::Tables do
   subject do
     described_class.new(
-      student_attributes: attributes[:tables][:student_tables],
-      instructor_attributes: attributes[:tables][:instructor_tables]
+      student_attributes: attributes[:student][:tables],
+      instructor_attributes: attributes[:instructor][:tables]
     )
   end
 

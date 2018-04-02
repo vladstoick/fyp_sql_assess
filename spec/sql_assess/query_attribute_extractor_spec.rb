@@ -16,41 +16,29 @@ RSpec.describe SqlAssess::QueryAttributeExtractor do
     it "returns the correct format" do
       result = subject.extract(instructor_query, student_query)
       expect(result).to match({
-        columns: {
-          student_columns: an_instance_of(Array),
-          instructor_columns: an_instance_of(Array)
+        student: {
+          columns: an_instance_of(Array),
+          order_by: an_instance_of(Array),
+          where: an_instance_of(Hash),
+          where_tree: an_instance_of(Hash),
+          tables: an_instance_of(Array),
+          distinct_filter: an_instance_of(String),
+          limit: an_instance_of(Hash),
+          group: an_instance_of(Array),
+          having: an_instance_of(Hash),
+          having_tree: an_instance_of(Hash),
         },
-        order_by: {
-          student_order_by: an_instance_of(Array),
-          instructor_order_by: an_instance_of(Array)
-        },
-        where: {
-          student_where: an_instance_of(Hash),
-          instructor_where: an_instance_of(Hash),
-          student_where_tree: an_instance_of(Hash),
-          instructor_where_tree: an_instance_of(Hash),
-        },
-        tables: {
-          student_tables: an_instance_of(Array),
-          instructor_tables: an_instance_of(Array)
-        },
-        distinct_filter: {
-          student_distinct_filter: an_instance_of(String),
-          instructor_distinct_filter: an_instance_of(String)
-        },
-        limit: {
-          student_limit: an_instance_of(Hash),
-          instructor_limit: an_instance_of(Hash)
-        },
-        group: {
-          student_group: an_instance_of(Array),
-          instructor_group: an_instance_of(Array)
-        },
-        having: {
-          student_having: an_instance_of(Hash),
-          instructor_having: an_instance_of(Hash),
-          student_having_tree: an_instance_of(Hash),
-          instructor_having_tree: an_instance_of(Hash),
+        instructor: {
+          columns: an_instance_of(Array),
+          order_by: an_instance_of(Array),
+          where: an_instance_of(Hash),
+          where_tree: an_instance_of(Hash),
+          tables: an_instance_of(Array),
+          distinct_filter: an_instance_of(String),
+          limit: an_instance_of(Hash),
+          group: an_instance_of(Array),
+          having: an_instance_of(Hash),
+          having_tree: an_instance_of(Hash),
         },
       })
     end

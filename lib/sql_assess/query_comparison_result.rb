@@ -29,12 +29,13 @@ module SqlAssess
 
     def calculate_attributes_grade
       @attributes_grade ||= grade_components_percentages.keys.map do |key|
+        key_hash = key == :where ? :where_tree : key
         [
           key,
           SqlAssess::Grader::Base.grade_for(
             attribute: key,
-            student_attributes: attributes[key],
-            instructor_attributes: attributes[key]
+            student_attributes: attributes[:student][key_hash],
+            instructor_attributes: attributes[:instructor][key_hash]
           ).to_d
         ]
       end.to_h
