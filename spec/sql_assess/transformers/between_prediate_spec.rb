@@ -20,21 +20,21 @@ RSpec.describe SqlAssess::Transformers::BetweenPredicate do
     context "with only a between query" do
       it "returns the updated query" do
         expect(subject.transform("SELECT * FROM table WHERE a BETWEEN 1 and 3"))
-          .to eq("SELECT * FROM `table` WHERE (`a` > 1 AND `a` < 3)")
+          .to eq("SELECT * FROM `table` WHERE (`a` >= 1 AND `a` <= 3)")
       end
     end
 
     context "with a between query and another type of query" do
       it "returns the updated query" do
         expect(subject.transform("SELECT * FROM table WHERE (a BETWEEN 1 and 3) AND b = 2"))
-          .to eq("SELECT * FROM `table` WHERE ((`a` > 1 AND `a` < 3) AND `b` = 2)")
+          .to eq("SELECT * FROM `table` WHERE ((`a` >= 1 AND `a` <= 3) AND `b` = 2)")
       end
     end
 
     context "with a between query and two other type of query" do
       it "returns the updated query" do
         expect(subject.transform("SELECT * FROM table WHERE a BETWEEN 1 and 3 AND b = 2 AND c = 3"))
-          .to eq("SELECT * FROM `table` WHERE (((`a` > 1 AND `a` < 3) AND `b` = 2) AND `c` = 3)")
+          .to eq("SELECT * FROM `table` WHERE (((`a` >= 1 AND `a` <= 3) AND `b` = 2) AND `c` = 3)")
       end
     end
   end

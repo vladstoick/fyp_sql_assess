@@ -33,8 +33,8 @@ module SqlAssess::Transformers
 
     def transform_between_query(statement)
       SQLParser::Statement::And.new(
-        SQLParser::Statement::Greater.new(statement.left, statement.min),
-        SQLParser::Statement::Less.new(statement.left, statement.max)
+        SQLParser::Statement::GreaterOrEquals.new(statement.left, statement.min),
+        SQLParser::Statement::LessOrEquals.new(statement.left, statement.max)
       )
     end
   end
