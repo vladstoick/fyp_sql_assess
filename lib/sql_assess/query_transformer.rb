@@ -9,9 +9,10 @@ module SqlAssess
       Transformers::AmbigousColumns,
       Transformers::AmbigousColumnsGroup,
       # Predicate
+      Transformers::Not,
       Transformers::BetweenPredicate,
       Transformers::WhereComparisonPredicate,
-      Transformers::Not,
+      Transformers::HavingComparisonPredicate,
     ]
 
     def initialize(connection)
