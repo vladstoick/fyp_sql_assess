@@ -8,8 +8,13 @@ RSpec.describe SqlAssess::Grader::Tables do
     )
   end
 
+  before do
+    connection.query("CREATE TABLE table1 (id1 integer, id2 integer)")
+    connection.query("CREATE TABLE table2 (id3 integer, id4 integer)")
+  end
+
   let(:attributes) do
-    SqlAssess::QueryAttributeExtractor.new(connection).extract(
+    SqlAssess::QueryAttributeExtractor.new.extract(
        instructor_query, student_query
     )
   end
@@ -110,7 +115,7 @@ RSpec.describe SqlAssess::Grader::Tables do
     it { expect(subject.rounded_grade).to eq(0.75) }
   end
 
-    context "with base equal but join condition and type different" do
+  context "with base equal but join condition and type different" do
     let(:student_query) do
       <<-SQL
         SELECT a from table1 left join table2 on table2.id = table1.id
@@ -124,5 +129,37 @@ RSpec.describe SqlAssess::Grader::Tables do
     end
 
     it { expect(subject.rounded_grade).to eq(0.63) }
+  end
+
+  context "with two equal subquery" do
+    let(:student_query) do
+      <<-SQL
+        SELECT id1 from (SELECT id1 from table1)
+      SQL
+    end
+
+    let(:instructor_query) do
+      <<-SQL
+        SELECT id1 from (SELECT id1 from table1)
+      SQL
+    end
+
+    it { expect(subject.rounded_grade).to eq(1) }
+  end
+
+  context "with two slightly different subquery" do
+    let(:student_query) do
+      <<-SQL
+        SELECT id1 from (SELECT id1 from table1)
+      SQL
+    end
+
+    let(:instructor_query) do
+      <<-SQL
+        SELECT id1 from (SELECT id2 from table1)
+      SQL
+    end
+
+    it { expect(subject.rounded_grade).to eq(0.88) }
   end
 end

@@ -3,11 +3,13 @@ require "sql_assess/transformers/base"
 module SqlAssess
   class QueryTransformer
     TRANSFORMERS = [
+      # Subquery
+      Transformers::FromSubquery,
       # Columns
       Transformers::AllColumns,
-      Transformers::EquivalentColumns,
       Transformers::AmbigousColumns,
       Transformers::AmbigousColumnsGroup,
+      Transformers::EquivalentColumns,
       # Predicate
       Transformers::Not,
       Transformers::BetweenPredicate,

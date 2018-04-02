@@ -3,8 +3,6 @@ module SqlAssess::Grader
     private
 
     def grade
-      compare_base_grade = @student_attributes[0] == @instructor_attributes[0] ? 1 : 0
-
       if @instructor_attributes.length == 1 && @student_attributes.length == 1
         compare_base_grade
       else
@@ -17,13 +15,38 @@ module SqlAssess::Grader
       end
     end
 
-    def match_score(condition_1, condition_2)
-      if condition_1 == condition_2
+    def compare_base_grade
+      instructor_condition = @instructor_attributes.first
+      student_condition = @student_attributes.first
+
+      if instructor_condition == student_condition
+        1
+      elsif instructor_condition[:type] == "Subquery" && student_condition[:type] == "Subquery"
+        match_score(instructor_condition, student_condition) / 2.0
+      else
+        0
+      end
+    end
+
+    def match_score(instructor_condition, student_condition)
+      if instructor_condition == student_condition
         2
-      elsif condition_1[:table] == condition_2[:table]
-        if condition_1[:type] == condition_2[:type]
+      elsif instructor_condition[:type] == "Subquery" || student_condition[:type] == "Subquery"
+        if instructor_condition[:type] == "Subquery" && student_condition[:type] == "Subquery"
+          SqlAssess::QueryComparisonResult.new(
+            success: false,
+            attributes: {
+              student: instructor_condition[:attributes],
+              instructor: student_condition[:attributes]
+            }
+          ).grade / 50.0
+        else
+          0
+        end
+      elsif instructor_condition[:table] == student_condition[:table]
+        if instructor_condition[:type] == student_condition[:type]
           1
-        elsif condition_1[:condition] == condition_2[:condition]
+        elsif instructor_condition[:condition] == student_condition[:condition]
           1
         else
           # or look at differences in type or condition
