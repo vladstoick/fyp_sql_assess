@@ -11,6 +11,12 @@ module SqlAssess::Transformers
     def transform
       raise "Implement this method in subclass"
     end
+
+    def tables(query)
+      SqlAssess::Parsers::Tables.new(query).tables.map do |table|
+        table[:table]
+      end
+    end
   end
 end
 
