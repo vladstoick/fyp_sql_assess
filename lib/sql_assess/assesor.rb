@@ -5,13 +5,6 @@ require "sql_assess/query_transformer"
 require "sql_assess/data_extractor"
 require "sql_assess/query_attribute_extractor"
 
-class SQLVisitorForPostgres < SQLParser::SQLVisitor
-  def quote(str)
-    "\"#{str}\""
-  end
-end
-
-
 module SqlAssess
   class Assesor
     attr_reader :connection

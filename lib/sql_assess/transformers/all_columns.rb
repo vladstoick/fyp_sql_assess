@@ -13,7 +13,7 @@ module SqlAssess::Transformers
     private
 
     def transform_star_select
-      table_list = PgQuery.parse(SQLVisitorForPostgres.new.visit(@parsed_query)).tables
+      table_list = tables(@parsed_query.to_sql)
 
       new_columns = table_list.map do |table|
         columns_query = "SHOW COLUMNS from #{table}"

@@ -7,7 +7,7 @@ RSpec.describe SqlAssess::Transformers::Base do
       let(:query) { "SELECT * from t1" }
 
       it "returns the table" do
-        expect(subject.tables(query)).to eq(["`t1`"])
+        expect(subject.tables(query)).to eq(["t1"])
       end
     end
 
@@ -15,7 +15,7 @@ RSpec.describe SqlAssess::Transformers::Base do
       let(:query) { "SELECT * from t1, t2" }
 
       it "returns the table" do
-        expect(subject.tables(query)).to eq(["`t1`", "`t2`"])
+        expect(subject.tables(query)).to eq(["t1", "t2"])
       end
     end
 
@@ -23,7 +23,7 @@ RSpec.describe SqlAssess::Transformers::Base do
       let(:query) { "SELECT * from t1, t2 LEFT JOIN t3 on t1.id = t3.id" }
 
       it "returns the table" do
-        expect(subject.tables(query)).to eq(["`t1`", "`t2`", "`t3`"])
+        expect(subject.tables(query)).to eq(["t1", "t2", "t3"])
       end
     end
   end

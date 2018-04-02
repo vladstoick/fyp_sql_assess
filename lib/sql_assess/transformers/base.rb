@@ -1,5 +1,4 @@
 require 'sql-parser'
-require 'pg_query'
 
 module SqlAssess::Transformers
   class Base
@@ -14,7 +13,7 @@ module SqlAssess::Transformers
 
     def tables(query)
       SqlAssess::Parsers::Tables.new(query).tables.map do |table|
-        table[:table]
+        table[:table].remove("`")
       end
     end
   end

@@ -40,7 +40,7 @@ module SqlAssess::Transformers
     private
 
     def find_table_for(column_name)
-      table_list = PgQuery.parse(SQLVisitorForPostgres.new.visit(@parsed_query)).tables
+      table_list = tables(@parsed_query.to_sql)
 
       table_list.detect do |table|
         columns_query = "SHOW COLUMNS from #{table}"
