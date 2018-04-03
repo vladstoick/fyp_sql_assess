@@ -1,4 +1,6 @@
-require "sql_assess/transformers/base"
+# frozen_string_literal: true
+
+require 'sql_assess/transformers/base'
 
 module SqlAssess
   class QueryTransformer
@@ -18,7 +20,7 @@ module SqlAssess
       Transformers::ComparisonPredicateFrom,
       Transformers::ComparisonPredicateWhere,
       Transformers::ComparisonPredicateHaving,
-    ]
+    ].freeze
 
     def initialize(connection)
       @connection = connection

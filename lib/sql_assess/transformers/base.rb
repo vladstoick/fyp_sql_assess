@@ -1,19 +1,23 @@
+# frozen_string_literal: true
+
 require 'sql-parser'
 
-module SqlAssess::Transformers
-  class Base
-    def initialize(connection)
-      @connection = connection
-      @parser = SQLParser::Parser.new
-    end
+module SqlAssess
+  module Transformers
+    class Base
+      def initialize(connection)
+        @connection = connection
+        @parser = SQLParser::Parser.new
+      end
 
-    def transform
-      raise "Implement this method in subclass"
-    end
+      def transform
+        raise 'Implement this method in subclass'
+      end
 
-    def tables(query)
-      SqlAssess::Parsers::Tables.new(query).tables.map do |table|
-        table[:table].remove("`")
+      def tables(query)
+        SqlAssess::Parsers::Tables.new(query).tables.map do |table|
+          table[:table].remove('`')
+        end
       end
     end
   end

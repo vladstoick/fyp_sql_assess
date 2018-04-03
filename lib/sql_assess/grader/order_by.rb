@@ -1,22 +1,26 @@
-module SqlAssess::Grader
-  class OrderBy < Base
-    private
+# frozen_string_literal: true
 
-    def grade
-      grade_for_array
-    end
+module SqlAssess
+  module Grader
+    class OrderBy < Base
+      private
 
-    def match_score(order_by_1, order_by_2)
-      if order_by_1 == order_by_2
-        2
-      else
-        column_1 = order_by_1.split(" ")[0]
-        column_2 = order_by_2.split(" ")[0]
+      def grade
+        grade_for_array
+      end
 
-        if column_1 == column_2
-          1
+      def match_score(order_by1, order_by2)
+        if order_by1 == order_by2
+          2
         else
-          0
+          column1 = order_by1.split(' ')[0]
+          column2 = order_by2.split(' ')[0]
+
+          if column1 == column2
+            1
+          else
+            0
+          end
         end
       end
     end

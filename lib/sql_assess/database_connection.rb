@@ -1,8 +1,10 @@
-require "mysql2"
+# frozen_string_literal: true
+
+require 'mysql2'
 
 module SqlAssess
   class DatabaseConnection
-    def initialize(host: "127.0.0.1", port: "3306", username: "root", database: nil)
+    def initialize(host: '127.0.0.1', port: '3306', username: 'root', database: nil)
       @client = Mysql2::Client.new(
         host: host,
         port: port,
@@ -17,20 +19,18 @@ module SqlAssess
       else
         success = false
         attempt = 0
-        while !success do
-          time = DateTime.now
-
-          if attempt > 0
-            @database = "#{Time.now.strftime("%H%M%S")}_#{attempt}"
+        until success
+          if attempt.positive?
+            @database = "#{Time.now.strftime('%H%M%S')}_#{attempt}"
           else
-            @database = "#{Time.now.strftime("%H%M%S")}"
+            @database = Time.now.strftime('%H%M%S').to_s
           end
 
           begin
             @client.query("CREATE DATABASE `#{@database}`")
             success = true
           rescue Mysql2::Error => exception
-            raise exception unless exception.message.include?("database exists")
+            raise exception unless exception.message.include?('database exists')
             success = false
             attempt += 1
           end
@@ -50,7 +50,7 @@ module SqlAssess
       @restricted_client.select_db(@database)
       @client.select_db(@database)
     rescue Mysql2::Error => exception
-      raise DatabaseConnectionError.new(exception.message)
+      raise DatabaseConnectionError, exception.message
     end
 
     def query(query)
@@ -60,16 +60,16 @@ module SqlAssess
     def delete_database
       if @parent_database
         # disable foreign key checks before dropping the database
-        @client.query("SET FOREIGN_KEY_CHECKS = 0")
+        @client.query('SET FOREIGN_KEY_CHECKS = 0')
 
-        tables = query("SHOW tables");
+        tables = query('SHOW tables')
 
         tables.each do |table|
-          table_name = table["Tables_in_local_db"]
+          table_name = table['Tables_in_local_db']
           @client.query("DROP table #{table_name}")
         end
 
-        @client.query("SET FOREIGN_KEY_CHECKS = 1")
+        @client.query('SET FOREIGN_KEY_CHECKS = 1')
       else
         @client.query("DROP DATABASE `#{@database}`")
         @client.query("DROP USER IF EXISTS `#{@database}`")

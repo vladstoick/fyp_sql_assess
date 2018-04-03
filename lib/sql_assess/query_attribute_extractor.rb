@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SqlAssess
   class QueryAttributeExtractor
     def extract(instructor_sql_query, student_sql_query)

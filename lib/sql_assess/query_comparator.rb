@@ -1,5 +1,7 @@
-require "sql_assess/query_comparison_result"
-require "sql_assess/parsers/base"
+# frozen_string_literal: true
+
+require 'sql_assess/query_comparison_result'
+require 'sql_assess/parsers/base'
 
 module SqlAssess
   class QueryComparator
@@ -11,12 +13,12 @@ module SqlAssess
       instructor_result = @connection.query(instructor_sql_query).to_a
       student_result = @connection.query(student_sql_query).to_a
 
-      is_success(instructor_result, student_result)
+      success?(instructor_result, student_result)
     end
 
     private
 
-    def is_success(instructor_result, student_result)
+    def success?(instructor_result, student_result)
       return false if instructor_result.count != student_result.count
 
       (0..instructor_result.count).all? do |i|
