@@ -13,7 +13,7 @@ RSpec.describe SqlAssess::Transformers::ComparisonPredicateWhere do
     context "with no comparison predicate query" do
       it "returns the same query" do
         expect(subject.transform("SELECT * FROM table WHERE a BETWEEN 1 AND 3"))
-          .to eq("SELECT * FROM `table` WHERE `a` BETWEEN 1 AND 3 ")
+          .to eq("SELECT * FROM `table` WHERE `a` BETWEEN 1 AND 3")
       end
     end
 
