@@ -5,7 +5,7 @@ RSpec.describe SqlAssess::Transformers::Base do
 
   context "#transform" do
     it "throws an error" do
-      expect { subject.transform }.to raise_error
+      expect { subject.transform }.to raise_error('Implement this method in subclass')
     end
   end
 
