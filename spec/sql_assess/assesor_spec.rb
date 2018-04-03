@@ -48,8 +48,6 @@ RSpec.describe SqlAssess::Assesor do
       let(:student_sql_query) { "SELECT * from table1" }
       it "returns a result" do
         expect(do_assess).to be_a(SqlAssess::QueryComparisonResult)
-
-
       end
     end
   end
