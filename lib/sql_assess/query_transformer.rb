@@ -13,7 +13,8 @@ module SqlAssess
       Transformers::EquivalentColumns,
       # Predicate
       Transformers::Not,
-      Transformers::BetweenPredicate,
+      Transformers::BetweenPredicateWhere,
+      Transformers::BetweenPredicateHaving,
       Transformers::ComparisonPredicateFrom,
       Transformers::ComparisonPredicateWhere,
       Transformers::ComparisonPredicateHaving,

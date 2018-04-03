@@ -20,7 +20,9 @@ module SqlAssess::Transformers
 end
 
 require_relative 'all_columns'
-require_relative 'between_predicate'
+require_relative 'between_predicate_where'
+require_relative 'between_predicate_having'
+require_relative 'between_predicate_from'
 require_relative 'not'
 require_relative 'ambigous_columns_select'
 require_relative 'ambigous_columns_group'

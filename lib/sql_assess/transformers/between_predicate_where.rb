@@ -1,5 +1,5 @@
 module SqlAssess::Transformers
-  class BetweenPredicate < Base
+  class BetweenPredicateWhere < Base
     def transform(query)
       parsed_query = @parser.scan_str(query)
 
