@@ -12,15 +12,15 @@ RSpec.describe SqlAssess::Transformers::BetweenPredicateFrom do
   context "when there is a having clause" do
     context "with no between query" do
       it "returns the same query" do
-        expect(subject.transform("SELECT * FROM table LEFT JOIN t2 ON a = 1"))
-          .to eq("SELECT * FROM `table` LEFT JOIN `t2` ON `a` = 1")
+        expect(subject.transform("SELECT * FROM table, t3 LEFT JOIN t2 ON a = 1"))
+          .to eq("SELECT * FROM `table` CROSS JOIN `t3` LEFT JOIN `t2` ON `a` = 1")
       end
     end
 
     context "with only a between query" do
       it "returns the updated query" do
-        expect(subject.transform("SELECT * FROM table LEFT JOIN t2 ON a BETWEEN 1 and 3"))
-          .to eq("SELECT * FROM `table` LEFT JOIN `t2` ON (`a` >= 1 AND `a` <= 3)")
+        expect(subject.transform("SELECT * FROM table, t3 LEFT JOIN t2 ON a BETWEEN 1 and 3"))
+          .to eq("SELECT * FROM `table` CROSS JOIN `t3` LEFT JOIN `t2` ON (`a` >= 1 AND `a` <= 3)")
       end
     end
 

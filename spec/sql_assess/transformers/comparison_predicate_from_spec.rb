@@ -12,15 +12,15 @@ RSpec.describe SqlAssess::Transformers::ComparisonPredicateFrom do
   context "when there is a join clause" do
     context "with no comparison predicate query" do
       it "returns the same query" do
-        expect(subject.transform("SELECT * FROM table LEFT JOIN t1 ON a = 1"))
-          .to eq("SELECT * FROM `table` LEFT JOIN `t1` ON `a` = 1")
+        expect(subject.transform("SELECT * FROM table LEFT JOIN t1, t3 ON a BETWEEN 1 AND 3"))
+          .to eq("SELECT * FROM `table` LEFT JOIN `t1` CROSS JOIN `t3` ON `a` BETWEEN 1 AND 3")
       end
     end
 
     context "with a >" do
       it "returns the updated query" do
-        expect(subject.transform("SELECT * FROM table LEFT JOIN t1 ON a > 1"))
-          .to eq("SELECT * FROM `table` LEFT JOIN `t1` ON 1 < `a`")
+        expect(subject.transform("SELECT * FROM table, t3 LEFT JOIN t1 ON a > 1"))
+          .to eq("SELECT * FROM `table` CROSS JOIN `t3` LEFT JOIN `t1` ON 1 < `a`")
       end
     end
 

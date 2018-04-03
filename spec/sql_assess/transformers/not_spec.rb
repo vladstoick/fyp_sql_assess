@@ -60,5 +60,12 @@ RSpec.describe SqlAssess::Transformers::Not do
           .to eq("SELECT * FROM `t1` WHERE ((`a` <= 1 AND `b` = 2) AND `c` = 3)")
       end
     end
+
+    context "with a not which is not transformable" do
+      it "returns the updated query" do
+        expect(subject.transform("SELECT * FROM t1 WHERE NOT a LIKE 'a'"))
+          .to eq("SELECT * FROM `t1` WHERE `a` NOT LIKE 'a'")
+      end
+    end
   end
 end
