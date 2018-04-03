@@ -9,6 +9,7 @@ module SqlAssess
       Transformers::AllColumns,
       Transformers::AmbigousColumns,
       Transformers::AmbigousColumnsGroup,
+      Transformers::AmbigousColumnsOrderBy,
       Transformers::EquivalentColumns,
       # Predicate
       Transformers::Not,
