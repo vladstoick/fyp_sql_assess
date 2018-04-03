@@ -16,7 +16,7 @@ RSpec.describe SqlAssess::Parsers::Tables do
     it "returns an array containing the tables" do
       expect(subject.tables).to eq([
         {
-          type: "BASE",
+          type: "table",
           table: "`table1`",
           sql: "`table1`",
         }
@@ -30,13 +30,17 @@ RSpec.describe SqlAssess::Parsers::Tables do
     it "returns an array containing the tables" do
       expect(subject.tables).to eq([
         {
-          type: "BASE",
+          type: "table",
           table: "`table1`",
           sql: "`table1`",
         },
         {
-          type: "CROSS JOIN",
-          table: "`table2`",
+          join_type: "CROSS JOIN",
+          table: {
+            type: "table",
+            table: "`table2`",
+            sql: "`table2`",
+          },
           sql: "CROSS JOIN `table2`",
         }
       ])
@@ -49,13 +53,17 @@ RSpec.describe SqlAssess::Parsers::Tables do
     it "returns an array containing the tables" do
       expect(subject.tables).to eq([
         {
-          type: "BASE",
+          type: "table",
           table: "`table1`",
           sql: "`table1`",
         },
         {
-          type: "INNER JOIN",
-          table: "`table2`",
+          join_type: "INNER JOIN",
+          table: {
+            type: "table",
+            table: "`table2`",
+            sql: "`table2`",
+          },
           sql: "INNER JOIN `table2` ON `table1`.`id` = `table2`.`id`",
           condition: {
             type: "EQUALS",
@@ -82,13 +90,17 @@ RSpec.describe SqlAssess::Parsers::Tables do
     it "returns an array containing the tables" do
       expect(subject.tables).to eq([
         {
-          type: "BASE",
+          type: "table",
           table: "`table1`",
           sql: "`table1`",
         },
         {
-          type: "LEFT JOIN",
-          table: "`table2`",
+          join_type: "LEFT JOIN",
+          table: {
+            type: "table",
+            table: "`table2`",
+            sql: "`table2`",
+          },
           condition: {
             type: "EQUALS",
             left: "`table1`.`id`",
@@ -98,8 +110,12 @@ RSpec.describe SqlAssess::Parsers::Tables do
           sql: "LEFT JOIN `table2` ON `table1`.`id` = `table2`.`id`"
         },
         {
-          type: "LEFT JOIN",
-          table: "`table3`",
+          join_type: "LEFT JOIN",
+          table: {
+            type: "table",
+            table: "`table3`",
+            sql: "`table3`",
+          },
           condition: {
             type: "EQUALS",
             left: "`table3`.`id`",
@@ -130,7 +146,7 @@ RSpec.describe SqlAssess::Parsers::Tables do
             order_by: [],
             where: {},
             where_tree: {},
-            tables: [{type: "BASE", table: "`table1`", sql: "`table1`"}],
+            tables: [{type: "table", table: "`table1`", sql: "`table1`"}],
             distinct_filter: "ALL",
             limit: {limit: "inf", offset: 0},
             group: [],

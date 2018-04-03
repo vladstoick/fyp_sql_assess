@@ -16,7 +16,11 @@ module SqlAssess
 
       def tables(query)
         SqlAssess::Parsers::Tables.new(query).tables.map do |table|
-          table[:table].remove('`')
+          if table.key?(:join_type)
+            table[:table][:table].remove('`')
+          else
+            table[:table].remove('`')
+          end
         end
       end
     end
