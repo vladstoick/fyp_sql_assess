@@ -7,7 +7,7 @@ module SqlAssess
       Transformers::FromSubquery,
       # Columns
       Transformers::AllColumns,
-      Transformers::AmbigousColumns,
+      Transformers::AmbigousColumnsSelect,
       Transformers::AmbigousColumnsGroup,
       Transformers::AmbigousColumnsOrderBy,
       Transformers::EquivalentColumns,
