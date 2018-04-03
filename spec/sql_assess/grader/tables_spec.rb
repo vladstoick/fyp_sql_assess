@@ -162,4 +162,20 @@ RSpec.describe SqlAssess::Grader::Tables do
 
     it { expect(subject.rounded_grade).to eq(0.88) }
   end
+
+  context "with one subquery and one table" do
+    let(:student_query) do
+      <<-SQL
+        SELECT id1 from (SELECT id1 from table1)
+      SQL
+    end
+
+    let(:instructor_query) do
+      <<-SQL
+        SELECT id1 from table1
+      SQL
+    end
+
+    it { expect(subject.rounded_grade).to eq(0.0) }
+  end
 end

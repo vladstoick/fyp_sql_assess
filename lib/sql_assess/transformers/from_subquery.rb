@@ -30,11 +30,6 @@ module SqlAssess
             transform_table(table.right),
             table.search_condition.search_condition
           )
-        elsif table.is_a?(SQLParser::Statement::JoinedTable)
-          predicate.class.new(
-            transform_table(table.left),
-            transform_table(table.right)
-          )
         elsif table.is_a?(SQLParser::Statement::Subquery)
           SQLParser::Statement::Subquery.new(
             @parser.scan_str(

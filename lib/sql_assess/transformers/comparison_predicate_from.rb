@@ -33,7 +33,7 @@ module SqlAssess
             )
           )
         elsif table.is_a?(SQLParser::Statement::JoinedTable)
-          predicate.class.new(
+          table.class.new(
             transform_comparison_predicate_table(table.left),
             transform_comparison_predicate_table(table.right)
           )

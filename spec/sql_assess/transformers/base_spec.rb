@@ -2,6 +2,13 @@ require "spec_helper"
 
 RSpec.describe SqlAssess::Transformers::Base do
   subject { described_class.new(@connection) }
+
+  context "#transform" do
+    it "throws an error" do
+      expect { subject.transform }.to raise_error
+    end
+  end
+
   context "#tables" do
     context "one table" do
       let(:query) { "SELECT * from t1" }
