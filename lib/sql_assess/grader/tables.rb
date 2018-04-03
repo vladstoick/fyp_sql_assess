@@ -25,7 +25,13 @@ module SqlAssess
         if instructor_condition == student_condition
           1
         elsif instructor_condition[:type] == 'Subquery' && student_condition[:type] == 'Subquery'
-          match_score(instructor_condition, student_condition) / 2.0
+          SqlAssess::QueryComparisonResult.new(
+            success: false,
+            attributes: {
+              student: instructor_condition[:attributes],
+              instructor: student_condition[:attributes],
+            }
+          ).grade / 100.0
         else
           0
         end
@@ -34,29 +40,36 @@ module SqlAssess
       def match_score(instructor_condition, student_condition)
         if instructor_condition == student_condition
           2
-        elsif instructor_condition[:type] == 'Subquery' || student_condition[:type] == 'Subquery'
-          if instructor_condition[:type] == 'Subquery' && student_condition[:type] == 'Subquery'
-            SqlAssess::QueryComparisonResult.new(
-              success: false,
-              attributes: {
-                student: instructor_condition[:attributes],
-                instructor: student_condition[:attributes],
-              }
-            ).grade / 50.0
+        else
+          if instructor_condition[:join_type] != student_condition[:join_type]
+            divide = 2.0
+          else
+            divide = 1.0
+          end
+
+          if instructor_condition[:type] == student_condition[:type]
+            if instructor_condition[:type] == 'Subquery'
+              subuqery_match_score = SqlAssess::QueryComparisonResult.new(
+                success: false,
+                attributes: {
+                  student: instructor_condition[:attributes],
+                  instructor: student_condition[:attributes],
+                }
+              ).grade / 100.0 / 2
+
+              subuqery_match_score / divide
+            elsif instructor_condition[:table] == student_condition[:table]
+              if instructor_condition[:condition] == student_condition[:condition]
+                2.0 / divide
+              else
+                1.0 / divide
+              end
+            else
+              0
+            end
           else
             0
           end
-        elsif instructor_condition[:table] == student_condition[:table]
-          if instructor_condition[:type] == student_condition[:type]
-            1
-          elsif instructor_condition[:condition] == student_condition[:condition]
-            1
-          else
-            # or look at differences in type or condition
-            0.5
-          end
-        else
-          0
         end
       end
     end

@@ -15,23 +15,20 @@ module SqlAssess
 
       private
 
-      def transform(query, is_base = true)
+      def transform(query)
         if query.is_a?(SQLParser::Statement::Table)
-          if is_base
-            {
-              type: 'BASE',
-              table: query.to_sql,
-              sql: query.to_sql,
-            }
-          else
-            query.to_sql
-          end
+          {
+            type: 'table',
+            table: query.to_sql,
+            sql: query.to_sql,
+          }
         elsif query.is_a?(SQLParser::Statement::JoinedTable)
           hash = {
-            type: query.class.name.split('::').last.underscore.humanize.upcase,
-            table: transform(query.right, false),
+            join_type: query.class.name.split('::').last.underscore.humanize.upcase,
+            table: transform(query.right),
             sql: "#{query.class.name.split('::').last.underscore.humanize.upcase} #{query.right.to_sql}",
           }
+
           if query.is_a?(SQLParser::Statement::QualifiedJoin)
             hash[:condition] = Where.transform(
               query.search_condition.search_condition
@@ -39,7 +36,7 @@ module SqlAssess
             hash[:sql] = "#{query.class.name.split('::').last.underscore.humanize.upcase} #{query.right.to_sql} #{query.search_condition.to_sql}"
           end
 
-          [transform(query.left, is_base), hash].flatten
+          [transform(query.left), hash].flatten
         elsif query.is_a?(SQLParser::Statement::Subquery)
           {
             type: 'Subquery',
