@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe SqlAssess::Transformers::JoinComparisonPredicate do
+RSpec.describe SqlAssess::Transformers::ComparisonPredicateFrom do
   subject { described_class.new(connection) }
 
   context "when there is no join clause" do

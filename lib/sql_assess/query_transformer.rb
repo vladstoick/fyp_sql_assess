@@ -14,9 +14,9 @@ module SqlAssess
       # Predicate
       Transformers::Not,
       Transformers::BetweenPredicate,
-      Transformers::JoinComparisonPredicate,
-      Transformers::WhereComparisonPredicate,
-      Transformers::HavingComparisonPredicate,
+      Transformers::ComparisonPredicateFrom,
+      Transformers::ComparisonPredicateWhere,
+      Transformers::ComparisonPredicateHaving,
     ]
 
     def initialize(connection)

@@ -1,5 +1,5 @@
 module SqlAssess::Transformers
-  class JoinComparisonPredicate < Base
+  class ComparisonPredicateFrom < Base
     def transform(query)
       parsed_query = @parser.scan_str(query)
 
