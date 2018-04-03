@@ -1,5 +1,5 @@
 module SqlAssess::Transformers
-  class JoinComparisonPredicate < Base
+  class BetweenPredicateFrom < Base
     def transform(query)
       parsed_query = @parser.scan_str(query)
 
@@ -45,27 +45,18 @@ module SqlAssess::Transformers
           transform_comparison_predicate_condition(predicate.left),
           transform_comparison_predicate_condition(predicate.right)
         )
-      elsif predicate.is_a?(SQLParser::Statement::ComparisonPredicate)
-        transform_comparison_predicate(predicate)
+      elsif predicate.is_a?(SQLParser::Statement::Between)
+        transform_between_query(predicate)
       else
         predicate
       end
     end
 
-    def transform_comparison_predicate(predicate)
-      if predicate.is_a?(SQLParser::Statement::Greater)
-        SQLParser::Statement::Less.new(
-          predicate.right,
-          predicate.left
-        )
-      elsif predicate.is_a?(SQLParser::Statement::GreaterOrEquals)
-        SQLParser::Statement::LessOrEquals.new(
-          predicate.right,
-          predicate.left
-        )
-      else
-        predicate
-      end
+    def transform_between_query(predicate)
+      SQLParser::Statement::And.new(
+        SQLParser::Statement::GreaterOrEquals.new(predicate.left, predicate.min),
+        SQLParser::Statement::LessOrEquals.new(predicate.left, predicate.max)
+      )
     end
   end
 end

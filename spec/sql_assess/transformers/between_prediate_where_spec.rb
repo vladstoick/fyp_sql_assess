@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe SqlAssess::Transformers::BetweenPredicate do
+RSpec.describe SqlAssess::Transformers::BetweenPredicateWhere do
   subject { described_class.new(connection) }
 
   context "when there is no where clause" do

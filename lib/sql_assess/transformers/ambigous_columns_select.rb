@@ -1,5 +1,5 @@
 module SqlAssess::Transformers
-  class AmbigousColumns < Base
+  class AmbigousColumnsSelect < Base
     def transform(query)
       @query = query
       @parsed_query = @parser.scan_str(query)

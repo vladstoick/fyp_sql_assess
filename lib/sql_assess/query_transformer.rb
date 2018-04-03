@@ -7,15 +7,17 @@ module SqlAssess
       Transformers::FromSubquery,
       # Columns
       Transformers::AllColumns,
-      Transformers::AmbigousColumns,
+      Transformers::AmbigousColumnsSelect,
       Transformers::AmbigousColumnsGroup,
+      Transformers::AmbigousColumnsOrderBy,
       Transformers::EquivalentColumns,
       # Predicate
       Transformers::Not,
-      Transformers::BetweenPredicate,
-      Transformers::JoinComparisonPredicate,
-      Transformers::WhereComparisonPredicate,
-      Transformers::HavingComparisonPredicate,
+      Transformers::BetweenPredicateWhere,
+      Transformers::BetweenPredicateHaving,
+      Transformers::ComparisonPredicateFrom,
+      Transformers::ComparisonPredicateWhere,
+      Transformers::ComparisonPredicateHaving,
     ]
 
     def initialize(connection)
