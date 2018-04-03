@@ -1,4 +1,6 @@
-require "mysql2"
+# frozen_string_literal: true
+
+require 'mysql2'
 
 module SqlAssess
   class DataExtractor
@@ -8,7 +10,7 @@ module SqlAssess
 
     def run
       result = []
-      tables = @connection.query("SHOW tables;")
+      tables = @connection.query('SHOW tables;')
 
       tables.each do |table|
         table_name = table.first.last
@@ -16,15 +18,15 @@ module SqlAssess
         data = @connection.query("SELECT * from #{table_name}")
         columns = @connection.query("SHOW columns from #{table_name}").to_a.map do |column|
           {
-            name: column.fetch("Field"),
-            type: column.fetch("Type")
+            name: column.fetch('Field'),
+            type: column.fetch('Type'),
           }
         end
 
         result << {
           name: table_name,
           columns: columns,
-          data: data.to_a
+          data: data.to_a,
         }
       end
 

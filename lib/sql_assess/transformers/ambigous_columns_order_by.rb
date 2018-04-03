@@ -1,52 +1,54 @@
-module SqlAssess::Transformers
-  class AmbigousColumnsOrderBy < Base
-    def transform(query)
-      @query = query
+# frozen_string_literal: true
 
-      @parsed_query = @parser.scan_str(query)
+module SqlAssess
+  module Transformers
+    class AmbigousColumnsOrderBy < Base
+      def transform(query)
+        @query = query
 
-      if @parsed_query.order_by.nil?
-        return @parsed_query.to_sql
-      end
+        @parsed_query = @parser.scan_str(query)
 
-      sort_specification = @parsed_query.order_by.sort_specification.map do |specification|
-        if specification.column.is_a?(SQLParser::Statement::Column)
-          table = find_table_for(specification.column.name)
+        return @parsed_query.to_sql if @parsed_query.order_by.nil?
 
-          specification.class.new(
-            SQLParser::Statement::QualifiedColumn.new(
-              SQLParser::Statement::Table.new(table),
-              specification.column
+        sort_specification = @parsed_query.order_by.sort_specification.map do |specification|
+          if specification.column.is_a?(SQLParser::Statement::Column)
+            table = find_table_for(specification.column.name)
+
+            specification.class.new(
+              SQLParser::Statement::QualifiedColumn.new(
+                SQLParser::Statement::Table.new(table),
+                specification.column
+              )
             )
-          )
 
-        elsif specification.column.is_a?(SQLParser::Statement::Integer)
-          specification.class.new(
-            @parsed_query.query_expression.list.columns[specification.column.value - 1]
-          )
+          elsif specification.column.is_a?(SQLParser::Statement::Integer)
+            specification.class.new(
+              @parsed_query.query_expression.list.columns[specification.column.value - 1]
+            )
 
-        else
-          specification
+          else
+            specification
+          end
         end
+
+        @parsed_query.order_by.instance_variable_set(
+          '@sort_specification',
+          sort_specification
+        )
+
+        @parsed_query.to_sql
       end
 
-      @parsed_query.order_by.instance_variable_set(
-        "@sort_specification",
-        sort_specification
-      )
+      private
 
-      @parsed_query.to_sql
-    end
+      def find_table_for(column_name)
+        table_list = tables(@parsed_query.to_sql)
 
-    private
-
-    def find_table_for(column_name)
-      table_list = tables(@parsed_query.to_sql)
-
-      table_list.detect do |table|
-        columns_query = "SHOW COLUMNS from #{table}"
-        columns = @connection.query(columns_query).map { |k| k["Field"] }
-        columns.include?(column_name)
+        table_list.detect do |table|
+          columns_query = "SHOW COLUMNS from #{table}"
+          columns = @connection.query(columns_query).map { |k| k['Field'] }
+          columns.include?(column_name)
+        end
       end
     end
   end

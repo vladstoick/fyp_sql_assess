@@ -1,33 +1,26 @@
-require "sql_assess/grader/base"
+# frozen_string_literal: true
+
+require 'sql_assess/grader/base'
 
 module SqlAssess
   class QueryComparisonResult
-    attr_reader :success, :attributes, :grade, :attributes_grade, :message
+    attr_reader :success, :attributes, :grade, :message
 
     def initialize(success:, attributes:)
       @success = success
       @attributes = attributes
+      @message = determine_hints
 
-      calculate_attributes_grade
+      attributes_grade
 
       if @success == true
         @grade = 100.00
       else
         @grade = calculate_grade * 100.00
       end
-
-      @message = determine_hints
     end
 
-    private
-
-    def calculate_grade
-      attributes_grade.sum do |attribute, grade|
-        grade * grade_components_percentages[attribute]
-      end
-    end
-
-    def calculate_attributes_grade
+    def attributes_grade
       @attributes_grade ||= grade_components_percentages.keys.map do |key|
         key_hash = key == :where ? :where_tree : key
         [
@@ -36,9 +29,17 @@ module SqlAssess
             attribute: key,
             student_attributes: attributes[:student][key_hash],
             instructor_attributes: attributes[:instructor][key_hash]
-          ).to_d
+          ).to_d,
         ]
       end.to_h
+    end
+
+    private
+
+    def calculate_grade
+      attributes_grade.sum do |attribute, grade|
+        grade * grade_components_percentages[attribute]
+      end
     end
 
     def grade_components_percentages
@@ -50,15 +51,15 @@ module SqlAssess
         distinct_filter: 1 / 8.0,
         limit: 1 / 8.0,
         order_by: 1 / 8.0,
-        having: 1 / 8.0
+        having: 1 / 8.0,
       }
     end
 
     def determine_hints
       if success == true
-        message = "Congratulations! Your solutions is correct"
+        'Congratulations! Your solutions is correct'
       else
-        message = "Your query is not correct. #{message_for_attribute(first_wrong_component)}"
+        "Your query is not correct. #{message_for_attribute(first_wrong_component)}"
       end
     end
 
@@ -70,13 +71,13 @@ module SqlAssess
 
     def message_for_attribute(attribute)
       case attribute
-      when :columns then "Check what columns you are selecting."
-      when :tables then "Are you sure you are selecting the right tables?"
-      when :order_by then "Are you ordering the rows correctly?"
-      when :where then "Looks like you are selecting the right columns, but you are not selecting only the correct rows."
-      when :distinct_filter then "What about duplicates? What does the exercise say?"
-      when :limit then "Are you selecting the correct number of rows?"
-      when :group then "Are you grouping by the correct columns?"
+      when :columns then 'Check what columns you are selecting.'
+      when :tables then 'Are you sure you are selecting the right tables?'
+      when :order_by then 'Are you ordering the rows correctly?'
+      when :where then 'Looks like you are selecting the right columns, but you are not selecting only the correct rows.'
+      when :distinct_filter then 'What about duplicates? What does the exercise say?'
+      when :limit then 'Are you selecting the correct number of rows?'
+      when :group then 'Are you grouping by the correct columns?'
       end
     end
   end

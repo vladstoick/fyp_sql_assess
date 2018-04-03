@@ -1,51 +1,55 @@
-module SqlAssess::Transformers
-  class AmbigousColumnsSelect < Base
-    def transform(query)
-      @query = query
-      @parsed_query = @parser.scan_str(query)
+# frozen_string_literal: true
 
-      columns = @parsed_query.query_expression.list.columns.map do |column|
-        if column.is_a?(SQLParser::Statement::Column)
-          table = find_table_for(column.name)
+module SqlAssess
+  module Transformers
+    class AmbigousColumnsSelect < Base
+      def transform(query)
+        @query = query
+        @parsed_query = @parser.scan_str(query)
 
-          SQLParser::Statement::QualifiedColumn.new(
-            SQLParser::Statement::Table.new(table),
-            column
-          )
-        elsif column.is_a?(SQLParser::Statement::Aggregate) && column.column.is_a?(SQLParser::Statement::Column)
-          table = find_table_for(column.column.name)
+        columns = @parsed_query.query_expression.list.columns.map do |column|
+          if column.is_a?(SQLParser::Statement::Column)
+            table = find_table_for(column.name)
 
-          column.instance_variable_set(
-            "@column",
             SQLParser::Statement::QualifiedColumn.new(
               SQLParser::Statement::Table.new(table),
-              column.column
+              column
             )
-          )
+          elsif column.is_a?(SQLParser::Statement::Aggregate) && column.column.is_a?(SQLParser::Statement::Column)
+            table = find_table_for(column.column.name)
 
-          column
-        else
-          column
+            column.instance_variable_set(
+              '@column',
+              SQLParser::Statement::QualifiedColumn.new(
+                SQLParser::Statement::Table.new(table),
+                column.column
+              )
+            )
+
+            column
+          else
+            column
+          end
         end
+
+        @parsed_query.query_expression.list.instance_variable_set(
+          '@columns',
+          columns
+        )
+
+        @parsed_query.to_sql
       end
 
-      @parsed_query.query_expression.list.instance_variable_set(
-        "@columns",
-        columns
-      )
+      private
 
-      @parsed_query.to_sql
-    end
+      def find_table_for(column_name)
+        table_list = tables(@parsed_query.to_sql)
 
-    private
-
-    def find_table_for(column_name)
-      table_list = tables(@parsed_query.to_sql)
-
-      table_list.detect do |table|
-        columns_query = "SHOW COLUMNS from #{table}"
-        columns = @connection.query(columns_query).map { |k| k["Field"] }
-        columns.include?(column_name)
+        table_list.detect do |table|
+          columns_query = "SHOW COLUMNS from #{table}"
+          columns = @connection.query(columns_query).map { |k| k['Field'] }
+          columns.include?(column_name)
+        end
       end
     end
   end

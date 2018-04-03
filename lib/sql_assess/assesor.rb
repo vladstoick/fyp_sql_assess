@@ -1,15 +1,17 @@
-require "sql_assess/database_connection"
-require "sql_assess/runner"
-require "sql_assess/query_comparator"
-require "sql_assess/query_transformer"
-require "sql_assess/data_extractor"
-require "sql_assess/query_attribute_extractor"
+# frozen_string_literal: true
+
+require 'sql_assess/database_connection'
+require 'sql_assess/runner'
+require 'sql_assess/query_comparator'
+require 'sql_assess/query_transformer'
+require 'sql_assess/data_extractor'
+require 'sql_assess/query_attribute_extractor'
 
 module SqlAssess
   class Assesor
     attr_reader :connection
 
-    def initialize(databse_host: "127.0.0.1", database_port: "3306", database_username: "root")
+    def initialize(databse_host: '127.0.0.1', database_port: '3306', database_username: 'root')
       @connection = SqlAssess::DatabaseConnection.new(
         host: databse_host,
         port: database_port,
@@ -34,7 +36,7 @@ module SqlAssess
       Runner.new(@connection).execute_query(student_sql_query)
 
       query_result_match = QueryComparator.new(@connection)
-        .compare(instructor_sql_query, student_sql_query)
+                                          .compare(instructor_sql_query, student_sql_query)
 
       transformer = QueryTransformer.new(@connection)
       instructor_sql_query = transformer.transform(instructor_sql_query)
@@ -64,7 +66,7 @@ module SqlAssess
       )
     end
 
-    def clear_database(delete_databse: true)
+    def clear_database
       @connection.delete_database
     end
   end
