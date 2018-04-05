@@ -1,20 +1,20 @@
 require "spec_helper"
+require 'yaml'
 
 RSpec.describe SqlAssess::QueryTransformer do
   subject { described_class.new(connection) }
 
-  before do
-    connection.query("CREATE TABLE table1 (id1 integer, id2 integer)")
-    connection.query("CREATE TABLE table2 (id3 integer, id4 integer)")
-  end
+  yaml = YAML.load_file("spec/fixtures/transformer_integration_tests.yml")
 
-  it do
-    expect(subject.transform("SELECT * from table1"))
-      .to eq("SELECT `table1`.`id1`, `table1`.`id2` FROM `table1`")
-  end
-
-  it do
-    expect(subject.transform("SELECT * from table1 ORDER BY table1.id1 DESC"))
-      .to eq("SELECT `table1`.`id1`, `table1`.`id2` FROM `table1` ORDER BY `table1`.`id1` DESC")
+  yaml.each do |test|
+    it "transform #{test['query']} to #{test['expected_result']}" do
+      # Seed date
+      connection.multiple_query(test["schema"])
+      # Check if queries from file are correct
+      connection.query(test["query"])
+      connection.query(test["expected_result"])
+      # Check transformation
+      expect(subject.transform(test["query"])).to eq(test["expected_result"])
+    end
   end
 end

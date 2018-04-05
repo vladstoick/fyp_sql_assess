@@ -28,7 +28,9 @@ module SqlAssess
           table.class.new(
             transform_table(table.left),
             transform_table(table.right),
-            table.search_condition.search_condition
+            SQLParser::Statement::On.new(
+              table.search_condition.search_condition
+            )
           )
         elsif table.is_a?(SQLParser::Statement::Subquery)
           SQLParser::Statement::Subquery.new(

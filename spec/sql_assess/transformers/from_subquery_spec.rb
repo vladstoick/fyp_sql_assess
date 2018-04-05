@@ -14,6 +14,7 @@ RSpec.describe SqlAssess::Transformers::FromSubquery do
         SELECT `table1`.`id`
         FROM
           `table1`
+          LEFT JOIN `table2` ON `table1`.`id1` = `table2`.`id3`
       SQL
     end
 
