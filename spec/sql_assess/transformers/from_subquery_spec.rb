@@ -47,7 +47,7 @@ RSpec.describe SqlAssess::Transformers::FromSubquery do
     end
 
     it "returns the same query" do
-      expect(subject).to eq("SELECT `table1`.`id` FROM `table2` LEFT JOIN (SELECT `table1`.`id1`, `table1`.`id2` FROM `table1`) `table1`.`id1` = `table2`.`id3`")
+      expect(subject).to eq("SELECT `table1`.`id` FROM `table2` LEFT JOIN (SELECT `table1`.`id1`, `table1`.`id2` FROM `table1`) ON `table1`.`id1` = `table2`.`id3`")
     end
   end
 end
