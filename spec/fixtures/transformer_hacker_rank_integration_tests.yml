@@ -1,0 +1,367 @@
+# Basic Select
+-
+  name: Revising the Select Query I
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: SELECT * from CITY WHERE `POPULATION` > 100000 and `COUNTRYCODE` = "USA"
+  expected_result: SELECT `CITY`.`id`, `CITY`.`name`, `CITY`.`countrycode`, `CITY`.`district`, `CITY`.`population` FROM `CITY` WHERE (100000 < `CITY`.`POPULATION` AND `CITY`.`COUNTRYCODE` = 'USA')
+-
+  name: Revising the Select Query II
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: select name from CITY where POPULATION > 120000 and `COUNTRYCODE` = 'USA'
+  expected_result: SELECT `CITY`.`name` FROM `CITY` WHERE (120000 < `CITY`.`POPULATION` AND `CITY`.`COUNTRYCODE` = 'USA')
+-
+  name: Select All
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: SELECT * from CITY
+  expected_result: SELECT `CITY`.`id`, `CITY`.`name`, `CITY`.`countrycode`, `CITY`.`district`, `CITY`.`population` FROM `CITY`
+-
+  name: Select By Id
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: select * from CITY WHERE ID = 1661
+  expected_result: SELECT `CITY`.`id`, `CITY`.`name`, `CITY`.`countrycode`, `CITY`.`district`, `CITY`.`population` FROM `CITY` WHERE `CITY`.`ID` = 1661
+-
+  name: Japanese Cities' Attributes
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: select * from CITY WHERE `COUNTRYCODE` = 'JPN'
+  expected_result: SELECT `CITY`.`id`, `CITY`.`name`, `CITY`.`countrycode`, `CITY`.`district`, `CITY`.`population` FROM `CITY` WHERE `CITY`.`COUNTRYCODE` = 'JPN'
+-
+  name: Japanese Cities' Names
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: select name from CITY WHERE `COUNTRYCODE` = 'JPN'
+  expected_result: SELECT `CITY`.`name` FROM `CITY` WHERE `CITY`.`COUNTRYCODE` = 'JPN'
+-
+  name: Weather Observation Station 1
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: SELECT city, state from STATION
+  expected_result: SELECT `STATION`.`city`, `STATION`.`state` FROM `STATION`
+-
+  name: Weather Observation Station 3
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select DISTINCT(CITY) from STATION where ID % 2 = 0 ORDER by CITY DESC
+  expected_result: SELECT DISTINCT `STATION`.`CITY` FROM `STATION` WHERE (`STATION`.`ID` % 2) = 0 ORDER BY `STATION`.`CITY` DESC
+-
+  name: Weather Observation Station 4
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select count(CITY) - count(DISTINCT CITY) FROM STATION;
+  support: false
+-
+  name: Weather Observation Station 5 - part 1
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select city, length(city) from STATION order by length(city) ASC, city ASC LIMIT 2
+  support: false
+-
+  name: Weather Observation Station 5 - part 2
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select city, length(city) from STATION order by length(city) desc, city ASC limit 1
+  support: false
+-
+  name: Weather Observation Station 6
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select DISTINCT CITY from STATION WHERE CITY LIKE 'A%' OR CITY LIKE 'E%' OR CITY LIKE 'I%' OR CITY LIKE 'O%' OR CITY LIKE 'U%'
+  expected_result: SELECT DISTINCT `STATION`.`CITY` FROM `STATION` WHERE ((((`STATION`.`CITY` LIKE 'A%' OR `STATION`.`CITY` LIKE 'E%') OR `STATION`.`CITY` LIKE 'I%') OR `STATION`.`CITY` LIKE 'O%') OR `STATION`.`CITY` LIKE 'U%')
+-
+  name: Weather Observation Station 7
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select DISTINCT CITY from STATION WHERE CITY LIKE '%A' OR CITY LIKE '%E' OR CITY LIKE '%I' OR CITY LIKE '%O' OR CITY LIKE '%U'
+  expected_result: SELECT DISTINCT `STATION`.`CITY` FROM `STATION` WHERE ((((`STATION`.`CITY` LIKE '%A' OR `STATION`.`CITY` LIKE '%E') OR `STATION`.`CITY` LIKE '%I') OR `STATION`.`CITY` LIKE '%O') OR `STATION`.`CITY` LIKE '%U')
+-
+  name: Weather Observation Station 8
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select DISTINCT CITY from STATION WHERE CITY LIKE '[AEIOU]%[AEIOU]'
+  expected_result: SELECT DISTINCT `STATION`.`CITY` FROM `STATION` WHERE `STATION`.`CITY` LIKE '[AEIOU]%[AEIOU]'
+-
+  name: Weather Observation Station 9
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select DISTINCT CITY from STATION WHERE CITY NOT LIKE '[AEIOUaeiou]%'
+  expected_result: SELECT DISTINCT `STATION`.`CITY` FROM `STATION` WHERE `CITY` NOT LIKE '[AEIOUaeiou]%'
+-
+  name: Weather Observation Station 10
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select DISTINCT CITY from STATION WHERE CITY LIKE '%[^AEIOU]'
+  expected_result: SELECT DISTINCT `STATION`.`CITY` FROM `STATION` WHERE `STATION`.`CITY` LIKE '%[^AEIOU]'
+-
+  name: Weather Observation Station 11
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select DISTINCT CITY from STATION WHERE CITY LIKE '[^AEIOU]%' OR CITY LIKE '%[^AEIOU]'
+  expected_result: SELECT DISTINCT `STATION`.`CITY` FROM `STATION` WHERE (`STATION`.`CITY` LIKE '[^AEIOU]%' OR `STATION`.`CITY` LIKE '%[^AEIOU]')
+-
+  name: Weather Observation Station 12
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select DISTINCT CITY from STATION WHERE CITY LIKE '[^AEIOU]%[^AEIOU]'
+  expected_result: SELECT DISTINCT `STATION`.`CITY` FROM `STATION` WHERE `STATION`.`CITY` LIKE '[^AEIOU]%[^AEIOU]'
+-
+  name: Higher Than 75 Marks
+  schema: |
+    CREATE TABLE STUDENTS(id integer, name varchar(255), marks integer)
+  query: select Name from STUDENTS where Marks > 75 order by substr(Name, -3) ASC, ID ASC
+  support: false
+-
+  name: Employee names
+  schema: |
+    CREATE TABLE EMPLOYEE(employee_id integer, name varchar(255), months integer, salary integer)
+  query: SELECT name FROM `EMPLOYEE` ORDER BY name ASC
+  expected_result: SELECT `EMPLOYEE`.`name` FROM `EMPLOYEE` ORDER BY `EMPLOYEE`.`name` ASC
+-
+  name: Employee salaries
+  schema: |
+    CREATE TABLE EMPLOYEE(employee_id integer, name varchar(255), months integer, salary integer)
+  query: SELECT name FROM `EMPLOYEE` WHERE salary > 2000 and months < 10
+  expected_result: SELECT `EMPLOYEE`.`name` FROM `EMPLOYEE` WHERE (2000 < `EMPLOYEE`.`salary` AND `EMPLOYEE`.`months` < 10)
+# Basic join
+-
+  name: Asian Population
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer);
+    CREATE TABLE COUNTRY(
+      code varchar(255), name varchar(255), continent varchar(255),
+      region varchar(255), surfacearea integer, indepyear varchar(255),
+      population integer, lifeexpectancy varchar(255), gnp integer,
+      gnpold varchar(255), localname varchar(255), governmentform varchar(255),
+      headofstate varchar(255), capital varchar(255), code2 varchar(255)
+    );
+  query: SELECT SUM(CITY.POPULATION) FROM CITY LEFT JOIN `COUNTRY` ON `COUNTRY`.CODE = CITY.`COUNTRYCODE` WHERE `COUNTRY`.CONTINENT = "ASIA"
+  expected_result: SELECT SUM(`CITY`.`POPULATION`) FROM `CITY` LEFT JOIN `COUNTRY` ON `COUNTRY`.`CODE` = `CITY`.`COUNTRYCODE` WHERE `COUNTRY`.`CONTINENT` = 'ASIA'
+-
+  name: African cities
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer);
+    CREATE TABLE COUNTRY(
+      code varchar(255), name varchar(255), continent varchar(255),
+      region varchar(255), surfacearea integer, indepyear varchar(255),
+      population integer, lifeexpectancy varchar(255), gnp integer,
+      gnpold varchar(255), localname varchar(255), governmentform varchar(255),
+      headofstate varchar(255), capital varchar(255), code2 varchar(255)
+    );
+  query: SELECT CITY.NAME FROM CITY LEFT JOIN `COUNTRY` ON `COUNTRY`.CODE = CITY.`COUNTRYCODE` WHERE `COUNTRY`.CONTINENT = 'AFRICA'
+  expected_result: SELECT `CITY`.`NAME` FROM `CITY` LEFT JOIN `COUNTRY` ON `COUNTRY`.`CODE` = `CITY`.`COUNTRYCODE` WHERE `COUNTRY`.`CONTINENT` = 'AFRICA'
+-
+  name: Average Population of Each Continent
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer);
+    CREATE TABLE COUNTRY(
+      code varchar(255), name varchar(255), continent varchar(255),
+      region varchar(255), surfacearea integer, indepyear varchar(255),
+      population integer, lifeexpectancy varchar(255), gnp integer,
+      gnpold varchar(255), localname varchar(255), governmentform varchar(255),
+      headofstate varchar(255), capital varchar(255), code2 varchar(255)
+    );
+  query: SELECT `COUNTRY`.CONTINENT, AVG(CITY.POPULATION) FROM CITY LEFT JOIN `COUNTRY` ON `COUNTRY`.CODE = CITY.`COUNTRYCODE` GROUP BY `COUNTRY`.CONTINENT
+  expected_result: SELECT `COUNTRY`.`CONTINENT`, AVG(`CITY`.`POPULATION`) FROM `CITY` LEFT JOIN `COUNTRY` ON `COUNTRY`.`CODE` = `CITY`.`COUNTRYCODE` GROUP BY `COUNTRY`.`CONTINENT`
+-
+  name: The report
+  schema: |
+    CREATE TABLE Students(id integer, name varchar(255), marks integer);
+    CREATE TABLE Grades(grade integer, min_mark integer, max_mark integer);
+  query: SELECT CASE WHEN `Grades`.`grade` < 8 THEN NULL ELSE Students.Name END, Grades.grade, Students.Marks FROM Students LEFT JOIN Grades ON Students.Marks >= Grades.`Min_Mark` AND Students.Marks <= Grades.`Max_Mark` ORDER BY Grades.grade DESC, Students.Name ASC
+  support: false
+-
+  name: Top competitors
+  schema: |
+    CREATE TABLE hackers(hacker_id integer, name varchar(255));
+    CREATE TABLE difficulty(difficulty_level integer, score integer);
+    CREATE TABLE challenges(difficulty_level integer, hacker_id integer, challenge_id integer);
+    CREATE TABLE submissions(submission_id integer, hacker_id integer, challenge_id integer, score integer);
+  query: |
+    select hackers.hacker_id, hackers.name
+    from
+      submissions
+      inner join challenges on submissions.challenge_id = challenges.challenge_id
+      inner join difficulty on challenges.difficulty_level = difficulty.difficulty_level
+      inner join hackers on submissions.hacker_id = hackers.hacker_id
+    where submissions.score = difficulty.score and challenges.difficulty_level = difficulty.difficulty_level
+    group by hackers.hacker_id, hackers.name
+    having count(submissions.hacker_id) > 1
+    order by count(submissions.hacker_id) desc, submissions.hacker_id asc
+  expected_result: |
+    SELECT `hackers`.`hacker_id`, `hackers`.`name`
+    FROM
+      `submissions`
+      INNER JOIN `challenges` ON `submissions`.`challenge_id` = `challenges`.`challenge_id`
+      INNER JOIN `difficulty` ON `challenges`.`difficulty_level` = `difficulty`.`difficulty_level`
+      INNER JOIN `hackers` ON `submissions`.`hacker_id` = `hackers`.`hacker_id`
+    WHERE (`submissions`.`score` = `difficulty`.`score` AND `challenges`.`difficulty_level` = `difficulty`.`difficulty_level`)
+    GROUP BY `hackers`.`hacker_id`, `hackers`.`name`
+    HAVING 1 < COUNT(`submissions`.`hacker_id`)
+    ORDER BY COUNT(`submissions`.`hacker_id`) DESC, `submissions`.`hacker_id` ASC
+-
+  name: Challenges
+  schema: |
+    CREATE TABLE hackers(hacker_id integer, name varchar(255));
+    CREATE TABLE difficulty(difficulty_level integer, score integer);
+    CREATE TABLE challenges(difficulty_level integer, hacker_id integer, challenge_id integer);
+    CREATE TABLE submissions(submission_id integer, hacker_id integer, challenge_id integer, score integer);
+  query: |
+    select * from hackers
+  support: false
+-
+  name: Contest leaderboard
+  schema: |
+    CREATE TABLE hackers(hacker_id integer, name varchar(255));
+    CREATE TABLE difficulty(difficulty_level integer, score integer);
+    CREATE TABLE challenges(difficulty_level integer, hacker_id integer, challenge_id integer);
+    CREATE TABLE submissions(submission_id integer, hacker_id integer, challenge_id integer, score integer);
+  query: |
+    select * from hackers
+  support: false
+# Advance select
+-
+  name: Type of triangle
+  support: false
+-
+  name: The pads
+  support: false
+-
+  name: Occupations
+  support: false
+-
+  name: Binary Tree nodes
+  support: false
+-
+  name: New companies
+  schema: |
+    CREATE TABLE Company(company_code varchar(255), founder varchar(255));
+    CREATE TABLE Lead_Manager(company_code varchar(255), lead_manager_code varchar(255));
+    CREATE TABLE Senior_Manager(company_code varchar(255), lead_manager_code varchar(255), senior_manager_code varchar(255));
+    CREATE TABLE Manager(company_code varchar(255), lead_manager_code varchar(255), senior_manager_code varchar(255), manager_code varchar(255));
+    CREATE TABLE Employee(company_code varchar(255), lead_manager_code varchar(255), senior_manager_code varchar(255), manager_code varchar(255), employee_code varchar(255));
+  query: |
+    select Company.company_code, Company.founder,
+      count(Lead_Manager.lead_manager_code), count(Senior_Manager.senior_manager_code),
+      count(Manager.manager_code), count(`Employee`.`employee_code`)
+    from Company, Lead_Manager, Senior_Manager, Manager, `Employee`
+    where Company.company_code = Lead_Manager.company_code
+      and Lead_Manager.lead_manager_code = Senior_Manager.lead_manager_code
+      and Senior_Manager.senior_manager_code = Manager.senior_manager_code
+      and Manager.manager_code = `Employee`.manager_code
+    group by Company.company_code, Company.founder
+    order by Company.company_code
+  expected_result: |
+    SELECT
+      `Company`.`company_code`,
+      `Company`.`founder`,
+      COUNT(`Lead_Manager`.`lead_manager_code`),
+      COUNT(`Senior_Manager`.`senior_manager_code`),
+      COUNT(`Manager`.`manager_code`),
+      COUNT(`Employee`.`employee_code`)
+    FROM
+      `Company`
+      CROSS JOIN `Lead_Manager`
+      CROSS JOIN `Senior_Manager`
+      CROSS JOIN `Manager`
+      CROSS JOIN `Employee`
+    WHERE
+      (((`Company`.`company_code` = `Lead_Manager`.`company_code` AND `Lead_Manager`.`lead_manager_code` = `Senior_Manager`.`lead_manager_code`) AND `Senior_Manager`.`senior_manager_code` = `Manager`.`senior_manager_code`) AND `Manager`.`manager_code` = `Employee`.`manager_code`)
+    GROUP BY
+      `Company`.`company_code`,
+      `Company`.`founder`
+    ORDER BY `Company`.`company_code` ASC
+# Aggregate
+-
+  name: Revising Aggregations - The Count Function
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: SELECT COUNT(id) FROM CITY WHERE population > 100000
+  expected_result: SELECT COUNT(`CITY`.`id`) FROM `CITY` WHERE 100000 < `CITY`.`population`
+-
+  name: Revising Aggregations - The Sum Function
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: SELECT SUM(POPULATION) FROM CITY WHERE DISTRICT="CALIFORNIA" GROUP BY DISTRICT
+  expected_result: SELECT SUM(`CITY`.`POPULATION`) FROM `CITY` WHERE `CITY`.`DISTRICT` = 'CALIFORNIA' GROUP BY `CITY`.`DISTRICT`
+-
+  name: Revising Aggregations - Averages
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: SELECT AVG(population) FROM CITY WHERE district = 'California'
+  expected_result: SELECT AVG(`CITY`.`population`) FROM `CITY` WHERE `CITY`.`district` = 'California'
+-
+  name: Average Population
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: SELECT AVG(POPULATION) FROM CITY
+  expected_result: SELECT AVG(`CITY`.`POPULATION`) FROM `CITY`
+-
+  name: Japan Population
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: SELECT SUM(POPULATION) FROM CITY  WHERE `COUNTRYCODE` ='JPN'
+  expected_result: SELECT SUM(`CITY`.`POPULATION`) FROM `CITY` WHERE `CITY`.`COUNTRYCODE` = 'JPN'
+-
+  name: Population Density Difference
+  schema: |
+    CREATE TABLE CITY(id integer, name varchar(255), countrycode varchar(255), district varchar(255), population integer)
+  query: SELECT MAX(Population) - MIN(Population) FROM CITY
+  expected_result: SELECT (MAX(`CITY`.`Population`) - MIN(`CITY`.`Population`)) FROM `CITY`
+-
+  name: The Blunder
+  schema: |
+    CREATE TABLE employees(id integer, name varchar(255), salary integer)
+  query: SELECT AVG(salary - REPLACE(salary, '0', '')) FROM employees;
+  support: false
+-
+  name: Top earners
+  schema: |
+    CREATE TABLE EMPLOYEE(employee_id integer, name varchar(255), months integer, salary integer)
+  query: select salary * months FROM `EMPLOYEE` group by 1 order by 1 desc
+  expected_result: SELECT (`EMPLOYEE`.`salary` * `EMPLOYEE`.`months`) FROM `EMPLOYEE` GROUP BY (`EMPLOYEE`.`salary` * `EMPLOYEE`.`months`) ORDER BY (`EMPLOYEE`.`salary` * `EMPLOYEE`.`months`) DESC
+-
+  name: Weather Observation Station 2
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: SELECT ROUND(SUM(LAT_N), 2), ROUND(SUM(LONG_W), 2) FROM STATION;
+  support: false
+-
+  name: Weather Observation Station 13
+  schema: |
+    CREATE TABLE station(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select sum(lat_n) from station where lat_n>38.7880 and lat_n<137.2345
+  expected_result: SELECT SUM(`station`.`lat_n`) FROM `station` WHERE (38.788 < `station`.`lat_n` AND `station`.`lat_n` < 137.2345)
+-
+  name: Weather Observation Station 14
+  schema: |
+    CREATE TABLE station(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  support: false
+-
+  name: Weather Observation Station 16
+  schema: |
+    CREATE TABLE station(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  support: false
+-
+  name: Weather Observation Station 17
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  query: select LONG_W from STATION where LAT_N>38.7780 order by LAT_N
+  expected_result: SELECT `STATION`.`LONG_W` FROM `STATION` WHERE 38.778 < `STATION`.`LAT_N` ORDER BY `STATION`.`LAT_N` ASC
+-
+  name: Weather Observation Station 18
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  support: false
+-
+  name: Weather Observation Station 19
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  support: false
+-
+  name: Weather Observation Station 20
+  schema: |
+    CREATE TABLE STATION(id integer, CITY varchar(255), STATE varchar(255), LAT_N DOUBLE, LONG_W DOUBLE)
+  support: false

@@ -2,25 +2,40 @@
 
 module SqlAssess
   module Transformers
-    class AmbigousColumnsSelect < Base
+    class AmbigousColumnsWhere < Base
       def transform(query)
-        @query = query
         @parsed_query = @parser.scan_str(query)
 
-        columns = @parsed_query.query_expression.list.columns.map do |column|
-          transform_column(column)
-        end
+        where_clause = @parsed_query.query_expression.table_expression.where_clause
 
+        return query if where_clause.nil?
 
-        @parsed_query.query_expression.list.instance_variable_set(
-          '@columns',
-          columns
+        transformed_where_clause = transform_where(where_clause.search_condition)
+
+        @parsed_query.query_expression.table_expression.where_clause.instance_variable_set(
+          '@search_condition', transformed_where_clause
         )
 
         @parsed_query.to_sql
       end
 
       private
+
+      def transform_where(predicate)
+        if predicate.is_a?(SQLParser::Statement::SearchCondition)
+          predicate.class.new(
+            transform_where(predicate.left),
+            transform_where(predicate.right)
+          )
+        elsif predicate.is_a?(SQLParser::Statement::ComparisonPredicate)
+          predicate.class.new(
+            transform_column(predicate.left),
+            transform_column(predicate.right)
+          )
+        else
+          predicate
+        end
+      end
 
       def transform_column(column)
         if column.is_a?(SQLParser::Statement::Column)

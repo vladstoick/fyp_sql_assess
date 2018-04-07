@@ -34,18 +34,6 @@ module SqlAssess
 
         @parsed_query.to_sql
       end
-
-      private
-
-      def find_table_for(column_name)
-        table_list = tables(@parsed_query.to_sql)
-
-        table_list.detect do |table|
-          columns_query = "SHOW COLUMNS from #{table}"
-          columns = @connection.query(columns_query).map { |k| k['Field'] }
-          columns.include?(column_name)
-        end
-      end
     end
   end
 end

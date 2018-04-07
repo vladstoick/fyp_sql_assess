@@ -10,6 +10,7 @@ module SqlAssess
       # Columns
       Transformers::AllColumns,
       Transformers::AmbigousColumnsSelect,
+      Transformers::AmbigousColumnsWhere,
       Transformers::AmbigousColumnsGroup,
       Transformers::AmbigousColumnsOrderBy,
       Transformers::EquivalentColumns,
@@ -29,6 +30,7 @@ module SqlAssess
     def transform(query)
       TRANSFORMERS.each do |transformer_class|
         query = transformer_class.new(@connection).transform(query)
+        # binding.pry
       end
 
       query
