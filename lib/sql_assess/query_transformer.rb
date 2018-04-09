@@ -7,13 +7,6 @@ module SqlAssess
     TRANSFORMERS = [
       # Subquery
       Transformers::FromSubquery,
-      # Columns
-      Transformers::AllColumns,
-      Transformers::AmbigousColumnsSelect,
-      Transformers::AmbigousColumnsWhere,
-      Transformers::AmbigousColumnsGroup,
-      Transformers::AmbigousColumnsOrderBy,
-      Transformers::EquivalentColumns,
       # Predicate
       Transformers::Not,
       Transformers::BetweenPredicateWhere,
@@ -21,6 +14,13 @@ module SqlAssess
       Transformers::ComparisonPredicateFrom,
       Transformers::ComparisonPredicateWhere,
       Transformers::ComparisonPredicateHaving,
+      # Columns
+      Transformers::AllColumns,
+      Transformers::AmbigousColumnsSelect,
+      Transformers::AmbigousColumnsWhere,
+      Transformers::AmbigousColumnsGroup,
+      Transformers::AmbigousColumnsOrderBy,
+      Transformers::EquivalentColumns,
     ].freeze
 
     def initialize(connection)
