@@ -7,7 +7,12 @@ module SqlAssess
         if @parsed_query.order_by.nil?
           []
         else
-          @parsed_query.order_by.sort_specification.map(&:to_sql)
+          @parsed_query.order_by.sort_specification.each_with_index.map do |column, i|
+            {
+              column: column.to_sql,
+              position: i,
+            }
+          end
         end
       end
     end

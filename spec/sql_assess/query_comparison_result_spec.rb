@@ -7,17 +7,13 @@ RSpec.describe SqlAssess::QueryComparisonResult do
     SqlAssess::QueryAttributeExtractor.new.extract(
       (
         <<-SQL.squish
-          SELECT a, d, g
-          FROM table1 LEFT JOIN table2 on table1.id = table2.id
-          WHERE a < 1 AND b < 2
-          LIMIT 1 OFFSET 1
+          SELECT table1.a
+          FROM table1
         SQL
       ), (
         <<-SQL.squish
-          SELECT a, b, c, d
-          FROM table1 RIGHT JOIN table2 on table1.id = table2.id
-          WHERE a < 1 AND c < 3
-          LIMIT 1 OFFSET 1
+          SELECT table1.a
+          FROM table1
         SQL
       )
     )

@@ -10,17 +10,18 @@ module SqlAssess
       end
 
       def match_score(order_by1, order_by2)
-        if order_by1 == order_by2
-          2
-        else
-          column1 = order_by1.split(' ')[0]
-          column2 = order_by2.split(' ')[0]
+        column1, order1 = order_by1[:column].split(' ')
+        column2, order2 = order_by2[:column].split(' ')
+        position_difference = (order_by1[:position] - order_by2[:position]).abs + 1
 
-          if column1 == column2
-            1
+        if column1 == column2
+          if order1 == order2
+            1 / position_difference
           else
-            0
+            0.5 / position_difference
           end
+        else
+          0
         end
       end
     end

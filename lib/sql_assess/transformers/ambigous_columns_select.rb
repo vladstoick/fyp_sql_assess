@@ -11,7 +11,6 @@ module SqlAssess
           transform_column(column)
         end
 
-
         @parsed_query.query_expression.list.instance_variable_set(
           '@columns',
           columns

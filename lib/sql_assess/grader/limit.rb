@@ -9,7 +9,13 @@ module SqlAssess
       end
 
       def grade
-        @student_limit == @instructor_limit ? 1 : 0
+        grade = 0
+
+        grade += 0.5 if @student_limit[:limit] == @instructor_limit[:limit]
+
+        grade += 0.5 if @student_limit[:offset] == @instructor_limit[:offset]
+
+        grade
       end
     end
   end

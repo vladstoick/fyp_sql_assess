@@ -33,7 +33,7 @@ RSpec.describe SqlAssess::Grader::Columns do
     let(:student_columns) { ["table1.column"] }
     let(:instructor_columns) { ["table1.column_2"] }
 
-    it { expect(subject.rounded_grade).to eq(0.5) }
+    it { expect(subject.rounded_grade).to eq(0.17) }
   end
 
   context "example 5 - totally different columns" do
