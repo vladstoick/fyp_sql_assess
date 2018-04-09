@@ -6,14 +6,25 @@ RSpec.describe SqlAssess::Parsers::OrderBy do
   context "with order by one column" do
     let(:query) { "SELECT * from table1 ORDER BY id" }
     it "returns the order by clause" do
-      expect(subject.order).to eq(["`id` ASC"])
+      expect(subject.order).to eq([{
+        column: "`id` ASC",
+        position: 0,
+      }])
     end
   end
 
   context "with order by multiple columns" do
     let(:query) { "SELECT * from table1 ORDER BY id, id2 DESC" }
     it "returns the order by clause" do
-      expect(subject.order).to eq(["`id` ASC", "`id2` DESC"])
+      expect(subject.order).to eq([
+        {
+          column: "`id` ASC",
+          position: 0,
+        }, {
+          column: "`id2` DESC",
+          position: 1,
+        }
+      ])
     end
   end
 

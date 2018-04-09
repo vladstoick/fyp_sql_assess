@@ -45,7 +45,7 @@ module SqlAssess
 
           best_match_score = match_score.each_with_index.max
 
-          if best_match_score[0] == 2
+          if best_match_score[0] == 1
             instructor_unmatched_attributes.delete_at(best_match_score[1])
             false
           else

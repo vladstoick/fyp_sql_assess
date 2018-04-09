@@ -24,52 +24,24 @@ module SqlAssess
 
         if instructor_condition == student_condition
           1
-        elsif instructor_condition[:type] == 'Subquery' && student_condition[:type] == 'Subquery'
-          SqlAssess::QueryComparisonResult.new(
-            success: false,
-            attributes: {
-              student: instructor_condition[:attributes],
-              instructor: student_condition[:attributes],
-            }
-          ).grade / 100.0
         else
           0
         end
       end
 
-      def match_score(instructor_condition, student_condition)
-        if instructor_condition == student_condition
-          2
+      def match_score(instructor_join, student_expressions)
+        if instructor_join == student_expressions
+          1
+        elsif instructor_join[:table] == student_expressions[:table]
+          if instructor_join[:join_type] == student_expressions[:join_type]
+            0.75
+          elsif instructor_join[:condition] == student_expressions[:condition]
+            0.75
+          else
+            0.5
+          end
         else
-          if instructor_condition[:join_type] != student_condition[:join_type]
-            divide = 2.0
-          else
-            divide = 1.0
-          end
-
-          if instructor_condition[:type] == student_condition[:type]
-            if instructor_condition[:type] == 'Subquery'
-              subuqery_match_score = SqlAssess::QueryComparisonResult.new(
-                success: false,
-                attributes: {
-                  student: instructor_condition[:attributes],
-                  instructor: student_condition[:attributes],
-                }
-              ).grade / 100.0 / 2
-
-              subuqery_match_score / divide
-            elsif instructor_condition[:table] == student_condition[:table]
-              if instructor_condition[:condition] == student_condition[:condition]
-                2.0 / divide
-              else
-                1.0 / divide
-              end
-            else
-              0
-            end
-          else
-            0
-          end
+          0
         end
       end
     end

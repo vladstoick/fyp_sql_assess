@@ -19,12 +19,19 @@ RSpec.describe SqlAssess::Grader::Limit do
     let(:student_limit) { { "limit": 1, "offset": 1 } }
     let(:instructor_limit) { { "limit": 1, "offset": 0 } }
 
-    it { expect(subject.rounded_grade).to eq(0) }
+    it { expect(subject.rounded_grade).to eq(0.5) }
   end
 
   context "different limit but same offset" do
     let(:student_limit) { { "limit": 2, "offset": 0 } }
     let(:instructor_limit) { { "limit": 1, "offset": 0 } }
+
+    it { expect(subject.rounded_grade).to eq(0.5) }
+  end
+
+  context "different limit and offset" do
+    let(:student_limit) { { "limit": 2, "offset": 0 } }
+    let(:instructor_limit) { { "limit": 1, "offset": 2 } }
 
     it { expect(subject.rounded_grade).to eq(0) }
   end

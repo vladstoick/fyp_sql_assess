@@ -96,7 +96,7 @@ RSpec.describe SqlAssess::Grader::Tables do
       SQL
     end
 
-    it { expect(subject.rounded_grade).to eq(0.75) }
+    it { expect(subject.rounded_grade).to eq(BigDecimal(0.69, 2)) }
   end
 
   context "with base equal but join condition different" do
@@ -112,7 +112,7 @@ RSpec.describe SqlAssess::Grader::Tables do
       SQL
     end
 
-    it { expect(subject.rounded_grade).to eq(0.75) }
+    it { expect(subject.rounded_grade).to eq(BigDecimal.new(0.69, 2)) }
   end
 
   context "with base equal but join condition and type different" do
@@ -145,53 +145,5 @@ RSpec.describe SqlAssess::Grader::Tables do
     end
 
     it { expect(subject.rounded_grade).to eq(1) }
-  end
-
-  context "with two slightly different subquery" do
-    let(:student_query) do
-      <<-SQL
-        SELECT id1 from (SELECT id1 from table1)
-      SQL
-    end
-
-    let(:instructor_query) do
-      <<-SQL
-        SELECT id1 from (SELECT id2 from table1)
-      SQL
-    end
-
-    it { expect(subject.rounded_grade).to eq(0.88) }
-  end
-
-  context "with one subquery and one table" do
-    let(:student_query) do
-      <<-SQL
-        SELECT id1 from (SELECT id1 from table1)
-      SQL
-    end
-
-    let(:instructor_query) do
-      <<-SQL
-        SELECT id1 from table1
-      SQL
-    end
-
-    it { expect(subject.rounded_grade).to eq(0.0) }
-  end
-
-  context "with one subquery and one table" do
-    let(:student_query) do
-      <<-SQL
-        SELECT id1 from table2 LEFT JOIN (SELECT id1 from table1) ON 1 = 1
-      SQL
-    end
-
-    let(:instructor_query) do
-      <<-SQL
-        SELECT id1 from table2 LEFT JOIN (SELECT id1 from table2) ON 1 = 1
-      SQL
-    end
-
-    it { expect(subject.rounded_grade).to eq(0.5) }
   end
 end
