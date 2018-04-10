@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe SqlAssess::Transformers::AmbigousColumnsOrderBy do
+RSpec.describe SqlAssess::Transformers::AmbigousColumns::From do
   subject { described_class.new(connection) }
 
   before do
@@ -8,7 +8,7 @@ RSpec.describe SqlAssess::Transformers::AmbigousColumnsOrderBy do
     connection.query("CREATE TABLE table2 (id3 integer, id4 integer)")
   end
 
-  context "with no order clause" do
+  context "with no join" do
     let(:query) do
       <<-SQL.squish
         SELECT `table1`.`id`, `table1`.`id2`
@@ -21,12 +21,11 @@ RSpec.describe SqlAssess::Transformers::AmbigousColumnsOrderBy do
     end
   end
 
-  context "with order clause but no ambigous column" do
+  context "with join clause but no ambigous column" do
     let(:query) do
       <<-SQL.squish
         SELECT `table1`.`id`, `table1`.`id2`
-        FROM `table1`
-        ORDER BY `table1`.`id1` ASC
+        FROM `table1` LEFT JOIN `table2` ON `table2`.`id3` = `table1`.`id1`
       SQL
     end
 
@@ -35,12 +34,12 @@ RSpec.describe SqlAssess::Transformers::AmbigousColumnsOrderBy do
     end
   end
 
-  context "with order clause but with an ambigous column" do
+  context "with join clause but with ambigous column" do
     let(:query) do
       <<-SQL.squish
         SELECT `table1`.`id`, `table1`.`id2`
-        FROM `table1`
-        ORDER BY `id1` ASC
+        FROM `table1` LEFT JOIN `table2` ON `id3` = `id1`
+        GROUP BY `id1`
       SQL
     end
 
@@ -48,19 +47,19 @@ RSpec.describe SqlAssess::Transformers::AmbigousColumnsOrderBy do
       expect(subject.transform(query)).to eq(
         <<-SQL.squish
           SELECT `table1`.`id`, `table1`.`id2`
-          FROM `table1`
-          ORDER BY `table1`.`id1` ASC
+          FROM `table1` LEFT JOIN `table2` ON `table2`.`id3` = `table1`.`id1`
+          GROUP BY `id1`
         SQL
       )
     end
   end
 
-  context "with order clause but with a column number" do
+  context "with join clause but with ambigous column" do
     let(:query) do
       <<-SQL.squish
         SELECT `table1`.`id`, `table1`.`id2`
-        FROM `table1`
-        ORDER BY 1 ASC
+        FROM `table1` LEFT JOIN `table2` ON `id3` = `id1` AND `id4` = `id2`
+        GROUP BY `id1`
       SQL
     end
 
@@ -68,8 +67,8 @@ RSpec.describe SqlAssess::Transformers::AmbigousColumnsOrderBy do
       expect(subject.transform(query)).to eq(
         <<-SQL.squish
           SELECT `table1`.`id`, `table1`.`id2`
-          FROM `table1`
-          ORDER BY `table1`.`id` ASC
+          FROM `table1` LEFT JOIN `table2` ON (`table2`.`id3` = `table1`.`id1` AND `table2`.`id4` = `table1`.`id2`)
+          GROUP BY `id1`
         SQL
       )
     end

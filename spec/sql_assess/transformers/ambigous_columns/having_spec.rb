@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe SqlAssess::Transformers::AmbigousColumnsWhere do
+RSpec.describe SqlAssess::Transformers::AmbigousColumns::Having do
   subject { described_class.new(connection) }
 
   before do
@@ -8,7 +8,7 @@ RSpec.describe SqlAssess::Transformers::AmbigousColumnsWhere do
     connection.query("CREATE TABLE table2 (id3 integer, id4 integer)")
   end
 
-  context "with no where clause" do
+  context "with no HAVING clause" do
     let(:query) do
       <<-SQL.squish
         SELECT `table1`.`id`, `table1`.`id2`
@@ -21,12 +21,12 @@ RSpec.describe SqlAssess::Transformers::AmbigousColumnsWhere do
     end
   end
 
-  context "with WHERE clause but no ambigous column" do
+  context "with HAVING clause but no ambigous column" do
     let(:query) do
       <<-SQL.squish
         SELECT `table1`.`id`, `table1`.`id2`
         FROM `table1`
-        WHERE `table1`.`id1` > 1
+        HAVING `table1`.`id1` > 1
       SQL
     end
 
@@ -35,12 +35,12 @@ RSpec.describe SqlAssess::Transformers::AmbigousColumnsWhere do
     end
   end
 
-  context "with where clause but with an ambigous column" do
+  context "with HAVING clause but with an ambigous column" do
     let(:query) do
       <<-SQL.squish
         SELECT `table1`.`id`, `table1`.`id2`
         FROM `table1`
-        WHERE `id1` > 1
+        HAVING `id1` > 1
       SQL
     end
 
@@ -49,18 +49,18 @@ RSpec.describe SqlAssess::Transformers::AmbigousColumnsWhere do
         <<-SQL.squish
           SELECT `table1`.`id`, `table1`.`id2`
           FROM `table1`
-          WHERE `table1`.`id1` > 1
+          HAVING `table1`.`id1` > 1
         SQL
       )
     end
   end
 
-  context "with where clause but with an ambigous column" do
+  context "with HAVING clause but with an ambigous column" do
     let(:query) do
       <<-SQL.squish
         SELECT `table1`.`id`, `table1`.`id2`
         FROM `table1`
-        WHERE `id1` > 1 AND `id2` > 1
+        HAVING `id1` > 1 AND `id2` > 1
       SQL
     end
 
@@ -69,7 +69,7 @@ RSpec.describe SqlAssess::Transformers::AmbigousColumnsWhere do
         <<-SQL.squish
           SELECT `table1`.`id`, `table1`.`id2`
           FROM `table1`
-          WHERE (`table1`.`id1` > 1 AND `table1`.`id2` > 1)
+          HAVING (`table1`.`id1` > 1 AND `table1`.`id2` > 1)
         SQL
       )
     end
