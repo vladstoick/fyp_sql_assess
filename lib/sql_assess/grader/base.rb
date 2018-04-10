@@ -3,8 +3,15 @@
 require 'rubygems/text'
 
 module SqlAssess
+  # Namespace that handles the grading part of the library
   module Grader
+    # Base class for the grader
+    # @author Vlad Stoica
     class Base
+      # Returns the grade for a certain attribute given a list of attributes
+      # @param [String] attribute component name (e.g. columns)
+      # @param [Hash] student_attributes student's attributes for that component
+      # @param [Hash] instructor_attributes instructor's attributes for that component
       def self.grade_for(attribute:, student_attributes:, instructor_attributes:)
         "SqlAssess::Grader::#{attribute.to_s.camelcase}".constantize.new(
           student_attributes: student_attributes,
@@ -17,12 +24,19 @@ module SqlAssess
         @instructor_attributes = instructor_attributes
       end
 
+      # The levenshtein distance between two strings
+      # @param [String] string1
+      # @param [String] string2
+      # @return [Integer] the distance
       def levenshtein_distance(string1, string2)
         ld = Class.new.extend(Gem::Text).method(:levenshtein_distance)
 
         ld.call(string1, string2)
       end
 
+      # Rounds the grade to two decimals. The subclasses must implement the
+      # grade method.
+      # @return [Double] rounded grade to two decimals
       def rounded_grade
         grade.round(2)
       end

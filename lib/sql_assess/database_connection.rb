@@ -3,6 +3,8 @@
 require 'mysql2'
 
 module SqlAssess
+  # Class for handling database connection and securely executing queries
+  # @author Vlad Stoica
   class DatabaseConnection
     def initialize(host: '127.0.0.1', port: '3306', username: 'root', database: nil)
       @client = Mysql2::Client.new(
@@ -53,10 +55,14 @@ module SqlAssess
       raise DatabaseConnectionError, exception.message
     end
 
+    # Execute queries as restricted user
+    # @param [String] query
+    # @return [Hash] the results of the query
     def query(query)
       @restricted_client.query(query)
     end
 
+    # Drop the temporary database and the temporary user
     def delete_database
       if @parent_database
         # disable foreign key checks before dropping the database
@@ -76,6 +82,9 @@ module SqlAssess
       end
     end
 
+    # Execute a multi statement query as restricted user
+    # @param [String] query
+    # @return [Array<Hash>] the results of each statement
     def multiple_query(query)
       result = []
 

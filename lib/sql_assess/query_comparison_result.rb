@@ -3,6 +3,19 @@
 require 'sql_assess/grader/base'
 
 module SqlAssess
+  # @author Vlad Stoica
+  # The final result of an assesment
+  # @!attribute [r] success
+  #   @return [Boolean] whether the query returned the same results
+  # @!attribute [r] attributes
+  #   @return [Hash] The extracted attributes of the two queries. See
+  #     {QueryAttributeExtractor}
+  # @!attribute [r] attributes_grade
+  #   @return [Hash] The grade for each component
+  # @!attribute [r] grade
+  #   @return [Double] The overall grade
+  # @!attribute [r] message
+  #   @return [String] Hint
   class QueryComparisonResult
     attr_reader :success, :attributes, :grade, :message
 

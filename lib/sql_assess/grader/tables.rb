@@ -2,6 +2,8 @@
 
 module SqlAssess
   module Grader
+    # Grader for FROM clause
+    # @author Vlad Stoica
     class Tables < Base
       private
 

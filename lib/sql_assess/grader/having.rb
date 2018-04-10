@@ -2,11 +2,15 @@
 
 module SqlAssess
   module Grader
+    # Grader for HAVING clause
+    # @author Vlad Stoica
     class Having < Base
       def initialize(student_attributes:, instructor_attributes:)
         @student_having = student_attributes
         @instructor_having = instructor_attributes
       end
+
+      private
 
       def grade
         return 1 if @student_having == @instructor_having
@@ -29,8 +33,6 @@ module SqlAssess
           conditions_grade
         end
       end
-
-      private
 
       def grade_for_tree(student_tree, instructor_tree)
         if student_tree && student_tree[:is_inner] && instructor_tree && instructor_tree[:is_inner]

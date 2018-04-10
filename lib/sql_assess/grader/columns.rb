@@ -2,6 +2,8 @@
 
 module SqlAssess
   module Grader
+    # Grader for columns
+    # @author Vlad Stoica
     class Columns < Base
       private
 

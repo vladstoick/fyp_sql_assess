@@ -3,7 +3,21 @@
 module SqlAssess
   module Transformers
     module EquivalentColumns
+      # @author Vlad Stoica
+      # Equivalent columns transformer for columns list
       class Select < Base
+        # Transforms the query
+        #
+        # @param [String] query the initial query
+        # @return [String] the transformed query
+        # @example
+        #   SELECT `b`.`id`
+        #   FROM `b` LEFT JOIN `a` ON `a`.`id` = `b`.`id`
+        #
+        #   is transformed to
+        #
+        #   SELECT `a`.`id`
+        #   FROM `b` LEFT JOIN `a` ON `a`.`id` = `b`.`id`
         def transform(query)
           @query = query
           @parsed_query = @parser.scan_str(query)

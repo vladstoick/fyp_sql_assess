@@ -2,7 +2,10 @@
 
 module SqlAssess
   module Parsers
+    # Parser for the Order BY clause
+    # @author Vlad Stoica
     class OrderBy < Base
+      # @return [Array<Hash{column:, position:}>]
       def order
         if @parsed_query.order_by.nil?
           []

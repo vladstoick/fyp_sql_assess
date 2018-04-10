@@ -2,6 +2,8 @@
 
 module SqlAssess
   module Grader
+    # Grader for ORDER BY clause
+    # @author Vlad Stoica
     class OrderBy < Base
       private
 

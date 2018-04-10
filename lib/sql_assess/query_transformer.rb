@@ -3,7 +3,10 @@
 require 'sql_assess/transformers/base'
 
 module SqlAssess
+  # Class for handling the canonicalization process
+  # @author Vlad Stoica
   class QueryTransformer
+    # The ordered list of transformers applied
     TRANSFORMERS = [
       # Subquery
       Transformers::FromSubquery,
@@ -21,6 +24,10 @@ module SqlAssess
       @connection = connection
     end
 
+    # Apply sequentially all transformations to a query
+    #
+    # @param [String] query input query
+    # @return [String] canonicalized query
     def transform(query)
       TRANSFORMERS.each do |transformer_class|
         query = transformer_class.new(@connection).transform(query)

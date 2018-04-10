@@ -2,7 +2,14 @@
 
 module SqlAssess
   module Transformers
+    # @author Vlad Stoica
+    # Equivalent columns transformer for subqueries in the FROM clause
+    # @deprecated Do not use
     class FromSubquery < Base
+      # Transforms the query
+      #
+      # @param [String] query the initial query
+      # @return [String] the transformed query
       def transform(query)
         parsed_query = @parser.scan_str(query)
 

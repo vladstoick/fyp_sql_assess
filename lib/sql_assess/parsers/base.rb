@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 module SqlAssess
+  # Namespace that handles the components extraction
   module Parsers
+    # Base class for the parsers
+    # @author Vlad Stoica
     class Base
       def initialize(query)
         @parsed_query = SQLParser::Parser.new.scan_str(query)

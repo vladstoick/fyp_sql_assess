@@ -3,17 +3,26 @@
 require 'sql-parser'
 
 module SqlAssess
+  # Module for canonicalization transformers
   module Transformers
+    # Base transformer. Provides implementation for traversing from, for
+    # getting the list of tables.
+    # @abstract
+    # @author Vlad Stoica
     class Base
       def initialize(connection)
         @connection = connection
         @parser = SQLParser::Parser.new
       end
 
+      # Transform method that must be implemented in subclasses
       def transform
         raise 'Implement this method in subclass'
       end
 
+      # Gets the full list of tables from a query. It assumes that there are
+      # no sub-queries involved
+      # @return [Array<String>] the list of tables
       def tables(query)
         SqlAssess::Parsers::Tables.new(query).tables.map do |table|
           if table.key?(:join_type)
@@ -24,15 +33,7 @@ module SqlAssess
         end
       end
 
-      def find_table_for(column_name)
-        table_list = tables(@parsed_query.to_sql)
-
-        table_list.detect do |table|
-          columns_query = "SHOW COLUMNS from #{table}"
-          columns = @connection.query(columns_query).map { |k| k['Field'] }
-          columns.map(&:downcase).include?(column_name.downcase)
-        end
-      end
+      private
 
       def traverse_from(node)
         if node.is_a?(SQLParser::Statement::QualifiedJoin)

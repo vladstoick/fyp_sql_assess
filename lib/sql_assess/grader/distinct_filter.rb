@@ -2,11 +2,15 @@
 
 module SqlAssess
   module Grader
+    # Grader for distinct filter
+    # @author Vlad Stoica
     class DistinctFilter < Base
       def initialize(student_attributes:, instructor_attributes:)
         @student_distinct = student_attributes
         @instructor_distinct = instructor_attributes
       end
+
+      private
 
       def grade
         if @student_distinct == @instructor_distinct
