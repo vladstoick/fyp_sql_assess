@@ -14,7 +14,7 @@ module SqlAssess
       # Columns
       Transformers::AllColumns,
       Transformers::AmbigousColumns::Base.transformers,
-      Transformers::EquivalentColumns,
+      Transformers::EquivalentColumns::Base.transformers,
     ].flatten.freeze
 
     def initialize(connection)
