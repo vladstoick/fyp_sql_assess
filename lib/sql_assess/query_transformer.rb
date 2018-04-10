@@ -8,7 +8,7 @@ module SqlAssess
       # Subquery
       Transformers::FromSubquery,
       # Predicate
-      Transformers::Not,
+      Transformers::Not::Base.transformers,
       Transformers::BetweenPredicate::Base.transformers,
       Transformers::ComparisonPredicate::Base.transformers,
       # Columns

@@ -1,11 +1,11 @@
 require "spec_helper"
 
-RSpec.describe SqlAssess::Transformers::Not do
+RSpec.describe SqlAssess::Transformers::Not::Where do
   subject { described_class.new(connection) }
 
   context "when there is no where clause" do
     it "returns the same query" do
-      expect(subject.transform("SELECT * FROM t1")).to eq("SELECT * FROM `t1`")
+      expect(subject.transform("SELECT * FROM t1")).to eq("SELECT * FROM t1")
     end
   end
 
