@@ -57,7 +57,7 @@ module SqlAssess
 end
 
 require_relative 'all_columns'
-require_relative 'not'
+require_relative 'not/base'
 require_relative 'ambigous_columns/base'
 require_relative 'between_predicate/base'
 require_relative 'comparison_predicate/base'
