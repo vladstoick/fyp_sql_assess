@@ -10,9 +10,7 @@ module SqlAssess
       # Predicate
       Transformers::Not,
       Transformers::BetweenPredicate::Base.transformers,
-      Transformers::ComparisonPredicateFrom,
-      Transformers::ComparisonPredicateWhere,
-      Transformers::ComparisonPredicateHaving,
+      Transformers::ComparisonPredicate::Base.transformers,
       # Columns
       Transformers::AllColumns,
       Transformers::AmbigousColumns::Base.transformers,
@@ -26,7 +24,6 @@ module SqlAssess
     def transform(query)
       TRANSFORMERS.each do |transformer_class|
         query = transformer_class.new(@connection).transform(query)
-        # binding.pry
       end
 
       query
