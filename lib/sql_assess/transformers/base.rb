@@ -57,11 +57,9 @@ module SqlAssess
 end
 
 require_relative 'all_columns'
-require_relative 'between_predicate_where'
-require_relative 'between_predicate_having'
-require_relative 'between_predicate_from'
 require_relative 'not'
 require_relative 'ambigous_columns/base'
+require_relative 'between_predicate/base'
 require_relative 'equivalent_columns'
 require_relative 'comparison_predicate_where'
 require_relative 'comparison_predicate_having'
