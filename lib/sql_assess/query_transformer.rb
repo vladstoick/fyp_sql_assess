@@ -16,12 +16,9 @@ module SqlAssess
       Transformers::ComparisonPredicateHaving,
       # Columns
       Transformers::AllColumns,
-      Transformers::AmbigousColumnsSelect,
-      Transformers::AmbigousColumnsWhere,
-      Transformers::AmbigousColumnsGroup,
-      Transformers::AmbigousColumnsOrderBy,
+      Transformers::AmbigousColumns::Base.transformers,
       Transformers::EquivalentColumns,
-    ].freeze
+    ].flatten.freeze
 
     def initialize(connection)
       @connection = connection

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe SqlAssess::Transformers::AmbigousColumnsSelect do
+RSpec.describe SqlAssess::Transformers::AmbigousColumns::Select do
   subject { described_class.new(connection) }
 
   before do

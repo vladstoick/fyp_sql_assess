@@ -33,6 +33,25 @@ module SqlAssess
           columns.map(&:downcase).include?(column_name.downcase)
         end
       end
+
+      def traverse_from(node)
+        if node.is_a?(SQLParser::Statement::QualifiedJoin)
+          node.class.new(
+            traverse_from(node.left),
+            traverse_from(node.right),
+            SQLParser::Statement::On.new(
+              transform_tree(node.search_condition.search_condition)
+            )
+          )
+        elsif node.is_a?(SQLParser::Statement::JoinedTable)
+          node.class.new(
+            traverse_from(node.left),
+            traverse_from(node.right)
+          )
+        else
+          node
+        end
+      end
     end
   end
 end
@@ -42,10 +61,7 @@ require_relative 'between_predicate_where'
 require_relative 'between_predicate_having'
 require_relative 'between_predicate_from'
 require_relative 'not'
-require_relative 'ambigous_columns_select'
-require_relative 'ambigous_columns_group'
-require_relative 'ambigous_columns_order_by'
-require_relative 'ambigous_columns_where'
+require_relative 'ambigous_columns/base'
 require_relative 'equivalent_columns'
 require_relative 'comparison_predicate_where'
 require_relative 'comparison_predicate_having'

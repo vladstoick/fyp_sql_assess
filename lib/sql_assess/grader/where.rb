@@ -69,18 +69,18 @@ module SqlAssess
         end
       end
 
-def get_leaves(node)
-  if node.nil?
-    nil
-  elsif node[:is_inner] == false
-    node
-  else
-    [
-      get_leaves(node[:left_clause]),
-      get_leaves(node[:right_clause]),
-    ].flatten
-  end
-end
+      def get_leaves(node)
+        if node.nil?
+          nil
+        elsif node[:is_inner] == false
+          node
+        else
+          [
+            get_leaves(node[:left_clause]),
+            get_leaves(node[:right_clause]),
+          ].flatten
+        end
+      end
 
       def match_score(where_clause1, where_clause2)
         if where_clause1 == where_clause2
