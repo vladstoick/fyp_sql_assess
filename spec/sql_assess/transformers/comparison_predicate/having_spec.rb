@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe SqlAssess::Transformers::ComparisonPredicateHaving do
+RSpec.describe SqlAssess::Transformers::ComparisonPredicate::Having do
   subject { described_class.new(connection) }
 
   context "when there is no having clause" do
