@@ -5,7 +5,7 @@ module SqlAssess
     module AmbigousColumns
       class Base < SqlAssess::Transformers::Base
         def self.transformers
-          [Select, From, Where, Group, OrderBy, Having,]
+          [Select, From, Where, Group, OrderBy, Having]
         end
 
         private
