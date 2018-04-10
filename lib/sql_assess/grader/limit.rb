@@ -2,11 +2,15 @@
 
 module SqlAssess
   module Grader
+    # Grader for LIMIT clause
+    # @author Vlad Stoica
     class Limit < Base
       def initialize(student_attributes:, instructor_attributes:)
         @student_limit = student_attributes
         @instructor_limit = instructor_attributes
       end
+
+      private
 
       def grade
         grade = 0

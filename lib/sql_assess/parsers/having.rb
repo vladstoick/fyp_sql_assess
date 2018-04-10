@@ -2,7 +2,10 @@
 
 module SqlAssess
   module Parsers
+    # @author Vlad Stoica
+    # Parser for the HAVING clause
     class Having < Base
+      # @return [Hash] the binary expression tree of the HAVING clause
       def having
         if @parsed_query.query_expression.table_expression.having_clause.nil?
           {}
@@ -11,6 +14,7 @@ module SqlAssess
         end
       end
 
+      # @return [Hash] the expression tree (not binary tree) of the HAVING clause
       def having_tree
         if @parsed_query.query_expression.table_expression.having_clause.nil?
           {}
@@ -21,6 +25,9 @@ module SqlAssess
         end
       end
 
+      # Transform a clause to a tree
+      # @param [SQLParser::Statement] clause current node
+      # @return [Hash] tree version the clause
       def self.transform(clause)
         if clause.is_a?(SQLParser::Statement::ComparisonPredicate)
           {

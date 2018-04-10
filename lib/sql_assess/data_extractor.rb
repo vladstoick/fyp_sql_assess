@@ -3,11 +3,15 @@
 require 'mysql2'
 
 module SqlAssess
+  # Class for handling the extraction of data and schema from a database
+  # @author Vlad Stoica
   class DataExtractor
     def initialize(connection)
       @connection = connection
     end
 
+    # Extract data from the current connection
+    # @return [Hash] data from the table. The format of the hash is { table_name: [rows] }
     def run
       result = []
       tables = @connection.query('SHOW tables;')

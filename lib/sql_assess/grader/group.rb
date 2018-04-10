@@ -2,6 +2,8 @@
 
 module SqlAssess
   module Grader
+    # Grader for GROUP clause
+    # @author Vlad Stoica
     class Group < Base
       private
 

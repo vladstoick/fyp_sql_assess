@@ -2,8 +2,12 @@
 
 module SqlAssess
   module Transformers
+    # Transformers for comparison predicate
     module ComparisonPredicate
+      # @author Vlad Stoica
+      # Base class for transformers for comparison predicate
       class Base < SqlAssess::Transformers::Base
+        # The list of comparison predicate transformers
         def self.transformers
           [From, Where, Having]
         end

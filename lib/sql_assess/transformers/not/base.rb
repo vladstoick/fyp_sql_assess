@@ -2,8 +2,12 @@
 
 module SqlAssess
   module Transformers
+    # Namespace for NOT transformers
     module Not
+      # @author Vlad Stoica
+      # Base class for transformers for not
       class Base < SqlAssess::Transformers::Base
+        # The list not columns transformers
         def self.transformers
           [From, Where, Having]
         end

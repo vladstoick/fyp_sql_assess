@@ -7,8 +7,6 @@ AllCops:
     - 'sql_assess.gemspec'
     - 'Rakefile'
 
-Documentation:
-  Enabled: false
 Metrics:
   Enabled: false
 Style/ConditionalAssignment:

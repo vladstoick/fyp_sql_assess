@@ -3,7 +3,19 @@
 module SqlAssess
   module Transformers
     module Not
+      # @author Vlad Stoica
+      # NOT transformer for the FROM clause
       class From < Base
+        # Transforms the query
+        #
+        # @param [String] query the initial query
+        # @return [String] the transformed query
+        #
+        # @example
+        #   With tables: t1(id1), t2(id3);
+        #   SELECT * FROM `t1` LEFT JOIN `t2` ON NOT id1 > id2
+        #   is transformed
+        #   SELECT * FROM `t1` LEFT JOIN `t2` ON id1 <= id2
         def transform(query)
           parsed_query = @parser.scan_str(query)
 

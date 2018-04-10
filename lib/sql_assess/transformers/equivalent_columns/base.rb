@@ -5,8 +5,12 @@ require 'rgl/condensation.rb'
 
 module SqlAssess
   module Transformers
+    # Transformers for equivalent columns
     module EquivalentColumns
+      # @author Vlad Stoica
+      # Base class for transformers for equivalent column
       class Base < SqlAssess::Transformers::Base
+        # The list of equivalent columns transformers
         def self.transformers
           [Select, Where, Group, OrderBy, Having]
         end

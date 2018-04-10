@@ -2,7 +2,11 @@
 
 module SqlAssess
   module Parsers
+    # Parser for the limit clause
+    # @author Vlad Stoica
     class Limit < Base
+      # @return [Hash{limit:, offset:}]. If offset is not present then return 0,
+      #   if limit is not present then return inf.
       def limit
         if @parsed_query.query_expression&.table_expression&.limit_clause.present?
           {

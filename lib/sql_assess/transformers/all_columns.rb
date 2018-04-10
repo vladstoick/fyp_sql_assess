@@ -2,7 +2,25 @@
 
 module SqlAssess
   module Transformers
+    # @author Vlad Stoica
+    # Transformer for transforming * to the full list of qulified columns.
     class AllColumns < Base
+      # Transforms the query
+      #
+      # @param [String] query the initial query
+      # @return [String] the transformed query
+      #
+      # @example
+      #   With tables: t1(id1), t2(id3);
+      #   "SELECT * FROM `t1`, `t2`"
+      #   is transformed
+      #   to "SELECT `t1`.`id1`, `t2`.`id3` FROM `t1`, `t2`"
+      #
+      # @example
+      #   With tables: t1(id1), t2(id3);
+      #   "SELECT `t1`.`id1` FROM `t1`, `t2`"
+      #   is transformed
+      #   to "SELECT `t1`.`id1` FROM `t1`, `t2`"
       def transform(query)
         @parsed_query = @parser.scan_str(query)
 

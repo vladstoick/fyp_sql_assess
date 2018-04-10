@@ -3,7 +3,19 @@
 module SqlAssess
   module Transformers
     module AmbigousColumns
+      # @author Vlad Stoica
+      # Ambiguous columns transformer for the FROM clause
       class From < Base
+        # Transforms the query
+        #
+        # @param [String] query the initial query
+        # @return [String] the transformed query
+        #
+        # @example
+        #   With tables: t1(id1), t2(id3);
+        #   SELECT `id1` FROM `t1` LEFT JOIN `t2` on `id1` = `id3`
+        #   is transformed to
+        #   SELECT `id1` FROM `t1` LEFT JOIN `t2` on `t1`.`id1` = `t2`.`id3`
         def transform(query)
           @parsed_query = @parser.scan_str(query)
 

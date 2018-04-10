@@ -2,7 +2,10 @@
 
 module SqlAssess
   module Parsers
+    # Parser for the FROM clause
+    # @author Vlad Stoica
     class Tables < Base
+      # @return [Array<Hash{type:, table:, sql:}, Hash{join_type:,table: Hash{type:, table:, sql:}, sql:}>]
       def tables
         if @parsed_query.query_expression&.table_expression&.from_clause.nil?
           []

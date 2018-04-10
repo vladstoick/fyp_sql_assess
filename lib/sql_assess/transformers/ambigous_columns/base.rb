@@ -2,8 +2,13 @@
 
 module SqlAssess
   module Transformers
+    # Module for ambigous columns transformers
     module AmbigousColumns
+      # @author Vlad Stoica
+      # Base class for transformers for ambiguous column. Provides implementation
+      # for transforming columns
       class Base < SqlAssess::Transformers::Base
+        # The list of ambiguous columns transformers
         def self.transformers
           [Select, From, Where, Group, OrderBy, Having]
         end
@@ -46,6 +51,16 @@ module SqlAssess
             )
           else
             transform_column(node)
+          end
+        end
+
+        def find_table_for(column_name)
+          table_list = tables(@parsed_query.to_sql)
+
+          table_list.detect do |table|
+            columns_query = "SHOW COLUMNS from #{table}"
+            columns = @connection.query(columns_query).map { |k| k['Field'] }
+            columns.map(&:downcase).include?(column_name.downcase)
           end
         end
       end

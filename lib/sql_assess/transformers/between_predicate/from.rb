@@ -3,7 +3,19 @@
 module SqlAssess
   module Transformers
     module BetweenPredicate
+      # Between transformer for FROM clause
+      # @author Vlad Stoica
       class From < Base
+        # Transforms the query
+        #
+        # @param [String] query the initial query
+        # @return [String] the transformed query
+        #
+        # @example
+        #   With tables: t1(id1), t2(id3);
+        #   SELECT * FROM `t1` LEFT JOIN `t2` ON id1 BETWEEN id2 and 3
+        #   is transformed
+        #   SELECT * FROM `t1` LEFT JOIN `t2` ON id1 >= id2 AND id1 <= 3
         def transform(query)
           parsed_query = @parser.scan_str(query)
 
