@@ -16,7 +16,7 @@ module SqlAssess
 
         if column1 == column2
           if order1 == order2
-            1 / position_difference
+            1.0 / position_difference
           else
             0.5 / position_difference
           end

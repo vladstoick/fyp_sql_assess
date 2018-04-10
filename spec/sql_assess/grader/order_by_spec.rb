@@ -89,7 +89,7 @@ RSpec.describe SqlAssess::Grader::OrderBy do
     it { expect(subject.rounded_grade).to eq(0.5) }
   end
 
-    context "with one equal and one different order by" do
+  context "with one equal and one different order by" do
     let(:student_query) do
       <<-SQL
         SELECT a from table1
@@ -105,5 +105,41 @@ RSpec.describe SqlAssess::Grader::OrderBy do
     end
 
     it { expect(subject.rounded_grade).to eq(0.67) }
+  end
+
+  context "with reversed two order by" do
+    let(:student_query) do
+      <<-SQL
+        SELECT a from table1
+        ORDER BY a, b
+      SQL
+    end
+
+    let(:instructor_query) do
+      <<-SQL
+        SELECT a from table1
+        ORDER BY b, a
+      SQL
+    end
+
+    it { expect(subject.rounded_grade).to eq(0.25) }
+  end
+
+  context "with reversed two order by" do
+    let(:student_query) do
+      <<-SQL
+        SELECT a from table1
+        ORDER BY a ASC, b
+      SQL
+    end
+
+    let(:instructor_query) do
+      <<-SQL
+        SELECT a from table1
+        ORDER BY b, a DESC
+      SQL
+    end
+
+    it { expect(subject.rounded_grade).to eq(0.19) }
   end
 end
