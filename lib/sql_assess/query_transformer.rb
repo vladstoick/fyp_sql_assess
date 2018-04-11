@@ -34,6 +34,8 @@ module SqlAssess
       end
 
       query
+    rescue SQLParser::Parser::ScanError, Racc::ParseError
+      raise CanonicalizationError
     end
   end
 end

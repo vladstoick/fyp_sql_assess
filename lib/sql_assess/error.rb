@@ -25,4 +25,9 @@ module SqlAssess
   # @author Vlad Stoica
   class DatabaseQueryExecutionFailed < SqlAssess::Error
   end
+
+  # Error thrown when the library cannot canonicalize a query
+  # @author Vlad Stoica
+  class CanonicalizationError < SqlAssess::Error
+  end
 end
