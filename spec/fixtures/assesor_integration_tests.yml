@@ -1,0 +1,6 @@
+-
+  schema: CREATE TABLE t1(id integer);
+  seed: INSERT INTO t1(id) VALUES (122);
+  instructor_query: SELECT * from t1;
+  student_query: SELECT 2 from t1;
+  message: Your query is not correct. Check what columns you are selecting.
