@@ -28,6 +28,7 @@ module SqlAssess
     #
     # @param [String] query input query
     # @return [String] canonicalized query
+    # @raise [CanonicalizationError] if any parsing errors are encountered
     def transform(query)
       TRANSFORMERS.each do |transformer_class|
         query = transformer_class.new(@connection).transform(query)
