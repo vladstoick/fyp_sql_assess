@@ -24,18 +24,19 @@ module SqlAssess
       @connection = connection
     end
 
-    # Apply sequentially all transformations to a query
-    #
-    # @param [String] query input query
-    # @return [String] canonicalized query
-    def transform(query)
-      TRANSFORMERS.each do |transformer_class|
-        query = transformer_class.new(@connection).transform(query)
-      end
+# Apply sequentially all transformations to a query
+#
+# @param [String] query input query
+# @return [String] canonicalized query
+# @raise [CanonicalizationError] if any parsing errors are encountered
+def transform(query)
+  TRANSFORMERS.each do |transformer_class|
+    query = transformer_class.new(@connection).transform(query)
+  end
 
-      query
-    rescue SQLParser::Parser::ScanError, Racc::ParseError
-      raise CanonicalizationError
-    end
+  query
+rescue SQLParser::Parser::ScanError, Racc::ParseError
+  raise CanonicalizationError
+end
   end
 end
