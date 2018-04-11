@@ -6,11 +6,12 @@ module SqlAssess
   # Class for handling database connection and securely executing queries
   # @author Vlad Stoica
   class DatabaseConnection
-    def initialize(host: '127.0.0.1', port: '3306', username: 'root', database: nil)
+    def initialize(host: '127.0.0.1', port: '3306', username: 'root', database: nil, password: '')
       @client = Mysql2::Client.new(
         host: host,
         port: port,
         username: username,
+        password: password,
         flags: Mysql2::Client::MULTI_STATEMENTS
       )
 

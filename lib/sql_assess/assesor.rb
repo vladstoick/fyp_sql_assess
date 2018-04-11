@@ -14,11 +14,12 @@ module SqlAssess
     attr_reader :connection
 
     # @raise [DatabaseSchemaError] if any MySQL errors are encountered
-    def initialize(databse_host: '127.0.0.1', database_port: '3306', database_username: 'root')
+    def initialize(database_host: '127.0.0.1', database_port: '3306', database_username: 'root', database_password: '')
       @connection = SqlAssess::DatabaseConnection.new(
-        host: databse_host,
+        host: database_host,
         port: database_port,
-        username: database_username
+        username: database_username,
+        password: database_password
       )
     end
 
