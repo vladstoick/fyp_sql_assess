@@ -4,6 +4,13 @@ require 'yaml'
 RSpec.describe SqlAssess::QueryTransformer do
   subject { described_class.new(connection) }
 
+  context "when encountering an error" do
+    it "raises a CanonicalizationError" do
+      expect { subject.transform("adad * from a") }
+        .to raise_error(SqlAssess::CanonicalizationError)
+    end
+  end
+
   yaml = YAML.load_file("spec/fixtures/transformer_integration_tests.yml")
 
   yaml.each do |test|

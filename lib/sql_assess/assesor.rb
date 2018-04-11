@@ -39,6 +39,8 @@ module SqlAssess
 
       Runner.new(@connection).execute_query(instructor_sql_query)
 
+      QueryTransformer.new(@connection).transform(instructor_sql_query)
+
       DataExtractor.new(@connection).run
     ensure
       clear_database
