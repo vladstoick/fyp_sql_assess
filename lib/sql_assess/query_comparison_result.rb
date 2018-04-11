@@ -77,9 +77,11 @@ module SqlAssess
     end
 
     def first_wrong_component
-      grade_components_percentages.detect do |component, _|
+      comp = grade_components_percentages.detect do |component, _|
         attributes_grade[component].to_d != 1
-      end.first
+      end
+
+      comp.present? ? comp.first : nil
     end
 
     def message_for_attribute(attribute)
