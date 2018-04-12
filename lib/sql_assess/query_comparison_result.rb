@@ -70,7 +70,7 @@ module SqlAssess
 
     def determine_hints
       if success == true
-        'Congratulations! Your solutions is correct'
+        'Congratulations! Your solution is correct'
       else
         "Your query is not correct. #{message_for_attribute(first_wrong_component)}"
       end
