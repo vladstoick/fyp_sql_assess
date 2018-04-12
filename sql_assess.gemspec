@@ -40,4 +40,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "timecop"
   spec.add_development_dependency "rubocop", '~> 0.54.0'
+  spec.add_development_dependency "codecov"
 end

@@ -56,7 +56,7 @@ RSpec.describe SqlAssess::QueryComparisonResult do
     context "with success = true" do
       let(:success) { true }
 
-      it { expect(subject.message).to eq("Congratulations! Your solutions is correct") }
+      it { expect(subject.message).to eq("Congratulations! Your solution is correct") }
     end
 
     context "with success = false" do
