@@ -197,10 +197,10 @@
       INNER JOIN `challenges` ON `submissions`.`challenge_id` = `challenges`.`challenge_id`
       INNER JOIN `difficulty` ON `challenges`.`difficulty_level` = `difficulty`.`difficulty_level`
       INNER JOIN `hackers` ON `submissions`.`hacker_id` = `hackers`.`hacker_id`
-    WHERE (`submissions`.`score` = `difficulty`.`score` AND `challenges`.`difficulty_level` = `difficulty`.`difficulty_level`)
+    WHERE (`submissions`.`score` = `difficulty`.`score` AND `challenges`.`difficulty_level` = `challenges`.`difficulty_level`)
     GROUP BY `hackers`.`hacker_id`, `hackers`.`name`
-    HAVING 1 < COUNT(`submissions`.`hacker_id`)
-    ORDER BY COUNT(`submissions`.`hacker_id`) DESC, `submissions`.`hacker_id` ASC
+    HAVING 1 < COUNT(`hackers`.`hacker_id`)
+    ORDER BY COUNT(`hackers`.`hacker_id`) DESC, `hackers`.`hacker_id` ASC
 -
   name: Challenges
   schema: |

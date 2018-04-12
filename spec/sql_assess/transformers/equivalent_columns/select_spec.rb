@@ -33,6 +33,21 @@ RSpec.describe SqlAssess::Transformers::EquivalentColumns::Select do
         expect(subject).to eq(sql)
       end
     end
+
+    context "with a join clause but no equivalence" do
+      let(:sql) do
+        <<-SQL.squish
+          SELECT `a`.`id`
+          FROM
+            `b`
+            LEFT JOIN `a` ON (`a`.`id` = `b`.`id` OR `a`.`id` = `b`.`id2`)
+        SQL
+      end
+
+      it "returns the same query" do
+        expect(subject).to eq(sql)
+      end
+    end
   end
 
   context "with an equivalence" do

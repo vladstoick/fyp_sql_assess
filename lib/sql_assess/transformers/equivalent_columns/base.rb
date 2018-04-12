@@ -63,28 +63,53 @@ module SqlAssess
         def build_equivalence_graph
           graph = RGL::DirectedAdjacencyGraph.new
 
-          @equivalences = []
-
           join_conditions = @parsed_query.query_expression.table_expression.from_clause.tables.first
-          find_equivalences(join_conditions)
 
-          @equivalences.each do |equivalence|
-            graph.add_edge(equivalence[0].to_sql, equivalence[1].to_sql)
-            graph.add_edge(equivalence[1].to_sql, equivalence[0].to_sql)
+          equivalences = find_equivalences(join_conditions)
+
+          equivalences.each do |equivalence|
+            graph.add_edge(equivalence[:equivalence_left].to_sql, equivalence[:equivalence_right].to_sql)
+            graph.add_edge(equivalence[:equivalence_right].to_sql, equivalence[:equivalence_left].to_sql)
           end
 
           graph.condensation_graph.vertices
         end
 
         def find_equivalences(clause)
-          return unless clause.is_a?(SQLParser::Statement::LeftJoin) || clause.is_a?(SQLParser::Statement::RightJoin)
+          if clause.is_a?(SQLParser::Statement::QualifiedJoin)
+            [
+              find_equivalences_search_condition(
+                clause.search_condition.search_condition
+              ),
+              find_equivalences(clause.left),
+              find_equivalences(clause.right),
+            ].flatten
+          elsif clause.is_a?(SQLParser::Statement::JoinedTable)
+            [
+              find_equivalences(clause.left),
+              find_equivalences(clause.right),
+            ].flatten
+          else
+            []
+          end
+        end
 
-          @equivalences << [
-            clause.search_condition.search_condition.left,
-            clause.search_condition.search_condition.right,
-          ]
-          find_equivalences(clause.left)
-          find_equivalences(clause.right)
+        def find_equivalences_search_condition(search_condition)
+          if search_condition.is_a?(SQLParser::Statement::And)
+            [
+              find_equivalences_search_condition(search_condition.left),
+              find_equivalences_search_condition(search_condition.right),
+            ].flatten
+          elsif search_condition.is_a?(SQLParser::Statement::Equals)
+            [
+              {
+                equivalence_left: search_condition.left,
+                equivalence_right: search_condition.right,
+              },
+            ]
+          else
+            []
+          end
         end
       end
     end
