@@ -57,7 +57,7 @@ RSpec.describe SqlAssess::Transformers::EquivalentColumns::Select do
           SELECT `b`.`id`
           FROM
             `b`
-            LEFT JOIN `a` ON `a`.`id` = `b`.`id`
+            LEFT JOIN `a` ON (`a`.`id` = `b`.`id` AND `a`.`id2` = `b`.`id2`)
         SQL
       end
 
@@ -67,7 +67,7 @@ RSpec.describe SqlAssess::Transformers::EquivalentColumns::Select do
             SELECT `a`.`id`
             FROM
               `b`
-              LEFT JOIN `a` ON `a`.`id` = `b`.`id`
+              LEFT JOIN `a` ON (`a`.`id` = `b`.`id` AND `a`.`id2` = `b`.`id2`)
           SQL
         )
       end
