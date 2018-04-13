@@ -5,7 +5,7 @@ PATH
       activesupport
       mysql2
       rgl
-      sql-parser-vlad (~> 0.0.14)
+      sql-parser-vlad (~> 0.0.15)
 
 GEM
   remote: https://rubygems.org/
@@ -70,7 +70,7 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    sql-parser-vlad (0.0.14)
+    sql-parser-vlad (0.0.15)
       racc (= 1.4.12)
     stream (0.5)
     thread_safe (0.3.6)
