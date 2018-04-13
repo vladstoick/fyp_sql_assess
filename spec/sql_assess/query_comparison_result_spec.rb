@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe SqlAssess::QueryComparisonResult do
-  subject { described_class.new(success: success, attributes: attributes) }
+  subject { described_class.new(success: true, attributes: attributes) }
 
   let(:attributes) do
     SqlAssess::QueryAttributeExtractor.new.extract(
@@ -18,26 +18,7 @@ RSpec.describe SqlAssess::QueryComparisonResult do
       )
     )
   end
-
-  context "#grade" do
-    context "with success true" do
-      let(:success) { true }
-
-      it { expect(subject.grade).to eq(100) }
-    end
-
-    context "with success false" do
-      let(:success) { false }
-
-      it "returns a number" do
-        expect(subject.grade).to be_a(BigDecimal)
-      end
-    end
-  end
-
   context "#attributes_grade" do
-    let(:success) { false }
-
     it "returns a hash" do
       expect(subject.attributes_grade).to match({
         columns: an_instance_of(BigDecimal),
@@ -53,16 +34,17 @@ RSpec.describe SqlAssess::QueryComparisonResult do
   end
 
   context "#message" do
-    context "with success = true" do
-      let(:success) { true }
+    context "with grade = 100" do
+      before do
+        allow_any_instance_of(described_class).to receive(:calculate_grade).and_return(1)
+      end
 
       it { expect(subject.message).to eq("Congratulations! Your solution is correct") }
     end
 
-    context "with success = false" do
-      let(:success) { false }
-
+    context "with grade < 100" do
       before do
+        allow_any_instance_of(described_class).to receive(:calculate_grade).and_return(0.9)
         allow_any_instance_of(described_class).to receive(:first_wrong_component).and_return(component)
       end
 

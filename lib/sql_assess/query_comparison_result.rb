@@ -22,15 +22,16 @@ module SqlAssess
     def initialize(success:, attributes:)
       @success = success
       @attributes = attributes
-      @message = determine_hints
 
       attributes_grade
 
       if @success == true
-        @grade = 100.00
-      else
         @grade = calculate_grade * 100.00
+      else
+        @grade = calculate_grade * 90.00
       end
+
+      @message = determine_hints
     end
 
     def attributes_grade
@@ -69,7 +70,7 @@ module SqlAssess
     end
 
     def determine_hints
-      if success == true
+      if @grade == 100.00
         'Congratulations! Your solution is correct'
       else
         "Your query is not correct. #{message_for_attribute(first_wrong_component)}"
